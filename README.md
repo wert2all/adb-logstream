@@ -1,6 +1,6 @@
 # ADB Logstream Viewer
 
-A minimalistic web-based viewer for Android `adb logstream`. Stream logs from your device in real time, right in the browser.
+A minimalistic web-based viewer for Android `adb logcat` output. Stream logs from your device in real time, right in the browser.
 
 ## How it works
 
@@ -8,7 +8,7 @@ A minimalistic web-based viewer for Android `adb logstream`. Stream logs from yo
 device ──USB──▶ adb daemon ──▶ server (:3000) ──WebSocket──▶ browser
 ```
 
-The server spawns `adb logstream -v long`, parses each entry into structured JSON, and broadcasts it to all connected browser clients via WebSocket. The client renders a searchable, filterable, auto-scrolling log list.
+The server spawns `adb logcat -v long`, parses each entry into structured JSON, and broadcasts it to all connected browser clients via WebSocket. The client renders a searchable, filterable, auto-scrolling log list.
 
 ## Requirements
 
