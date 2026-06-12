@@ -1,7 +1,7 @@
 {
   "name": "server",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
   "type": "commonjs",
   "scripts": {
     "start": "tsc && node dist/index.js",
