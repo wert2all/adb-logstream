@@ -51,7 +51,10 @@ export function loadAutoScrollState(): void {
 
 export function saveAutoScrollState(): void {
   try {
-    localStorage.setItem("logstream-auto-scroll-enabled", String(state.autoScrollEnabled));
+    localStorage.setItem(
+      "logstream-auto-scroll-enabled",
+      String(state.autoScrollEnabled),
+    );
   } catch {
     // localStorage unavailable — silently ignore
   }

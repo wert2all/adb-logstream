@@ -7,6 +7,7 @@ The log container (`#log-container`) already has scroll detection and conditiona
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Add a checkbox in the footer to explicitly enable/disable auto-scroll
 - Default state: enabled (on)
 - When enabled: new entries auto-scroll to bottom unless user has manually scrolled up
@@ -15,6 +16,7 @@ The log container (`#log-container`) already has scroll detection and conditiona
 - Persist toggle state across page reloads via `localStorage`
 
 **Non-Goals:**
+
 - Changing the WebSocket server or protocol
 - Adding a settings panel or modal
 - Animating scroll behavior (keep it instant)

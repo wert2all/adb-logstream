@@ -17,7 +17,9 @@ function init(): void {
 
   // Auto-scroll toggle
   loadAutoScrollState();
-  const autoScrollToggle = document.getElementById("auto-scroll-toggle") as HTMLInputElement;
+  const autoScrollToggle = document.getElementById(
+    "auto-scroll-toggle",
+  ) as HTMLInputElement;
   autoScrollToggle.checked = state.autoScrollEnabled;
   updateAutoScrollIndicator();
 

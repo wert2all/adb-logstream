@@ -10,5 +10,6 @@ Start proc ...
 This format was chosen because it is the easiest to parse reliably with a regular expression (all metadata is on the first line in brackets, the message follows on subsequent lines), and it includes all relevant fields: date, time, PID, TID, level, and tag.
 
 **Considered options:**
+
 - **`brief`** (default) — compact but harder to parse unambiguously because the message itself may contain spaces and colons.
 - **`threadtime`** — similar information but a different format; `long` brackets make field boundaries clearer.

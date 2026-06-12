@@ -12,7 +12,9 @@ const statusDot = document.getElementById("status-dot") as HTMLSpanElement;
 const statusText = document.getElementById("status-text") as HTMLSpanElement;
 const banner = document.getElementById("connection-banner") as HTMLDivElement;
 const bannerText = document.getElementById("banner-text") as HTMLSpanElement;
-const bannerDismiss = document.getElementById("banner-dismiss") as HTMLButtonElement;
+const bannerDismiss = document.getElementById(
+  "banner-dismiss",
+) as HTMLButtonElement;
 
 export function connect(): void {
   if (ws) {

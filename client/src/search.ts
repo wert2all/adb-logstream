@@ -2,7 +2,9 @@ import { state } from "./state";
 import { reRenderAll, applyVisibility } from "./render";
 
 const searchInput = document.getElementById("search-input") as HTMLInputElement;
-const searchClearBtn = document.getElementById("search-clear") as HTMLButtonElement;
+const searchClearBtn = document.getElementById(
+  "search-clear",
+) as HTMLButtonElement;
 
 export function initSearch(): void {
   searchInput.addEventListener("input", () => {

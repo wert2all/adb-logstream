@@ -14,11 +14,13 @@ The project currently has a flat structure with no package management, no separa
 ## Capabilities
 
 ### New Capabilities
+
 - `server-package`: Node.js server package with its own dependencies, scripts, and TypeScript configuration
 - `client-package`: Client package with its own build pipeline, dependencies, and TypeScript configuration
 - `monorepo-root`: Root workspace configuration including shared TypeScript config, workspace scripts, and `.gitignore`
 
 ### Modified Capabilities
+
 <!-- No existing specs to modify -->
 
 ## Impact

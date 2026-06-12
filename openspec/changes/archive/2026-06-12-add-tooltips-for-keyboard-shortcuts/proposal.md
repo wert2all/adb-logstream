@@ -13,9 +13,11 @@ Users have no way to discover keyboard shortcuts by hovering over UI controls. T
 ## Capabilities
 
 ### New Capabilities
+
 - `control-tooltips`: Tooltip overlays for UI controls that have keyboard shortcuts, displaying the key binding on hover.
 
 ### Modified Capabilities
+
 - `keyboard-shortcuts`: Existing spec gains a requirement that each shortcut-having control exposes its key binding via a tooltip on hover.
 
 ## Impact

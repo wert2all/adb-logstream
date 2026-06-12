@@ -3,7 +3,9 @@ import { applyVisibility, reRenderAll } from "./render";
 
 const STORAGE_KEY = "logstream-levels";
 
-const toggleContainer = document.getElementById("level-toggles") as HTMLDivElement;
+const toggleContainer = document.getElementById(
+  "level-toggles",
+) as HTMLDivElement;
 
 export function initFilters(): void {
   // Load from localStorage
