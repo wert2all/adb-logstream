@@ -20,17 +20,21 @@ The server spawns `adb logstream -v long`, parses each entry into structured JSO
 
 ```bash
 npm install
-npm build
+npm run build
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+The server serves the pre-built client on [http://localhost:3000](http://localhost:3000).
 
 ### Development
 
 ```bash
-npm run dev        # starts server with hot reload + Vite dev server for client
+npm run dev        # starts server + client in parallel via concurrently
 ```
+
+`npm run dev` uses [concurrently](https://github.com/open-cli-tools/concurrently) to run both the server (with `nodemon` hot reload) and the client (Vite dev server) in parallel. Each process is labeled with its color-coded name in the terminal output for easy identification.
+
+Open [http://localhost:5173](http://localhost:5173) for the Vite dev client (HMR enabled). The WebSocket proxy to the server is configured automatically in `vite.config.ts`.
 
 ## Project structure
 
@@ -72,6 +76,7 @@ adb-logstream/
 | Max DOM entries| 5000                        |
 | Reconnect delay| 3 seconds                   |
 | Filtering      | Client-side only            |
+| Dev runner     | concurrently (parallel server + client) |
 
 ## Features
 
