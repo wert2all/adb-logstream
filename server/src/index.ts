@@ -1,46 +1,46 @@
-import { createServer } from "http";
-import { WebSocketServer, WebSocket } from "ws";
-import { spawn, ChildProcess } from "child_process";
-import { readFileSync, existsSync } from "fs";
-import { join, extname } from "path";
+import { createServer } from 'http';
+import { WebSocketServer, WebSocket } from 'ws';
+import { spawn, ChildProcess } from 'child_process';
+import { readFileSync, existsSync } from 'fs';
+import { join, extname } from 'path';
 
 const PORT = 3000;
-const CLIENT_DIR = join(__dirname, "..", "..", "client");
+const CLIENT_DIR = join(__dirname, '..', '..', 'client');
 
 const MIME_TYPES: Record<string, string> = {
-  ".html": "text/html",
-  ".css": "text/css",
-  ".js": "application/javascript",
-  ".ts": "application/javascript",
+  '.html': 'text/html',
+  '.css': 'text/css',
+  '.js': 'application/javascript',
+  '.ts': 'application/javascript',
 };
 
 // === HTTP Static Server ===
 const server = createServer((req, res) => {
-  const url = req.url || "/";
+  const url = req.url || '/';
   let filePath: string;
 
-  if (url === "/") {
-    filePath = join(CLIENT_DIR, "index.html");
+  if (url === '/') {
+    filePath = join(CLIENT_DIR, 'index.html');
   } else {
     filePath = join(CLIENT_DIR, url);
   }
 
   if (!existsSync(filePath)) {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not Found');
     return;
   }
 
   const ext = extname(filePath);
-  const contentType = MIME_TYPES[ext] || "application/octet-stream";
+  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
   try {
     const content = readFileSync(filePath);
-    res.writeHead(200, { "Content-Type": contentType });
+    res.writeHead(200, { 'Content-Type': contentType });
     res.end(content);
   } catch (err) {
-    res.writeHead(500, { "Content-Type": "text/plain" });
-    res.end("Internal Server Error");
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end('Internal Server Error');
   }
 });
 
@@ -59,12 +59,12 @@ function broadcast(type: string, data: Record<string, unknown>): void {
   }
 }
 
-wss.on("connection", (ws) => {
+wss.on('connection', (ws) => {
   clients.add(ws);
-  ws.on("close", () => {
+  ws.on('close', () => {
     clients.delete(ws);
   });
-  ws.on("message", () => {
+  ws.on('message', () => {
     // ignore client messages
   });
 });
@@ -86,8 +86,8 @@ let bodyLines: string[] = [];
 
 function emitEntry(): void {
   if (!currentEntry) return;
-  currentEntry.message = bodyLines.join("\n");
-  broadcast("entry", { ...currentEntry });
+  currentEntry.message = bodyLines.join('\n');
+  broadcast('entry', { ...currentEntry });
   currentEntry = null;
   bodyLines = [];
 }
@@ -104,7 +104,7 @@ function parseLine(line: string): void {
       tid: match[3],
       level: match[4],
       tag: match[5],
-      message: "",
+      message: '',
     };
   } else if (currentEntry) {
     bodyLines.push(trimmed);
@@ -121,41 +121,41 @@ let isShuttingDown = false;
 function startAdb(): void {
   if (isShuttingDown) return;
 
-  adbProcess = spawn("adb", ["logcat", "-v", "long"], {
-    stdio: ["ignore", "pipe", "pipe"],
+  adbProcess = spawn('adb', ['logcat', '-v', 'long'], {
+    stdio: ['ignore', 'pipe', 'pipe'],
   });
 
-  adbProcess.stdout?.setEncoding("utf8");
-  adbProcess.stderr?.setEncoding("utf8");
+  adbProcess.stdout?.setEncoding('utf8');
+  adbProcess.stderr?.setEncoding('utf8');
 
-  let stdoutBuffer = "";
-  adbProcess.stdout?.on("data", (chunk: string) => {
+  let stdoutBuffer = '';
+  adbProcess.stdout?.on('data', (chunk: string) => {
     stdoutBuffer += chunk;
     let newlineIdx: number;
-    while ((newlineIdx = stdoutBuffer.indexOf("\n")) !== -1) {
+    while ((newlineIdx = stdoutBuffer.indexOf('\n')) !== -1) {
       const line = stdoutBuffer.slice(0, newlineIdx);
       stdoutBuffer = stdoutBuffer.slice(newlineIdx + 1);
       parseLine(line);
     }
   });
 
-  adbProcess.stderr?.on("data", (chunk: string) => {
-    const lines = chunk.split("\n");
+  adbProcess.stderr?.on('data', (chunk: string) => {
+    const lines = chunk.split('\n');
     for (const line of lines) {
       if (line.trim()) {
-        broadcast("status", { message: line.trim() });
+        broadcast('status', { message: line.trim() });
       }
     }
   });
 
-  adbProcess.on("error", (err) => {
-    console.error("Failed to spawn adb:", err.message);
+  adbProcess.on('error', (err) => {
+    console.error('Failed to spawn adb:', err.message);
     process.exit(1);
   });
 
-  adbProcess.on("close", () => {
+  adbProcess.on('close', () => {
     if (isShuttingDown) return;
-    broadcast("status", { message: "Device disconnected. Reconnecting..." });
+    broadcast('status', { message: 'Device disconnected. Reconnecting...' });
     if (reconnectTimer) clearTimeout(reconnectTimer);
     reconnectTimer = setTimeout(startAdb, 3000);
   });
@@ -175,8 +175,8 @@ function shutdown(): void {
   setTimeout(() => process.exit(0), 5000);
 }
 
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
 
 // === Start ===
 server.listen(PORT, () => {

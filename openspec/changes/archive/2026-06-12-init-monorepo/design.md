@@ -7,6 +7,7 @@ The change establishes a monorepo so both packages share root-level tooling whil
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Root `package.json` with npm workspaces (`server/`, `client/`)
 - `server/` package with its own `package.json`, `tsconfig.json`, and dependencies
 - `client/` package with its own `package.json` and build config
@@ -15,6 +16,7 @@ The change establishes a monorepo so both packages share root-level tooling whil
 - Workspace scripts: `dev`, `build`, `lint`, `start`
 
 **Non-Goals:**
+
 - Implementing server or client logic (deferred to implementation)
 - CI/CD pipelines
 - Publishing to npm

@@ -1,34 +1,35 @@
-import { state, LogstreamEntry } from "./state";
+import { state, LogstreamEntry } from './state';
 
 const LOG_LEVEL_COLORS: Record<string, string> = {
-  V: "text-log-v",
-  D: "text-log-d",
-  I: "text-log-i",
-  W: "text-log-w",
-  E: "text-log-e",
-  F: "text-log-f",
+  V: 'text-log-v',
+  D: 'text-log-d',
+  I: 'text-log-i',
+  W: 'text-log-w',
+  E: 'text-log-e',
+  F: 'text-log-f',
 };
 
 const MAX_DOM_ENTRIES = 5000;
 
-const logList = document.getElementById("log-list") as HTMLDivElement;
-const logContainer = document.getElementById("log-container") as HTMLDivElement;
-const entryCount = document.getElementById("entry-count") as HTMLSpanElement;
-const autoScrollIndicator = document.getElementById("auto-scroll-indicator") as HTMLSpanElement;
+const logList = document.getElementById('log-list') as HTMLDivElement;
+const logContainer = document.getElementById('log-container') as HTMLDivElement;
+const entryCount = document.getElementById('entry-count') as HTMLSpanElement;
+const autoScrollIndicator = document.getElementById('auto-scroll-indicator') as HTMLSpanElement;
 
 let userScrolledUp = false;
 
-logContainer.addEventListener("scroll", () => {
-  const atBottom = logContainer.scrollTop + logContainer.clientHeight >= logContainer.scrollHeight - 50;
+logContainer.addEventListener('scroll', () => {
+  const atBottom =
+    logContainer.scrollTop + logContainer.clientHeight >= logContainer.scrollHeight - 50;
   userScrolledUp = !atBottom;
 });
 
 export function createEntryRow(entry: LogstreamEntry): HTMLElement {
-  const row = document.createElement("div");
-  row.className = "log-row px-2 py-0.5 rounded transition-colors";
-  row.setAttribute("data-level", entry.level);
+  const row = document.createElement('div');
+  row.className = 'log-row px-2 py-0.5 rounded transition-colors';
+  row.setAttribute('data-level', entry.level);
 
-  const colorClass = LOG_LEVEL_COLORS[entry.level] || "text-on-surface";
+  const colorClass = LOG_LEVEL_COLORS[entry.level] || 'text-on-surface';
 
   row.innerHTML = `
     <span class="text-outline-variant shrink-0 text-xs w-[100px] tabular-nums">${escapeHtml(entry.timestamp)}</span>
@@ -66,23 +67,23 @@ export function applyVisibility(): void {
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i] as HTMLElement;
-    const level = row.getAttribute("data-level");
+    const level = row.getAttribute('data-level');
     const levelVisible = level ? state.levelFilters[level] !== false : true;
 
     let searchVisible = true;
     if (query) {
-      const text = row.textContent?.toLowerCase() || "";
+      const text = row.textContent?.toLowerCase() || '';
       searchVisible = text.includes(query);
     }
 
-    row.style.display = levelVisible && searchVisible ? "" : "none";
+    row.style.display = levelVisible && searchVisible ? '' : 'none';
   }
 }
 
 export function clearLog(): void {
   state.entries = [];
   state.totalReceived = 0;
-  logList.innerHTML = "";
+  logList.innerHTML = '';
   updateCount();
 }
 
@@ -97,11 +98,13 @@ export function autoScroll(): void {
 }
 
 export function updateAutoScrollIndicator(): void {
-  autoScrollIndicator.textContent = state.autoScrollEnabled ? "Auto-scroll: ON" : "Auto-scroll: OFF";
+  autoScrollIndicator.textContent = state.autoScrollEnabled
+    ? 'Auto-scroll: ON'
+    : 'Auto-scroll: OFF';
 }
 
 export function escapeHtml(str: string): string {
-  const div = document.createElement("div");
+  const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
@@ -132,16 +135,16 @@ export function formatMessage(message: string, query: string): string {
   }
 
   parts.push(escapedMessage.substring(lastIndex));
-  return parts.join("");
+  return parts.join('');
 }
 
 export function reRenderAll(): void {
-  logList.innerHTML = "";
+  logList.innerHTML = '';
   const query = state.searchQuery.toLowerCase();
 
   for (const entry of state.entries) {
     const levelVisible = state.levelFilters[entry.level] !== false;
-    const searchVisible = !query || (entry.tag + " " + entry.message).toLowerCase().includes(query);
+    const searchVisible = !query || (entry.tag + ' ' + entry.message).toLowerCase().includes(query);
 
     if (levelVisible && searchVisible) {
       logList.appendChild(createEntryRow(entry));

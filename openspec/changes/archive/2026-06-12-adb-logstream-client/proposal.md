@@ -16,6 +16,7 @@ The ADB Logstream Viewer project has a functional Node.js server that streams pa
 ## Capabilities
 
 ### New Capabilities
+
 - `websocket-client`: WebSocket connection, reconnect logic, and status display
 - `log-rendering`: Parsing, displaying, and capping Logcat Entries in the DOM
 - `level-filtering`: Toggle visibility by Level with localStorage persistence
@@ -23,7 +24,8 @@ The ADB Logstream Viewer project has a functional Node.js server that streams pa
 - `keyboard-shortcuts`: Global key bindings for search, clear, and level toggles
 
 ### Modified Capabilities
-- *(none — no existing specs to modify)*
+
+- _(none — no existing specs to modify)_
 
 ## Impact
 

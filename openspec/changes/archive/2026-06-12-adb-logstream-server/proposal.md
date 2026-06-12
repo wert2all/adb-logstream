@@ -16,13 +16,15 @@ The project needs a server that bridges `adb logstream` output to browser-based 
 ## Capabilities
 
 ### New Capabilities
+
 - `adb-process`: Spawn, monitor, and restart the `adb logstream -v long` child process. Includes device disconnect detection, 3-second reconnect delay, stderr capture and forwarding.
 - `log-parser`: Parse each logstream entry from `-v long` format (header + multi-line body) into structured objects with fields: `timestamp`, `pid`, `tid`, `level`, `tag`, `message`.
 - `entry-broadcast`: Serialize parsed log entries to JSON and broadcast (`type: "entry"`) to all connected WebSocket clients. Skip non-OPEN clients.
 - `static-server`: Serve static files from the `client/` directory. Route `/` to `index.html`, other paths to matching files. Use the same port as WebSocket (3000).
 
 ### Modified Capabilities
-- *(none — no existing specs to modify)*
+
+- _(none — no existing specs to modify)_
 
 ## Impact
 

@@ -1,17 +1,17 @@
-import { state } from "./state";
-import { reRenderAll, applyVisibility } from "./render";
+import { state } from './state';
+import { reRenderAll, applyVisibility } from './render';
 
-const searchInput = document.getElementById("search-input") as HTMLInputElement;
-const searchClearBtn = document.getElementById("search-clear") as HTMLButtonElement;
+const searchInput = document.getElementById('search-input') as HTMLInputElement;
+const searchClearBtn = document.getElementById('search-clear') as HTMLButtonElement;
 
 export function initSearch(): void {
-  searchInput.addEventListener("input", () => {
+  searchInput.addEventListener('input', () => {
     state.searchQuery = searchInput.value;
     updateClearButton();
     reRenderAll();
   });
 
-  searchClearBtn.addEventListener("click", () => {
+  searchClearBtn.addEventListener('click', () => {
     clearSearch();
   });
 
@@ -19,8 +19,8 @@ export function initSearch(): void {
 }
 
 export function clearSearch(): void {
-  searchInput.value = "";
-  state.searchQuery = "";
+  searchInput.value = '';
+  state.searchQuery = '';
   updateClearButton();
   searchInput.blur();
   reRenderAll();
@@ -32,9 +32,9 @@ export function focusSearch(): void {
 
 export function updateClearButton(): void {
   if (state.searchQuery) {
-    searchClearBtn.classList.remove("hidden");
+    searchClearBtn.classList.remove('hidden');
   } else {
-    searchClearBtn.classList.add("hidden");
+    searchClearBtn.classList.add('hidden');
   }
 }
 

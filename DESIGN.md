@@ -109,26 +109,31 @@ spacing:
 ---
 
 ## Brand & Style
-The design system is engineered for technical proficiency, targeting developers and systems engineers who require high-performance interfaces. The brand personality is clinical, efficient, and precise. 
+
+The design system is engineered for technical proficiency, targeting developers and systems engineers who require high-performance interfaces. The brand personality is clinical, efficient, and precise.
 
 The aesthetic is a fusion of **Minimalism** and **Modern IDE** patterns. It prioritizes content over chrome, using a monochromatic base to reduce cognitive load, while utilizing high-contrast status colors to guide attention. The UI should evoke the feeling of a well-configured terminal: predictable, fast, and authoritative.
 
 ## Colors
-The system operates on a deep "Midnight" dark mode to minimize eye strain during long-form technical work. 
+
+The system operates on a deep "Midnight" dark mode to minimize eye strain during long-form technical work.
 
 The palette is strictly functional. Neutrals define the structural hierarchy, ranging from the deep background to slate-toned borders. Accents are reserved exclusively for status indicators and primary actions. Log levels use a standardized high-contrast mapping to ensure immediate error identification within dense text streams.
 
 ## Typography
+
 Typography is the core of this design system. We use **JetBrains Mono** for all data-rich areas, logs, and UI controls to ensure perfect vertical alignment and readability of technical strings. **Geist** is used sparingly for high-level headings to provide a modern, clean contrast to the monospaced body text.
 
 The type scale is compact to support high information density. For mobile devices, font sizes remain consistent with desktop to preserve the integrity of code-like layouts, utilizing horizontal scrolling for code blocks rather than text wrapping.
 
 ## Layout & Spacing
-The layout follows a **Fixed Grid** philosophy inspired by IDE panels. The screen is divided into functional zones (Sidebar, Editor, Console, Inspector) separated by 1px borders rather than wide gutters. 
+
+The layout follows a **Fixed Grid** philosophy inspired by IDE panels. The screen is divided into functional zones (Sidebar, Editor, Console, Inspector) separated by 1px borders rather than wide gutters.
 
 Spacing follows a strict 4px baseline grid. Padding in technical lists and tables should be kept tight (sm/8px) to maximize the amount of visible data. The layout is fully responsive, where sidebars collapse into drawers on mobile and the main content area utilizes 100% of the viewport width.
 
 ## Elevation & Depth
+
 This system avoids shadows entirely to maintain a flat, technical aesthetic. Depth is communicated through **Tonal Layers** and **Low-contrast Outlines**:
 
 - **Level 0 (Background):** The base application canvas (`#020617`).
@@ -137,9 +142,11 @@ This system avoids shadows entirely to maintain a flat, technical aesthetic. Dep
 - **Level 3 (Modals/Popovers):** These use the same surface color but are defined by a strong border (`#475569`) to separate them from the background.
 
 ## Shapes
+
 Shapes are intentionally geometric and sharp. We use a **Soft (0.25rem)** roundedness for buttons and input fields to prevent the UI from feeling hostile, but containers and panels retain sharp 0px corners to reinforce the "grid" and terminal-like structure.
 
 ## Components
+
 - **Buttons:** Primary buttons are solid Blue-600. Secondary buttons use a subtle border with no fill. All buttons use `body-mono-bold` for text.
 - **Status Chips:** Small, rectangular indicators with a subtle background tint of the log-level color and a high-contrast label.
 - **Input Fields:** Dark backgrounds (`#020617`) with a 1px border. On focus, the border changes to Blue-500 with no outer glow.

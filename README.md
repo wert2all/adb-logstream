@@ -68,15 +68,15 @@ adb-logstream/
 
 ## Configuration
 
-| Setting        | Value                       |
-|----------------|-----------------------------|
-| Server port    | 3000 (fixed)                |
-| adb path       | Resolved from PATH          |
-| Logstream format  | `long` (parsed into JSON)   |
-| Max DOM entries| 5000                        |
-| Reconnect delay| 3 seconds                   |
-| Filtering      | Client-side only            |
-| Dev runner     | concurrently (parallel server + client) |
+| Setting          | Value                                   |
+| ---------------- | --------------------------------------- |
+| Server port      | 3000 (fixed)                            |
+| adb path         | Resolved from PATH                      |
+| Logstream format | `long` (parsed into JSON)               |
+| Max DOM entries  | 5000                                    |
+| Reconnect delay  | 3 seconds                               |
+| Filtering        | Client-side only                        |
+| Dev runner       | concurrently (parallel server + client) |
 
 ## Features
 

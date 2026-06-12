@@ -5,61 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ADB Logcat</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
     <script>
       tailwind.config = {
-        darkMode: "class",
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              "background": "#0b1326",
-              "surface": "#0b1326",
-              "surface-container": "#171f33",
-              "surface-container-high": "#222a3d",
-              "surface-container-highest": "#2d3449",
-              "surface-variant": "#2d3449",
-              "on-surface": "#dae2fd",
-              "on-surface-variant": "#c2c6d6",
-              "primary": "#adc6ff",
-              "primary-container": "#4d8eff",
-              "on-primary": "#002e6a",
-              "on-primary-container": "#00285d",
-              "secondary": "#4edea3",
-              "secondary-container": "#00a572",
-              "on-secondary": "#003824",
-              "on-secondary-container": "#00311f",
-              "outline": "#8c909f",
-              "outline-variant": "#424754",
-              "error": "#ffb4ab",
-              "error-container": "#93000a",
-              "on-error": "#690005",
-              "on-error-container": "#ffdad6",
-              "log-v": "#8c909f",
-              "log-d": "#adc6ff",
-              "log-i": "#4edea3",
-              "log-w": "#df7412",
-              "log-e": "#ffb4ab",
-              "log-f": "#ffb4ab"
+              background: '#0b1326',
+              surface: '#0b1326',
+              'surface-container': '#171f33',
+              'surface-container-high': '#222a3d',
+              'surface-container-highest': '#2d3449',
+              'surface-variant': '#2d3449',
+              'on-surface': '#dae2fd',
+              'on-surface-variant': '#c2c6d6',
+              primary: '#adc6ff',
+              'primary-container': '#4d8eff',
+              'on-primary': '#002e6a',
+              'on-primary-container': '#00285d',
+              secondary: '#4edea3',
+              'secondary-container': '#00a572',
+              'on-secondary': '#003824',
+              'on-secondary-container': '#00311f',
+              outline: '#8c909f',
+              'outline-variant': '#424754',
+              error: '#ffb4ab',
+              'error-container': '#93000a',
+              'on-error': '#690005',
+              'on-error-container': '#ffdad6',
+              'log-v': '#8c909f',
+              'log-d': '#adc6ff',
+              'log-i': '#4edea3',
+              'log-w': '#df7412',
+              'log-e': '#ffb4ab',
+              'log-f': '#ffb4ab',
             },
             fontFamily: {
-              mono: ["JetBrains Mono", "monospace"]
-            }
-          }
-        }
-      }
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+          },
+        },
+      };
     </script>
     <style>
-      ::-webkit-scrollbar { width: 8px; height: 8px; }
-      ::-webkit-scrollbar-track { background: #0b1326; }
-      ::-webkit-scrollbar-thumb { background: #2d3449; }
-      ::-webkit-scrollbar-thumb:hover { background: #424754; }
-      .log-row { display: flex; align-items: center; }
-      .log-row:hover { background-color: #222a3d; }
-      mark { background-color: #4d8eff; color: #002e6a; padding: 0 2px; border-radius: 2px; }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0b1326;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2d3449;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #424754;
+      }
+      .log-row {
+        display: flex;
+        align-items: center;
+      }
+      .log-row:hover {
+        background-color: #222a3d;
+      }
+      mark {
+        background-color: #4d8eff;
+        color: #002e6a;
+        padding: 0 2px;
+        border-radius: 2px;
+      }
 
       /* Tooltip */
-      .tooltip-trigger { position: relative; display: inline-flex; }
+      .tooltip-trigger {
+        position: relative;
+        display: inline-flex;
+      }
       .tooltip-trigger > .tooltip {
         position: absolute;
         bottom: calc(100% + 6px);
@@ -77,7 +105,9 @@
         transition: opacity 150ms ease 300ms;
         z-index: 50;
       }
-      .tooltip-trigger:hover > .tooltip { opacity: 1; }
+      .tooltip-trigger:hover > .tooltip {
+        opacity: 1;
+      }
 
       /* Tooltip bottom variant */
       .tooltip-trigger > .tooltip-bottom {
@@ -93,78 +123,173 @@
   </head>
   <body class="bg-background text-on-surface font-mono h-screen flex flex-col overflow-hidden">
     <!-- Header -->
-    <header class="bg-surface-container border-b border-outline-variant w-full h-14 flex items-center px-4 shrink-0 gap-4">
+    <header
+      class="bg-surface-container border-b border-outline-variant w-full h-14 flex items-center px-4 shrink-0 gap-4"
+    >
       <!-- Brand & Status -->
       <div class="flex items-center gap-3 shrink-0">
         <h1 class="text-lg font-semibold text-secondary">LOGCAT</h1>
-        <div id="connection-status" class="flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium bg-surface-container-high border border-outline-variant">
+        <div
+          id="connection-status"
+          class="flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium bg-surface-container-high border border-outline-variant"
+        >
           <span id="status-dot" class="w-2 h-2 rounded-full bg-outline"></span>
           <span id="status-text" class="text-outline-variant">DISCONNECTED</span>
         </div>
       </div>
-      
+
       <!-- Search -->
       <div class="flex-1 max-w-md relative tooltip-trigger">
-        <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline-variant text-sm">search</span>
-        <input id="search-input" type="text" placeholder="Filter logs (regex supported) [/]"
-          class="w-full bg-background border border-outline-variant rounded py-1 pl-8 pr-8 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline-variant/50">
-        <button id="search-clear" class="absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors hidden">
+        <span
+          class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline-variant text-sm"
+          >search</span
+        >
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Filter logs (regex supported) [/]"
+          class="w-full bg-background border border-outline-variant rounded py-1 pl-8 pr-8 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline-variant/50"
+        />
+        <button
+          id="search-clear"
+          class="absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors hidden"
+        >
           <span class="material-symbols-outlined text-sm">close</span>
         </button>
-        <span class="tooltip tooltip-bottom">Filter logs <kbd class=" px-1 rounded bg-surface-container text-on-surface">/</kbd></span>
+        <span class="tooltip tooltip-bottom"
+          >Filter logs <kbd class="px-1 rounded bg-surface-container text-on-surface">/</kbd></span
+        >
       </div>
-      
+
       <!-- Level Toggles -->
-      <div id="level-toggles" class="flex items-center border border-outline-variant rounded bg-background overflow-visible h-7 text-sm">
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="V" class="px-2 font-bold text-log-v hover:bg-surface-container-highest transition-colors h-full">V</button><span class="tooltip tooltip-bottom">Toggle Verbose <kbd class=" px-1 rounded bg-surface-container text-on-surface">V</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="D" class="px-2 font-bold text-log-d hover:bg-surface-container-highest transition-colors h-full">D</button><span class="tooltip tooltip-bottom">Toggle Debug <kbd class=" px-1 rounded bg-surface-container text-on-surface">D</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="I" class="px-2 font-bold text-log-i hover:bg-surface-container-highest transition-colors h-full">I</button><span class="tooltip tooltip-bottom">Toggle Info <kbd class=" px-1 rounded bg-surface-container text-on-surface">I</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="W" class="px-2 font-bold text-log-w hover:bg-surface-container-highest transition-colors h-full">W</button><span class="tooltip tooltip-bottom">Toggle Warn <kbd class=" px-1 rounded bg-surface-container text-on-surface">W</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="E" class="px-2 font-bold text-log-e hover:bg-surface-container-highest transition-colors h-full">E</button><span class="tooltip tooltip-bottom">Toggle Error <kbd class=" px-1 rounded bg-surface-container text-on-surface">E</kbd></span></span>
-        <span class="tooltip-trigger h-full"><button data-level="F" class="px-2 font-bold text-log-f hover:bg-surface-container-highest transition-colors h-full">F</button><span class="tooltip tooltip-bottom">Toggle Fatal <kbd class=" px-1 rounded bg-surface-container text-on-surface">F</kbd></span></span>
+      <div
+        id="level-toggles"
+        class="flex items-center border border-outline-variant rounded bg-background overflow-visible h-7 text-sm"
+      >
+        <span class="tooltip-trigger border-r border-outline-variant h-full"
+          ><button
+            data-level="V"
+            class="px-2 font-bold text-log-v hover:bg-surface-container-highest transition-colors h-full"
+          >
+            V</button
+          ><span class="tooltip tooltip-bottom"
+            >Toggle Verbose
+            <kbd class="px-1 rounded bg-surface-container text-on-surface">V</kbd></span
+          ></span
+        >
+        <span class="tooltip-trigger border-r border-outline-variant h-full"
+          ><button
+            data-level="D"
+            class="px-2 font-bold text-log-d hover:bg-surface-container-highest transition-colors h-full"
+          >
+            D</button
+          ><span class="tooltip tooltip-bottom"
+            >Toggle Debug
+            <kbd class="px-1 rounded bg-surface-container text-on-surface">D</kbd></span
+          ></span
+        >
+        <span class="tooltip-trigger border-r border-outline-variant h-full"
+          ><button
+            data-level="I"
+            class="px-2 font-bold text-log-i hover:bg-surface-container-highest transition-colors h-full"
+          >
+            I</button
+          ><span class="tooltip tooltip-bottom"
+            >Toggle Info
+            <kbd class="px-1 rounded bg-surface-container text-on-surface">I</kbd></span
+          ></span
+        >
+        <span class="tooltip-trigger border-r border-outline-variant h-full"
+          ><button
+            data-level="W"
+            class="px-2 font-bold text-log-w hover:bg-surface-container-highest transition-colors h-full"
+          >
+            W</button
+          ><span class="tooltip tooltip-bottom"
+            >Toggle Warn
+            <kbd class="px-1 rounded bg-surface-container text-on-surface">W</kbd></span
+          ></span
+        >
+        <span class="tooltip-trigger border-r border-outline-variant h-full"
+          ><button
+            data-level="E"
+            class="px-2 font-bold text-log-e hover:bg-surface-container-highest transition-colors h-full"
+          >
+            E</button
+          ><span class="tooltip tooltip-bottom"
+            >Toggle Error
+            <kbd class="px-1 rounded bg-surface-container text-on-surface">E</kbd></span
+          ></span
+        >
+        <span class="tooltip-trigger h-full"
+          ><button
+            data-level="F"
+            class="px-2 font-bold text-log-f hover:bg-surface-container-highest transition-colors h-full"
+          >
+            F</button
+          ><span class="tooltip tooltip-bottom"
+            >Toggle Fatal
+            <kbd class="px-1 rounded bg-surface-container text-on-surface">F</kbd></span
+          ></span
+        >
       </div>
-      
+
       <!-- Count & Clear -->
       <div class="flex items-center gap-2 shrink-0">
         <span id="entry-count" class="text-xs text-outline-variant">0 entries</span>
         <span class="tooltip-trigger">
-          <button id="clear-btn" class="px-3 py-1 bg-primary-container text-on-primary-container text-sm font-semibold rounded hover:opacity-90 active:opacity-80 transition-opacity">
+          <button
+            id="clear-btn"
+            class="px-3 py-1 bg-primary-container text-on-primary-container text-sm font-semibold rounded hover:opacity-90 active:opacity-80 transition-opacity"
+          >
             Clear
           </button>
-          <span class="tooltip tooltip-bottom">Clear logs 
-            <kbd class=" px-1 rounded bg-surface-container text-on-surface">C</kbd></span>
+          <span class="tooltip tooltip-bottom"
+            >Clear logs <kbd class="px-1 rounded bg-surface-container text-on-surface">C</kbd></span
+          >
         </span>
       </div>
     </header>
-    
+
     <!-- Connection Banner -->
-    <div id="connection-banner" class="hidden bg-error-container border-b border-error text-on-error py-1 px-4 flex items-center justify-center gap-2 text-sm z-10">
+    <div
+      id="connection-banner"
+      class="hidden bg-error-container border-b border-error text-on-error py-1 px-4 flex items-center justify-center gap-2 text-sm z-10"
+    >
       <span class="material-symbols-outlined text-sm">warning</span>
       <span id="banner-text">Device disconnected. Retrying connection...</span>
       <button id="banner-dismiss" class="ml-4 underline hover:opacity-80">Dismiss</button>
     </div>
-    
+
     <!-- Main Content -->
     <main id="log-container" class="flex-1 overflow-y-auto p-2 text-sm leading-tight">
       <div id="log-list" class="flex flex-col gap-0.5"></div>
     </main>
-    
+
     <!-- Footer -->
-    <footer class="bg-surface-container border-t border-outline-variant py-1 px-4 flex justify-between items-center text-xs text-outline-variant shrink-0">
+    <footer
+      class="bg-surface-container border-t border-outline-variant py-1 px-4 flex justify-between items-center text-xs text-outline-variant shrink-0"
+    >
       <div class="flex gap-4">
         <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">C</kbd> Clear</span>
         <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">/</kbd> Search</span>
         <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">Esc</kbd> Cancel</span>
       </div>
       <div class="flex gap-3">
-        <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">V</kbd>-<kbd class="bg-surface-variant px-1 rounded text-on-surface">F</kbd> Toggle Levels</span>
+        <span
+          ><kbd class="bg-surface-variant px-1 rounded text-on-surface">V</kbd>-<kbd
+            class="bg-surface-variant px-1 rounded text-on-surface"
+            >F</kbd
+          >
+          Toggle Levels</span
+        >
         <label class="flex items-center gap-1 cursor-pointer select-none">
-          <input id="auto-scroll-toggle" type="checkbox" class="accent-primary" checked>
+          <input id="auto-scroll-toggle" type="checkbox" class="accent-primary" checked />
           <span id="auto-scroll-indicator">Auto-scroll: ON</span>
         </label>
       </div>
     </footer>
-    
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
