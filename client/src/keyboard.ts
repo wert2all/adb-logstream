@@ -1,6 +1,7 @@
-import { clearLog } from "./render";
+import { clearLog, updateAutoScrollIndicator } from "./render";
 import { toggleLevel } from "./filter";
 import { clearSearch, focusSearch, searchInput } from "./search";
+import { state, saveAutoScrollState } from "./state";
 
 export function initKeyboard(): void {
   document.addEventListener("keydown", (event) => {
@@ -56,6 +57,17 @@ export function initKeyboard(): void {
       case "f":
       case "F":
         toggleLevel("F");
+        event.preventDefault();
+        break;
+      case "a":
+      case "A":
+        state.autoScrollEnabled = !state.autoScrollEnabled;
+        saveAutoScrollState();
+        const autoScrollToggle = document.getElementById(
+          "auto-scroll-toggle",
+        ) as HTMLInputElement;
+        autoScrollToggle.checked = state.autoScrollEnabled;
+        updateAutoScrollIndicator();
         event.preventDefault();
         break;
     }
