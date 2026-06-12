@@ -1,7 +1,7 @@
 export interface LogstreamEntry {
   timestamp: string;
-  pid: number;
-  tid: number;
+  pid: string;
+  tid: string;
   level: "V" | "D" | "I" | "W" | "E" | "F";
   tag: string;
   message: string;

@@ -1,4 +1,4 @@
-import { state, ConnectionStatus, LogcatEntry } from "./state";
+import { state, ConnectionStatus, LogstreamEntry } from "./state";
 import { appendEntry } from "./render";
 
 const WS_URL = "ws://localhost:3000";
@@ -69,11 +69,11 @@ function handleMessage(data: string): void {
   const msg = message as Record<string, unknown>;
 
   if (msg.type === "entry") {
-    const entry: LogcatEntry = {
+    const entry: LogstreamEntry = {
       timestamp: String(msg.timestamp || ""),
-      pid: Number(msg.pid || 0),
-      tid: Number(msg.tid || 0),
-      level: String(msg.level || "I") as LogcatEntry["level"],
+      pid: String(msg.pid || ""),
+      tid: String(msg.tid || ""),
+      level: String(msg.level || "I") as LogstreamEntry["level"],
       tag: String(msg.tag || ""),
       message: String(msg.message || ""),
     };

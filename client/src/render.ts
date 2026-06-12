@@ -1,4 +1,4 @@
-import { state, LogcatEntry } from "./state";
+import { state, LogstreamEntry } from "./state";
 
 const LOG_LEVEL_COLORS: Record<string, string> = {
   V: "text-log-v",
@@ -23,7 +23,7 @@ logContainer.addEventListener("scroll", () => {
   userScrolledUp = !atBottom;
 });
 
-export function createEntryRow(entry: LogcatEntry): HTMLElement {
+export function createEntryRow(entry: LogstreamEntry): HTMLElement {
   const row = document.createElement("div");
   row.className = "log-row px-2 py-0.5 rounded transition-colors";
   row.setAttribute("data-level", entry.level);
@@ -40,7 +40,7 @@ export function createEntryRow(entry: LogcatEntry): HTMLElement {
   return row;
 }
 
-export function appendEntry(entry: LogcatEntry): void {
+export function appendEntry(entry: LogstreamEntry): void {
   state.entries.push(entry);
   state.totalReceived++;
 
