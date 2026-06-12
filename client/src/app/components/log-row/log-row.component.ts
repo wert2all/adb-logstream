@@ -1,14 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { LogstreamEntry } from '../../models/logstream.model';
-
-const LOG_LEVEL_COLORS: Record<string, string> = {
-  V: 'text-log-v',
-  D: 'text-log-d',
-  I: 'text-log-i',
-  W: 'text-log-w',
-  E: 'text-log-e',
-  F: 'text-log-f',
-};
 
 @Component({
   selector: 'app-log-row',
@@ -20,8 +11,10 @@ export class LogRowComponent {
   @Input() entry!: LogstreamEntry;
   @Input() query = '';
 
-  colorClass(): string {
-    return LOG_LEVEL_COLORS[this.entry.level] || 'text-on-surface';
+  selected = signal(false);
+
+  toggleSelected(): void {
+    this.selected.update((v) => !v);
   }
 
   formatMessage(): string {
