@@ -5,7 +5,6 @@ import { LogStateService } from '../../services/log-state.service';
   selector: 'app-search-bar',
   standalone: true,
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.css'],
 })
 export class SearchBarComponent {
   logState = inject(LogStateService);

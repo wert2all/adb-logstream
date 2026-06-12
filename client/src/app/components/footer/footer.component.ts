@@ -6,7 +6,6 @@ import { LocalStorageService } from '../../services/local-storage.service';
   selector: 'app-footer',
   standalone: true,
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent {
   logState = inject(LogStateService);

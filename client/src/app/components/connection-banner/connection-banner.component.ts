@@ -5,7 +5,6 @@ import { WebSocketService } from '../../services/websocket.service';
   selector: 'app-connection-banner',
   standalone: true,
   templateUrl: './connection-banner.component.html',
-  styleUrls: ['./connection-banner.component.css'],
 })
 export class ConnectionBannerComponent {
   webSocket = inject(WebSocketService);
