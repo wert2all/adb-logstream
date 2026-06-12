@@ -18,9 +18,23 @@
   <!-- Level Toggles -->
   <app-level-toggles></app-level-toggles>
 
-  <!-- Count & Clear -->
+  <!-- Count & Clear & Copy -->
   <div class="flex items-center gap-2 shrink-0">
     <span class="text-xs text-outline-variant">{{ logState.totalReceived() }} entries</span>
+    @if (logState.copyFeedback(); as feedback) {
+      <span class="text-xs text-secondary font-semibold animate-pulse">{{ feedback.message }}</span>
+    }
+    @if (logState.hasSelection()) {
+      <span class="tooltip-trigger">
+        <button
+          (click)="copyLogs()"
+          class="px-3 py-1 bg-primary-container text-on-primary-container text-sm font-semibold rounded hover:opacity-90 active:opacity-80 transition-opacity"
+        >
+          Copy
+        </button>
+        <span class="tooltip tooltip-bottom"> Copy selected entries to clipboard </span>
+      </span>
+    }
     <span class="tooltip-trigger">
       <button
         (click)="clearLogs()"

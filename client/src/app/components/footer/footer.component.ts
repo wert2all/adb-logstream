@@ -11,6 +11,10 @@ export class FooterComponent {
   logState = inject(LogStateService);
   localStorage = inject(LocalStorageService);
 
+  copyLogs(): void {
+    this.logState.copySelected();
+  }
+
   onToggle(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
     this.logState.setAutoScroll(checked);

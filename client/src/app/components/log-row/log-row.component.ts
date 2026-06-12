@@ -1,5 +1,6 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { LogstreamEntry } from '../../models/logstream.model';
+import { LogStateService } from '../../services/log-state.service';
 
 @Component({
   selector: 'app-log-row',
@@ -11,10 +12,14 @@ export class LogRowComponent {
   @Input() entry!: LogstreamEntry;
   @Input() query = '';
 
-  selected = signal(false);
+  logState = inject(LogStateService);
+
+  isSelected(): boolean {
+    return this.logState.isSelected(this.entry.uuid);
+  }
 
   toggleSelected(): void {
-    this.selected.update((v) => !v);
+    this.logState.toggleSelection(this.entry.uuid);
   }
 
   formatMessage(): string {

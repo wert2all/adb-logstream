@@ -1,13 +1,13 @@
 <label
   class="log-row px-2 {{ entry.level }} py-0.5 rounded transition-colors block"
-  [class.selected]="selected()"
+  [class.selected]="isSelected()"
   [for]="entry.uuid"
 >
   <span class="flex items-center justify-center w-6 shrink-0">
     <input
       class="mt-0.5 accent-primary rounded-sm size-3 cursor-pointer"
       type="checkbox"
-      [checked]="selected()"
+      [checked]="isSelected()"
       (change)="toggleSelected()"
       [id]="entry.uuid"
     />

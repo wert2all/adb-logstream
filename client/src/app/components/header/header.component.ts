@@ -19,6 +19,10 @@ export class HeaderComponent {
     this.logState.clearLog();
   }
 
+  copyLogs(): void {
+    this.logState.copySelected();
+  }
+
   statusClass() {
     const status = this.logState.connectionStatus();
     switch (status) {

@@ -33,8 +33,16 @@ The Node.js process that runs `adb logcat` and broadcasts entries to all connect
 _Avoid_: backend, service
 
 **LogStateService**:
-An Angular injectable service that manages all application state via signals: entries, level filters, search query, connection status, auto-scroll, and entry count.
+An Angular injectable service that manages all application state via signals: entries, level filters, search query, connection status, auto-scroll, entry count, and selection.
 _Avoid_: state store, state manager
+
+**Selection**:
+The set of Logstream Entries chosen by the user via checkboxes. Managed centrally in LogStateService as a `signal<Set<string>>` keyed by Entry UUID. Multiple entries can be selected simultaneously.
+_Avoid_: checked entries, picked entries
+
+**Copy Action**:
+Copying the selected Logstream Entries to the system clipboard as a JSON array. Triggered by a Copy button that appears in the header and footer when at least one entry is selected. After copying, the selection is cleared and a brief "Copied!" confirmation is shown.
+_Avoid_: export, dump
 
 **WebSocketService**:
 An Angular injectable service that manages WebSocket connection, reconnection logic, and message parsing. Exposes signals for latest entry, connection status, and status messages.
