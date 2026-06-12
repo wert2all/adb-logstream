@@ -1,6 +1,7 @@
-<div
-  class="log-row px-2 {{ entry.level }} py-0.5 rounded transition-colors"
+<label
+  class="log-row px-2 {{ entry.level }} py-0.5 rounded transition-colors block"
   [class.selected]="selected()"
+  [for]="entry.uuid"
 >
   <span class="flex items-center justify-center w-6 shrink-0">
     <input
@@ -8,7 +9,7 @@
       type="checkbox"
       [checked]="selected()"
       (change)="toggleSelected()"
-      id="log-{{ entry.tid }}"
+      [id]="entry.uuid"
     />
   </span>
   <span class="text-outline-variant shrink-0 text-xs w-25 tabular-nums">
@@ -19,4 +20,4 @@
   </span>
   <span class="text-outline w-40 shrink-0 truncate pr-2 text-xs">{{ entry.tag }}</span>
   <span class="message flex-1 break-all" [innerHTML]="formatMessage()"></span>
-</div>
+</label>

@@ -3,7 +3,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { spawn, ChildProcess } from "child_process";
 import { readFileSync, existsSync } from "fs";
 import { join, extname } from "path";
-
+import { v4 as uuidv4 } from "uuid";
 const PORT = 3000;
 const CLIENT_DIR = join(__dirname, "..", "..", "client");
 
@@ -74,6 +74,7 @@ const HEADER_REGEX =
   /^\[\s*([\d-]+\s+[\d:.]+)\s+(\d+):\s*(\d+)\s+([VDIWEF])\/(\S+)\s*\]$/;
 
 interface LogstreamEntry {
+  uuid: string;
   timestamp: string;
   pid: string;
   tid: string;
@@ -100,6 +101,7 @@ function parseLine(line: string): void {
     // New header — emit previous entry if any
     emitEntry();
     currentEntry = {
+      uuid: uuidv4(),
       timestamp: match[1],
       pid: match[2],
       tid: match[3],
