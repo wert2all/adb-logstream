@@ -1,6 +1,6 @@
 # ADB Logstream Viewer
 
-A minimalistic web-based viewer for Android `adb logcat` output. A local Node.js server streams logstream entries via WebSocket to a pure HTML/JS client that renders them in real time with filtering and search.
+A minimalistic web-based viewer for Android `adb logcat` output. A local Node.js server streams logstream entries via WebSocket to an Angular client that renders them in real time with filtering and search.
 
 ## Language
 
@@ -21,12 +21,20 @@ The continuous flow of Logstream Entries from the server to connected clients vi
 _Avoid_: feed, pipe, channel
 
 **Client**:
-A browser tab connected to the server via WebSocket, rendering the Stream.
+A browser tab connected to the server via WebSocket, rendering the Stream. Built with Angular 21+ using standalone components, signals for state management, and Tailwind CSS via PostCSS.
 _Avoid_: user, frontend, consumer
 
 **Server**:
 The Node.js process that runs `adb logcat` and broadcasts entries to all connected Clients.
 _Avoid_: backend, service
+
+**LogStateService**:
+An Angular injectable service that manages all application state via signals: entries, level filters, search query, connection status, auto-scroll, and entry count.
+_Avoid_: state store, state manager
+
+**WebSocketService**:
+An Angular injectable service that manages WebSocket connection, reconnection logic, and message parsing. Exposes signals for latest entry, connection status, and status messages.
+\_Avoid$: ws service, connection service
 
 ## Relationships
 
@@ -34,6 +42,8 @@ _Avoid_: backend, service
 - Multiple **Clients** can connect to the same **Server** simultaneously
 - Each **Logstream Entry** has exactly one **Level** and one **Tag**
 - Filtering and search are performed on the **Client** side; the **Server** sends all entries unfiltered
+- The **Client** is composed of Angular standalone components that read from **LogStateService** signals
+- The **WebSocketService** pushes entries into the **LogStateService** via signal updates
 
 ## Flagged ambiguities
 

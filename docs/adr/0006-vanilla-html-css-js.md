@@ -1,19 +1,65 @@
-# Vite + TypeScript client with Tailwind CSS (CDN)
+# ADR-0006: Angular 21+ client with Tailwind CSS (PostCSS)
 
-The client is built with TypeScript and bundled with Vite. Styling uses Tailwind CSS loaded via CDN at runtime (no PostCSS/build-time Tailwind). The entry point is `index.html` which loads `src/main.ts` as an ES module.
+## Status
 
-This was chosen because:
+**Superseded** by this ADR (originally: "Vite + TypeScript client with Tailwind CSS (CDN)")
 
-- TypeScript provides type safety for the WebSocket message protocol and logstream entry shapes.
-- Vite gives fast dev-server HMR and a production bundler with zero config for a small project.
-- Tailwind via CDN avoids a PostCSS dependency while still providing utility-first styling.
+## Context
 
-No UI framework (React, Vue, Svelte) is used — the DOM is manipulated directly, keeping the bundle small and the architecture simple.
+The client was originally built with vanilla TypeScript bundled by Vite, with Tailwind CSS loaded via CDN and DOM manipulated directly. As the UI grew in complexity (log rendering, filtering, search, keyboard shortcuts, tooltips, auto-scroll), the direct DOM manipulation became harder to maintain and reason about.
 
-**Considered options:**
+The project needs:
 
-- **Plain HTML/CSS/JS** — simplest but no type safety; refactoring the message protocol becomes error-prone.
-- **React + Vite** — familiar but introduces ~50KB of framework code for a trivial UI.
-- **Preact / Svelte** — lighter than React but still requires a framework mental model.
+- A component-based architecture for clear separation of concerns
+- Reactive state management without manual DOM updates
+- Build-time Tailwind CSS processing for tree-shaking and smaller bundles
 
-If the client grows significantly in complexity, revisiting this decision may be warranted.
+## Decision
+
+The client is built with **Angular 21+** using:
+
+- **Standalone components** (default in Angular 21) — no NgModules
+- **Angular signals** for reactive state management (no RxJS for state)
+- **New control flow syntax** (`@if`, `@for`) instead of structural directives
+- **Tailwind CSS via PostCSS** — build-time processing, no CDN script
+- **`tailwind.config.ts`** for design tokens from DESIGN.md
+
+### Component Architecture
+
+| Component                   | Responsibility                                    |
+| --------------------------- | ------------------------------------------------- |
+| `AppComponent`              | Root layout: header, banner, main, footer         |
+| `HeaderComponent`           | Brand, status badge, search, level toggles, clear |
+| `SearchBarComponent`        | Search input + clear button                       |
+| `LevelTogglesComponent`     | V/D/I/W/E/F toggle buttons                        |
+| `ConnectionBannerComponent` | Connection error banner + dismiss                 |
+| `LogListComponent`          | Log container with virtual scrolling              |
+| `LogRowComponent`           | Single log entry row                              |
+| `FooterComponent`           | Keyboard shortcuts + auto-scroll toggle           |
+
+### Service Architecture
+
+| Service               | Responsibility                                                                                                                            |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `LogStateService`     | Signals: entries, levelFilters, searchQuery, connectionStatus, autoScrollEnabled. Methods: appendEntry(), clearLog(), toggleLevel(), etc. |
+| `WebSocketService`    | Connection, reconnect, message parsing. Signals: latestEntry, status, statusMessage.                                                      |
+| `LocalStorageService` | Wrapper around localStorage for filter and auto-scroll persistence.                                                                       |
+
+### Styling
+
+Tailwind CSS is processed at build time via PostCSS. The `tailwind.config.ts` file contains all design tokens (colors, typography, spacing) migrated from the inline config in the original `index.html` and the DESIGN.md specification.
+
+## Consequences
+
+- Component boundaries enforce separation of concerns that was previously maintained by convention
+- Signals provide reactive state without RxJS overhead
+- Build-time Tailwind eliminates the CDN script dependency and enables tree-shaking
+- Angular CLI provides standardized build, test, and development tooling
+- Bundle size increases (~70-100KB framework overhead) but is offset by better maintainability
+
+## Considered Options
+
+- **Vanilla TypeScript + Vite** (original) — simple but direct DOM manipulation doesn't scale
+- **React + Vite** — familiar but different component model; signals are native to Angular
+- **Preact / Svelte** — lighter alternatives but Angular signals were the stated goal
+- **Angular with RxJS for state** — over-engineered for this use case; pure signals are sufficient
