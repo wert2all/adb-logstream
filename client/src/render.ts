@@ -1,4 +1,4 @@
-import { state, LogstreamEntry } from "./state";
+import { state, saveAutoScrollState, LogstreamEntry } from "./state";
 
 const LOG_LEVEL_COLORS: Record<string, string> = {
   V: "text-log-v",
@@ -16,11 +16,15 @@ const logContainer = document.getElementById("log-container") as HTMLDivElement;
 const entryCount = document.getElementById("entry-count") as HTMLSpanElement;
 const autoScrollIndicator = document.getElementById("auto-scroll-indicator") as HTMLSpanElement;
 
-let userScrolledUp = false;
-
 logContainer.addEventListener("scroll", () => {
   const atBottom = logContainer.scrollTop + logContainer.clientHeight >= logContainer.scrollHeight - 50;
-  userScrolledUp = !atBottom;
+  if (!atBottom && state.autoScrollEnabled) {
+    state.autoScrollEnabled = false;
+    saveAutoScrollState();
+    const autoScrollToggle = document.getElementById("auto-scroll-toggle") as HTMLInputElement;
+    autoScrollToggle.checked = false;
+    updateAutoScrollIndicator();
+  }
 });
 
 export function createEntryRow(entry: LogstreamEntry): HTMLElement {
@@ -91,7 +95,7 @@ export function updateCount(): void {
 }
 
 export function autoScroll(): void {
-  if (state.autoScrollEnabled && !userScrolledUp) {
+  if (state.autoScrollEnabled) {
     logContainer.scrollTop = logContainer.scrollHeight;
   }
 }

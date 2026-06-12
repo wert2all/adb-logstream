@@ -16,6 +16,17 @@ The system SHALL provide a checkbox in the footer that allows the user to toggle
 - **WHEN** the user clicks the auto-scroll checkbox to check it
 - **THEN** the auto-scroll state becomes enabled
 - **AND** the footer indicator displays "Auto-scroll: ON"
+- **AND** the log container scrolls to the bottom
+
+### Requirement: Auto-scroll disabled by manual scroll
+When the user manually scrolls up from the bottom, the system SHALL automatically disable auto-scroll.
+
+#### Scenario: User scrolls up
+- **GIVEN** auto-scroll is enabled (checkbox checked)
+- **WHEN** the user scrolls up more than 50px from the bottom of the log container
+- **THEN** auto-scroll becomes disabled
+- **AND** the checkbox becomes unchecked
+- **AND** the footer indicator displays "Auto-scroll: OFF"
 
 ### Requirement: Default auto-scroll state
 The system SHALL initialize the auto-scroll toggle to enabled (on) by default when the page loads for the first time.
@@ -26,19 +37,12 @@ The system SHALL initialize the auto-scroll toggle to enabled (on) by default wh
 - **AND** the footer indicator displays "Auto-scroll: ON"
 
 ### Requirement: Auto-scroll behavior when enabled
-When auto-scroll is enabled, the system SHALL automatically scroll the log container to the bottom upon each new Logcat Entry, unless the user has manually scrolled up from the bottom.
+When auto-scroll is enabled, the system SHALL automatically scroll the log container to the bottom upon each new Logcat Entry.
 
-#### Scenario: New entry arrives with auto-scroll enabled and user at bottom
+#### Scenario: New entry arrives with auto-scroll enabled
 - **GIVEN** auto-scroll is enabled
-- **AND** the user is scrolled to the bottom of the log container
 - **WHEN** a new Logcat Entry arrives
 - **THEN** the log container scrolls to the bottom
-
-#### Scenario: New entry arrives with auto-scroll enabled but user scrolled up
-- **GIVEN** auto-scroll is enabled
-- **AND** the user has manually scrolled up from the bottom
-- **WHEN** a new Logcat Entry arrives
-- **THEN** the log container does NOT scroll
 
 ### Requirement: Auto-scroll behavior when disabled
 When auto-scroll is disabled, the system SHALL NOT scroll the log container upon new Logcat Entries, regardless of scroll position.
