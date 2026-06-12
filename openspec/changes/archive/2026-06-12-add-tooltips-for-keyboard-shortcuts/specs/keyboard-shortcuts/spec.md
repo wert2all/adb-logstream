@@ -4,7 +4,7 @@
 
 Define global keyboard shortcuts for the Client to enable quick access to search, level toggling, and log clearing without using the mouse.
 
-## Requirements
+## ADDED Requirements
 
 ### Requirement: Shortcut tooltips on controls
 Every control that has a keyboard shortcut SHALL expose that shortcut via a tooltip on hover.
@@ -20,6 +20,8 @@ Every control that has a keyboard shortcut SHALL expose that shortcut via a tool
 #### Scenario: Level toggles show shortcuts
 - **WHEN** the user hovers over any Level toggle button
 - **THEN** a tooltip SHALL display the corresponding key binding (V, D, I, W, E, or F)
+
+## Requirements
 
 ### Requirement: Focus search input
 The Client SHALL focus the search input when the `/` key is pressed.
