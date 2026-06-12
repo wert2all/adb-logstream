@@ -1,10 +1,22 @@
-<div class="log-row px-2 py-0.5 rounded transition-colors">
-  <span class="text-outline-variant shrink-0 text-xs w-[100px] tabular-nums">{{
-    entry.timestamp
-  }}</span>
-  <span class="{{ colorClass() }} w-6 shrink-0 font-bold text-center text-xs">{{
-    entry.level
-  }}</span>
+<div
+  class="log-row px-2 {{ entry.level }} py-0.5 rounded transition-colors"
+  [class.selected]="selected()"
+>
+  <span class="flex items-center justify-center w-6 shrink-0">
+    <input
+      class="mt-0.5 accent-primary rounded-sm size-3 cursor-pointer"
+      type="checkbox"
+      [checked]="selected()"
+      (change)="toggleSelected()"
+      id="log-{{ entry.tid }}"
+    />
+  </span>
+  <span class="text-outline-variant shrink-0 text-xs w-25 tabular-nums">
+    {{ entry.timestamp }}
+  </span>
+  <span class="level w-6 shrink-0 font-bold text-center text-xs">
+    {{ entry.level }}
+  </span>
   <span class="text-outline w-40 shrink-0 truncate pr-2 text-xs">{{ entry.tag }}</span>
-  <span class="{{ colorClass() }} flex-1 break-all" [innerHTML]="formatMessage()"></span>
+  <span class="message flex-1 break-all" [innerHTML]="formatMessage()"></span>
 </div>

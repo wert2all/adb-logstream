@@ -1,0 +1,49 @@
+.log-row.V .message,
+.log-row.V .level {
+  color: var(--color-log-v);
+}
+.log-row.D .message,
+.log-row.D .level {
+  color: var(--color-log-d);
+}
+.log-row.I .message,
+.log-row.I .level {
+  color: var(--color-log-i);
+}
+.log-row.W .message,
+.log-row.W .level {
+  color: var(--color-log-w);
+}
+.log-row.E .message,
+.log-row.E .level {
+  color: var(--color-log-e);
+}
+.log-row.F .message,
+.log-row.F .level {
+  color: var(--color-log-f);
+}
+
+/* Selected state — level-tinted backgrounds */
+.log-row.selected.V {
+  background-color: color-mix(in srgb, var(--color-log-v) 20%, transparent);
+}
+.log-row.selected.D {
+  background-color: color-mix(in srgb, var(--color-log-d) 20%, transparent);
+}
+.log-row.selected.I {
+  background-color: color-mix(in srgb, var(--color-log-i) 20%, transparent);
+}
+.log-row.selected.W {
+  background-color: color-mix(in srgb, var(--color-log-w) 20%, transparent);
+}
+.log-row.selected.E {
+  background-color: color-mix(in srgb, var(--color-log-e) 20%, transparent);
+}
+.log-row.selected.F {
+  background-color: color-mix(in srgb, var(--color-log-f) 20%, transparent);
+}
+
+/* Preserve hover background on unselected rows only */
+.log-row:not(.selected):hover {
+  background-color: #222a3d;
+}
