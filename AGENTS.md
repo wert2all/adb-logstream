@@ -44,19 +44,10 @@
   - `adb` executable in `PATH`
   - Android device or emulator connected via USB.
 
-## Testing Instructions
-
-_No automated test suite is currently configured._
-
-- Manual testing steps:
-  1. Run `npm run dev`.
-  2. Connect an Android device with `adb devices`.
-  3. Open the client in a browser and verify that log entries appear and filtering/search works.
-- If you add tests, place them under `server/__tests__` (Jest) or `client/__tests__` and add appropriate npm scripts.
-
 ## Code Style Guidelines
 
 - **Language**: TypeScript (strict mode enabled via `tsconfig.json`).
+- **Commit format**: All commits must follow [Conventional Commits](https://www.conventionalcommits.org/) specification (`<type>(<scope>): <description>`). Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, etc.
 - **Formatting**: Use `prettier` or your editor's built‑in TypeScript formatter.
 - **Linting**: Run `npm run lint` which invokes `tsc --noEmit` (type‑checking).
 - **File organization**:
@@ -65,33 +56,6 @@ _No automated test suite is currently configured._
   - Workspace root `package.json` defines the two workspaces.
 - **Naming**: Follow typical JavaScript/TypeScript conventions – camelCase for variables/functions, PascalCase for classes/types.
 
-## Build and Deployment
-
-- **Production build** (client assets + server bundle):
-  ```bash
-  npm run build
-  ```
-  - Client assets are emitted to `client/dist/` by Vite.
-  - Server is compiled to `server/dist/`.
-- **Run the built server** (serves static client files):
-  ```bash
-  npm start
-  ```
-- **Docker (optional)** – you can containerise the app by copying the `dist/` folders and running `node server/dist/index.js` behind a lightweight web server.
-
-## Pull Request Guidelines
-
-- **Title format**: `[component] short description` (e.g., `[client] add dark theme toggle`).
-- **Checks before merge**:
-  1. `npm run lint` passes for both workspaces.
-  2. Manual verification that the dev server runs without type errors.
-- **Review process**: At least one reviewer must confirm that new UI changes do not break existing functionality and that any new server endpoints are documented.
-
 ## Additional Notes
 
 - **Documentation**: ADRs are in `docs/adr/`, design spec in `DESIGN.md`, and domain glossary in `CONTEXT.md`.
-- **Common gotchas**:
-  - Ensure `adb` is in your `PATH`; otherwise the server will fail to start.
-  - The client caps the DOM at 5 000 entries to avoid memory bloat.
-  - If the device disconnects, the client will automatically attempt to reconnect after 3 seconds.
-- **Performance**: Log parsing is done in the server; the client only renders JSON entries.
