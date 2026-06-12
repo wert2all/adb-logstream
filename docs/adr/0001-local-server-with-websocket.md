@@ -1,6 +1,6 @@
 # Local server with WebSocket streaming
 
-The browser cannot execute `adb` directly, so a local Node.js server acts as a middleware: it spawns `adb logstream -v long` as a child process, parses each line into structured JSON, and broadcasts entries to all connected WebSocket clients in real time.
+The browser cannot execute `adb` directly, so a local Node.js server acts as a middleware: it spawns `adb logcat -v long` as a child process, parses each line into structured JSON, and broadcasts entries to all connected WebSocket clients in real time.
 
 This approach was chosen over browser extensions with native messaging because it works in any browser without installation, and over a polling HTTP API because WebSocket provides true real-time streaming with lower overhead.
 

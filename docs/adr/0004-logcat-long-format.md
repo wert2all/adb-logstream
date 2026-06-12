@@ -1,6 +1,6 @@
 # Use logstream `long` format
 
-The server runs `adb logstream -v long` which produces output like:
+The server runs `adb logcat -v long` which produces output like:
 
 ```
 [ 06-11 22:47:01.123  1234: 1235 I/ActivityManager ]
