@@ -19,6 +19,9 @@
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
+    "@ngrx/effects": "^21.0.0",
+    "@ngrx/operators": "^21.1.1",
+    "@ngrx/store": "^21.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -26,6 +29,7 @@
     "@angular/build": "^22.0.1",
     "@angular/cli": "^22.0.1",
     "@angular/compiler-cli": "^22.0.0",
+    "@ngrx/store-devtools": "^21.0.0",
     "@tailwindcss/postcss": "^4.3.0",
     "postcss": "^8.5.15",
     "prettier": "^3.8.1",

@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { LogStateService } from '../../services/log-state.service';
-import { LocalStorageService } from '../../services/local-storage.service';
+import { Store } from '@ngrx/store';
+import { appActions } from '../../store/app.actions';
+import { appFeature } from '../../store/app.redusers';
 
 @Component({
   selector: 'app-footer',
@@ -8,16 +10,22 @@ import { LocalStorageService } from '../../services/local-storage.service';
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {
+  private store = inject(Store);
   logState = inject(LogStateService);
-  localStorage = inject(LocalStorageService);
+  autoScrollEnabled = this.store.selectSignal(appFeature.selectAutoScroll);
+
+  autoScrollClass = computed(() =>
+    this.autoScrollEnabled() ? 'bg-secondary' : 'bg-outline-variant',
+  );
+  autoScrollLabel = computed(() =>
+    this.autoScrollEnabled() ? 'Autoscroll is enabled' : 'Autoscroll is disabled',
+  );
 
   copyLogs(): void {
     this.logState.copySelected();
   }
 
-  onToggle(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.logState.setAutoScroll(checked);
-    this.localStorage.saveAutoScroll(checked);
+  onToggle(): void {
+    this.store.dispatch(appActions.toggleAutoscroll());
   }
 }

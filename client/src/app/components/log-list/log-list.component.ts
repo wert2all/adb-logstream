@@ -1,6 +1,8 @@
 import { Component, inject, AfterViewInit, ElementRef, ViewChild, effect } from '@angular/core';
-import { LogStateService } from '../../services/log-state.service';
 import { LogRowComponent } from '../log-row/log-row.component';
+import { Store } from '@ngrx/store';
+import { appFeature } from '../../store/app.redusers';
+import { LogStateService } from '../../services/log-state.service';
 
 @Component({
   selector: 'app-log-list',
@@ -9,22 +11,20 @@ import { LogRowComponent } from '../log-row/log-row.component';
   templateUrl: './log-list.component.html',
   styleUrls: ['./log-list.component.css'],
 })
-export class LogListComponent implements AfterViewInit {
-  logState = inject(LogStateService);
-
+export class LogListComponent {
+  private store = inject(Store);
+  private autoScrollEnabled = this.store.selectSignal(appFeature.selectAutoScroll);
   @ViewChild('container', { static: true })
-  container!: ElementRef<HTMLDivElement>;
+  protected container!: ElementRef<HTMLDivElement>;
+  protected logState = inject(LogStateService);
 
   constructor() {
     effect(() => {
-      this.logState.getFilteredEntries();
-      if (this.logState.autoScrollEnabled()) {
+      if (this.autoScrollEnabled()) {
         requestAnimationFrame(() => this.scrollToBottom());
       }
     });
   }
-
-  ngAfterViewInit(): void {}
 
   scrollToBottom(): void {
     const el = this.container.nativeElement;
