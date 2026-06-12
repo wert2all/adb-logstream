@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define global keyboard shortcuts for the Client to enable quick access to search, level toggling, and log clearing without using the mouse.
+Define global keyboard shortcuts for the Client to enable quick access to search, level toggling, log clearing, and auto-scroll toggling without using the mouse.
 
 ## Requirements
 
@@ -24,6 +24,11 @@ Every control that has a keyboard shortcut SHALL expose that shortcut via a tool
 
 - **WHEN** the user hovers over any Level toggle button
 - **THEN** a tooltip SHALL display the corresponding key binding (V, D, I, W, E, or F)
+
+#### Scenario: Auto-scroll checkbox shows shortcut
+
+- **WHEN** the user hovers over the auto-scroll checkbox or its label
+- **THEN** a tooltip SHALL display the `a` key binding
 
 ### Requirement: Focus search input
 
@@ -109,6 +114,18 @@ The Client SHALL toggle the Fatal Level filter when the `f` key is pressed.
 - **WHEN** the user presses the `f` key
 - **THEN** the Fatal Level toggle SHALL switch to its opposite state
 
+### Requirement: Toggle auto-scroll
+
+The Client SHALL toggle the auto-scroll state when the `a` key is pressed.
+
+#### Scenario: User presses `a`
+
+- **WHEN** the user presses the `a` key (and no input is focused)
+- **THEN** the auto-scroll state SHALL switch to its opposite state
+- **AND** the auto-scroll checkbox SHALL reflect the new state
+- **AND** the footer indicator SHALL update to match
+- **AND** the state SHALL be persisted to localStorage
+
 ### Requirement: No shortcuts when typing
 
 The Client SHALL NOT trigger keyboard shortcuts when an editable input field is focused.
@@ -116,5 +133,5 @@ The Client SHALL NOT trigger keyboard shortcuts when an editable input field is 
 #### Scenario: User types in search field
 
 - **WHEN** the user is typing in the search input field
-- **THEN** pressing `c`, `v`, `d`, `i`, `w`, `e`, or `f` SHALL insert the character into the field
+- **THEN** pressing `c`, `v`, `d`, `i`, `w`, `e`, `f`, or `a` SHALL insert the character into the field
 - **AND** the corresponding shortcut action SHALL NOT be triggered
