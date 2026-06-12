@@ -55,9 +55,6 @@ adb-logstream/
 │   ├── package.json
 │   └── tsconfig.json
 ├── docs/
-│   ├── architecture.md  # System overview, message protocol, data flow
-│   ├── server.md        # Server spec (8 FRs, NFRs, error handling)
-│   ├── client.md        # Client spec (8 FRs, NFRs, keyboard shortcuts)
 │   └── adr/             # Architecture decision records (7 ADRs)
 ├── openspec/            # OpenSpec specs and completed change archives
 ├── CONTEXT.md           # Domain glossary
