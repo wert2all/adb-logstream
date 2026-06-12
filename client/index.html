@@ -78,14 +78,16 @@
         z-index: 50;
       }
       .tooltip-trigger:hover > .tooltip { opacity: 1; }
+
+      /* Tooltip bottom variant */
+      .tooltip-trigger > .tooltip-bottom {
+        bottom: auto;
+        top: calc(100% + 6px);
+      }
+
       .tooltip kbd {
-        background-color: #2d3449;
-        color: #dae2fd;
-        padding: 0 3px;
-        border-radius: 2px;
-        font-size: 10px;
+        font-size: inherit;
         font-family: inherit;
-        border: 1px solid #424754;
       }
     </style>
   </head>
@@ -109,17 +111,17 @@
         <button id="search-clear" class="absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors hidden">
           <span class="material-symbols-outlined text-sm">close</span>
         </button>
-        <span class="tooltip">Filter logs <kbd>/</kbd></span>
+        <span class="tooltip tooltip-bottom">Filter logs <kbd class=" px-1 rounded bg-surface-container text-on-surface">/</kbd></span>
       </div>
       
       <!-- Level Toggles -->
-      <div id="level-toggles" class="flex items-center border border-outline-variant rounded bg-background overflow-hidden h-7 text-sm">
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="V" class="px-2 font-bold text-log-v hover:bg-surface-container-highest transition-colors h-full">V</button><span class="tooltip">Toggle Verbose <kbd>V</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="D" class="px-2 font-bold text-log-d hover:bg-surface-container-highest transition-colors h-full">D</button><span class="tooltip">Toggle Debug <kbd>D</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="I" class="px-2 font-bold text-log-i hover:bg-surface-container-highest transition-colors h-full">I</button><span class="tooltip">Toggle Info <kbd>I</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="W" class="px-2 font-bold text-log-w hover:bg-surface-container-highest transition-colors h-full">W</button><span class="tooltip">Toggle Warn <kbd>W</kbd></span></span>
-        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="E" class="px-2 font-bold text-log-e hover:bg-surface-container-highest transition-colors h-full">E</button><span class="tooltip">Toggle Error <kbd>E</kbd></span></span>
-        <span class="tooltip-trigger h-full"><button data-level="F" class="px-2 font-bold text-log-f hover:bg-surface-container-highest transition-colors h-full">F</button><span class="tooltip">Toggle Fatal <kbd>F</kbd></span></span>
+      <div id="level-toggles" class="flex items-center border border-outline-variant rounded bg-background overflow-visible h-7 text-sm">
+        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="V" class="px-2 font-bold text-log-v hover:bg-surface-container-highest transition-colors h-full">V</button><span class="tooltip tooltip-bottom">Toggle Verbose <kbd class=" px-1 rounded bg-surface-container text-on-surface">V</kbd></span></span>
+        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="D" class="px-2 font-bold text-log-d hover:bg-surface-container-highest transition-colors h-full">D</button><span class="tooltip tooltip-bottom">Toggle Debug <kbd class=" px-1 rounded bg-surface-container text-on-surface">D</kbd></span></span>
+        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="I" class="px-2 font-bold text-log-i hover:bg-surface-container-highest transition-colors h-full">I</button><span class="tooltip tooltip-bottom">Toggle Info <kbd class=" px-1 rounded bg-surface-container text-on-surface">I</kbd></span></span>
+        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="W" class="px-2 font-bold text-log-w hover:bg-surface-container-highest transition-colors h-full">W</button><span class="tooltip tooltip-bottom">Toggle Warn <kbd class=" px-1 rounded bg-surface-container text-on-surface">W</kbd></span></span>
+        <span class="tooltip-trigger border-r border-outline-variant h-full"><button data-level="E" class="px-2 font-bold text-log-e hover:bg-surface-container-highest transition-colors h-full">E</button><span class="tooltip tooltip-bottom">Toggle Error <kbd class=" px-1 rounded bg-surface-container text-on-surface">E</kbd></span></span>
+        <span class="tooltip-trigger h-full"><button data-level="F" class="px-2 font-bold text-log-f hover:bg-surface-container-highest transition-colors h-full">F</button><span class="tooltip tooltip-bottom">Toggle Fatal <kbd class=" px-1 rounded bg-surface-container text-on-surface">F</kbd></span></span>
       </div>
       
       <!-- Count & Clear -->
@@ -129,7 +131,8 @@
           <button id="clear-btn" class="px-3 py-1 bg-primary-container text-on-primary-container text-sm font-semibold rounded hover:opacity-90 active:opacity-80 transition-opacity">
             Clear
           </button>
-          <span class="tooltip">Clear logs <kbd>C</kbd></span>
+          <span class="tooltip tooltip-bottom">Clear logs 
+            <kbd class=" px-1 rounded bg-surface-container text-on-surface">C</kbd></span>
         </span>
       </div>
     </header>
