@@ -92,6 +92,7 @@ export class WebSocketService {
 
     if (msg['type'] === 'entry') {
       const entry: LogstreamEntry = {
+        uuid: String(msg['uuid'] || ''),
         timestamp: String(msg['timestamp'] || ''),
         pid: String(msg['pid'] || ''),
         tid: String(msg['tid'] || ''),

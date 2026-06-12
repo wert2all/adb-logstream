@@ -10,10 +10,16 @@ Define how Logcat Entries are parsed from WebSocket messages, rendered as rows i
 
 The Client SHALL parse incoming JSON messages of type `"entry"` into Logcat Entry objects.
 
-#### Scenario: Valid entry received
+#### Scenario: Valid entry received with uuid
 
-- **WHEN** the Server sends a JSON message of type `"entry"` containing `timestamp`, `pid`, `tid`, `level`, `tag`, and `message`
+- **WHEN** the Server sends a JSON message of type `"entry"` containing `timestamp`, `pid`, `tid`, `level`, `tag`, `message`, and `uuid`
 - **THEN** the Client SHALL create a Logcat Entry object with those fields
+
+#### Scenario: Valid entry received without uuid
+
+- **WHEN** the Server sends a JSON message of type `"entry"` containing `timestamp`, `pid`, `tid`, `level`, `tag`, and `message` but no `uuid` field
+- **THEN** the Client SHALL create a Logcat Entry object with those fields
+- **AND** the `uuid` field SHALL be `undefined` in the resulting object
 
 ### Requirement: Logcat entry rendering
 

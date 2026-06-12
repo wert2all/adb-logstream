@@ -1,4 +1,5 @@
 export interface LogstreamEntry {
+  uuid: string;
   timestamp: string;
   pid: string;
   tid: string;
