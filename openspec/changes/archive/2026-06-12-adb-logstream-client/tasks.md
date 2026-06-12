@@ -6,7 +6,7 @@
 
 ## 2. Core State & Types
 
-- [x] 2.1 Define `LogcatEntry` TypeScript interface with `timestamp`, `pid`, `tid`, `level`, `tag`, `message` fields
+- [x] 2.1 Define `LogstreamEntry` TypeScript interface with `timestamp`, `pid`, `tid`, `level`, `tag`, `message` fields
 - [x] 2.2 Define `AppState` interface holding the complete entry array, filter toggles, search query, and connection status
 - [x] 2.3 Create and export a singleton `AppState` instance from `client/src/state.ts`
 
@@ -22,7 +22,7 @@
 
 ## 4. Log Rendering
 
-- [x] 4.1 Implement `createEntryRow()` function that creates a DOM element for a `LogcatEntry`
+- [x] 4.1 Implement `createEntryRow()` function that creates a DOM element for a `LogstreamEntry`
 - [x] 4.2 Apply color-coding per Level (V/D/I/W/E/F) matching the design reference
 - [x] 4.3 Implement `appendEntry()` that adds new rows to the bottom of the log list
 - [x] 4.4 Implement auto-scroll logic: check scroll position within 50px of bottom before scrolling

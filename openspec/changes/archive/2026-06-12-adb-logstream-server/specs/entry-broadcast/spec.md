@@ -1,11 +1,11 @@
 ## ADDED Requirements
 
 ### Requirement: Broadcast parsed entries to all clients
-Each parsed logcat entry SHALL be serialized to JSON and sent to all connected WebSocket clients.
+Each parsed logstream entry SHALL be serialized to JSON and sent to all connected WebSocket clients.
 The message type SHALL be `entry`, with the entry data included in the payload: `{ type: "entry", timestamp, pid, tid, level, tag, message }`.
 
 #### Scenario: New entry is broadcast to all clients
-- **WHEN** a logcat entry is parsed
+- **WHEN** a logstream entry is parsed
 - **THEN** the entry SHALL be serialized to JSON
 - **THEN** the JSON message SHALL be sent to every connected WebSocket client
 - **THEN** the message SHALL have `type: "entry"` at the top level
@@ -20,7 +20,7 @@ Skipped clients SHALL be removed from the client pool silently without logging.
 - **THEN** the server SHALL remove the client from the client pool without error logging
 
 ### Requirement: Preserve message ordering
-Entries SHALL be broadcast in the order they are received from the `adb logcat` process.
+Entries SHALL be broadcast in the order they are received from the `adb logstream` process.
 No reordering or batching SHALL occur.
 
 #### Scenario: Entries arrive and are broadcast in order

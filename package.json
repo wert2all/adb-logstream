@@ -1,5 +1,5 @@
 {
-  "name": "adb-logcat",
+  "name": "adb-logstream",
   "private": true,
   "workspaces": ["server", "client"],
   "scripts": {

@@ -16,6 +16,13 @@ const logContainer = document.getElementById("log-container") as HTMLDivElement;
 const entryCount = document.getElementById("entry-count") as HTMLSpanElement;
 const autoScrollIndicator = document.getElementById("auto-scroll-indicator") as HTMLSpanElement;
 
+let userScrolledUp = false;
+
+logContainer.addEventListener("scroll", () => {
+  const atBottom = logContainer.scrollTop + logContainer.clientHeight >= logContainer.scrollHeight - 50;
+  userScrolledUp = !atBottom;
+});
+
 export function createEntryRow(entry: LogcatEntry): HTMLElement {
   const row = document.createElement("div");
   row.className = "log-row px-2 py-0.5 rounded transition-colors";
@@ -84,13 +91,13 @@ export function updateCount(): void {
 }
 
 export function autoScroll(): void {
-  const atBottom = logContainer.scrollTop + logContainer.clientHeight >= logContainer.scrollHeight - 50;
-  if (atBottom) {
+  if (state.autoScrollEnabled && !userScrolledUp) {
     logContainer.scrollTop = logContainer.scrollHeight;
-    autoScrollIndicator.textContent = "Auto-scroll: ON";
-  } else {
-    autoScrollIndicator.textContent = "Auto-scroll: OFF";
   }
+}
+
+export function updateAutoScrollIndicator(): void {
+  autoScrollIndicator.textContent = state.autoScrollEnabled ? "Auto-scroll: ON" : "Auto-scroll: OFF";
 }
 
 export function escapeHtml(str: string): string {

@@ -72,7 +72,7 @@ wss.on("connection", (ws) => {
 // === Log Parser ===
 const HEADER_REGEX = /^\[\s*([\d-]+\s+[\d:.]+)\s+(\d+):(\d+)\s+([VDIWEF])\/(\S+)\s*\]$/;
 
-interface LogcatEntry {
+interface LogstreamEntry {
   timestamp: string;
   pid: string;
   tid: string;
@@ -81,7 +81,7 @@ interface LogcatEntry {
   message: string;
 }
 
-let currentEntry: LogcatEntry | null = null;
+let currentEntry: LogstreamEntry | null = null;
 let bodyLines: string[] = [];
 
 function emitEntry(): void {
@@ -121,7 +121,7 @@ let isShuttingDown = false;
 function startAdb(): void {
   if (isShuttingDown) return;
 
-  adbProcess = spawn("adb", ["logcat", "-v", "long"], {
+  adbProcess = spawn("adb", ["logstream", "-v", "long"], {
     stdio: ["ignore", "pipe", "pipe"],
   });
 

@@ -1,4 +1,4 @@
-export interface LogcatEntry {
+export interface LogstreamEntry {
   timestamp: string;
   pid: number;
   tid: number;
@@ -10,11 +10,12 @@ export interface LogcatEntry {
 export type ConnectionStatus = "connected" | "disconnected" | "reconnecting";
 
 export interface AppState {
-  entries: LogcatEntry[];
+  entries: LogstreamEntry[];
   levelFilters: Record<string, boolean>;
   searchQuery: string;
   connectionStatus: ConnectionStatus;
   totalReceived: number;
+  autoScrollEnabled: boolean;
 }
 
 export function createAppState(): AppState {
@@ -31,7 +32,27 @@ export function createAppState(): AppState {
     searchQuery: "",
     connectionStatus: "disconnected",
     totalReceived: 0,
+    autoScrollEnabled: true,
   };
 }
 
 export const state = createAppState();
+
+export function loadAutoScrollState(): void {
+  try {
+    const stored = localStorage.getItem("logstream-auto-scroll-enabled");
+    if (stored !== null) {
+      state.autoScrollEnabled = stored === "true";
+    }
+  } catch {
+    // localStorage unavailable — use default
+  }
+}
+
+export function saveAutoScrollState(): void {
+  try {
+    localStorage.setItem("logstream-auto-scroll-enabled", String(state.autoScrollEnabled));
+  } catch {
+    // localStorage unavailable — silently ignore
+  }
+}

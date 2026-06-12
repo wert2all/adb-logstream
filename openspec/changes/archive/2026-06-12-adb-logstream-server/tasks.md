@@ -21,7 +21,7 @@
 
 ## 4. adb Process Management
 
-- [x] 4.1 Implement function to spawn `adb logcat -v long` via `child_process.spawn`
+- [x] 4.1 Implement function to spawn `adb logstream -v long` via `child_process.spawn`
 - [x] 4.2 Handle spawn `error` event (adb not found) — log and exit
 - [x] 4.3 Pipe stdout to the log parser
 - [x] 4.4 Pipe stderr and forward each line as `{ type: "status", message }` to all clients

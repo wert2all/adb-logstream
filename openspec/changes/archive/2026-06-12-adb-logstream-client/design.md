@@ -1,6 +1,6 @@
 ## Context
 
-The ADB Logcat Viewer server already streams parsed JSON logcat entries over WebSocket. The client (`client/src/main.ts`) is currently a stub — it only logs to console. The UI design reference (`client/design.html`) defines a dark-themed terminal-style interface with a header, log list, level toggles, search bar, and keyboard shortcuts. The client uses vanilla TypeScript with Vite as a dev server only; no runtime frameworks or build dependencies.
+The ADB Logstream Viewer server already streams parsed JSON logstream entries over WebSocket. The client (`client/src/main.ts`) is currently a stub — it only logs to console. The UI design reference (`client/design.html`) defines a dark-themed terminal-style interface with a header, log list, level toggles, search bar, and keyboard shortcuts. The client uses vanilla TypeScript with Vite as a dev server only; no runtime frameworks or build dependencies.
 
 **Constraints:**
 - Vanilla TypeScript, no frameworks (React, Vue, etc.)
@@ -111,7 +111,7 @@ The ADB Logcat Viewer server already streams parsed JSON logcat entries over Web
 
 ### 8. localStorage for Toggle Persistence
 
-**Decision:** Store level toggle states as a simple JSON object in `localStorage` under key `logcat-levels`. Read on init, write on change.
+**Decision:** Store level toggle states as a simple JSON object in `localStorage` under key `logstream-levels`. Read on init, write on change.
 
 **Rationale:**
 - Simplest persistence mechanism available

@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
-### Requirement: Parse logcat long format entries
-The system SHALL parse each complete logcat entry from `-v long` format into a structured object.
+### Requirement: Parse logstream long format entries
+The system SHALL parse each complete logstream entry from `-v long` format into a structured object.
 
 Each entry in `long` format consists of a header line followed by zero or more body lines.
 The header line format SHALL be: `[ timestamp pid: tid level/tag ]`
