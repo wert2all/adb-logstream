@@ -1,0 +1,36 @@
+<header
+  class="bg-surface-container border-b border-outline-variant w-full h-14 flex items-center px-4 shrink-0 gap-4"
+>
+  <!-- Brand & Status -->
+  <div class="flex items-center gap-3 shrink-0">
+    <h1 class="text-lg font-semibold text-secondary">LOGCAT</h1>
+    <div
+      class="flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium bg-surface-container-high border border-outline-variant"
+    >
+      <span class="w-2 h-2 rounded-full {{ statusClass().dot }}"></span>
+      <span class="{{ statusClass().text }}">{{ statusLabel() }}</span>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <app-search-bar class="flex-1 max-w-md relative"></app-search-bar>
+
+  <!-- Level Toggles -->
+  <app-level-toggles></app-level-toggles>
+
+  <!-- Count & Clear -->
+  <div class="flex items-center gap-2 shrink-0">
+    <span class="text-xs text-outline-variant">{{ logState.totalReceived() }} entries</span>
+    <span class="tooltip-trigger">
+      <button
+        (click)="clearLogs()"
+        class="px-3 py-1 bg-primary-container text-on-primary-container text-sm font-semibold rounded hover:opacity-90 active:opacity-80 transition-opacity"
+      >
+        Clear
+      </button>
+      <span class="tooltip tooltip-bottom"
+        >Clear logs <kbd class="px-1 rounded bg-surface-container text-on-surface">C</kbd></span
+      >
+    </span>
+  </div>
+</header>

@@ -1,0 +1,10 @@
+<div class="log-row px-2 py-0.5 rounded transition-colors">
+  <span class="text-outline-variant shrink-0 text-xs w-[100px] tabular-nums">{{
+    entry.timestamp
+  }}</span>
+  <span class="{{ colorClass() }} w-6 shrink-0 font-bold text-center text-xs">{{
+    entry.level
+  }}</span>
+  <span class="text-outline w-40 shrink-0 truncate pr-2 text-xs">{{ entry.tag }}</span>
+  <span class="{{ colorClass() }} flex-1 break-all" [innerHTML]="formatMessage()"></span>
+</div>

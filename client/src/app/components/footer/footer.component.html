@@ -1,0 +1,27 @@
+<footer
+  class="bg-surface-container border-t border-outline-variant py-1 px-4 flex justify-between items-center text-xs text-outline-variant shrink-0"
+>
+  <div class="flex gap-4">
+    <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">C</kbd> Clear</span>
+    <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">/</kbd> Search</span>
+    <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">Esc</kbd> Cancel</span>
+  </div>
+  <div class="flex gap-3">
+    <span
+      ><kbd class="bg-surface-variant px-1 rounded text-on-surface">V</kbd>-<kbd
+        class="bg-surface-variant px-1 rounded text-on-surface"
+        >F</kbd
+      >
+      Toggle Levels</span
+    >
+    <label class="flex items-center gap-1 cursor-pointer select-none">
+      <input
+        type="checkbox"
+        class="accent-primary"
+        [checked]="logState.autoScrollEnabled()"
+        (change)="onToggle($event)"
+      />
+      <span>Auto-scroll: {{ logState.autoScrollEnabled() ? 'ON' : 'OFF' }}</span>
+    </label>
+  </div>
+</footer>

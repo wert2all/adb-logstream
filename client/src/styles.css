@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #0b1326;
+  --color-surface: #0b1326;
+  --color-surface-container: #171f33;
+  --color-surface-container-high: #222a3d;
+  --color-surface-container-highest: #2d3449;
+  --color-surface-variant: #2d3449;
+  --color-on-surface: #dae2fd;
+  --color-on-surface-variant: #c2c6d6;
+  --color-primary: #adc6ff;
+  --color-primary-container: #4d8eff;
+  --color-on-primary: #002e6a;
+  --color-on-primary-container: #00285d;
+  --color-secondary: #4edea3;
+  --color-secondary-container: #00a572;
+  --color-on-secondary: #003824;
+  --color-on-secondary-container: #00311f;
+  --color-outline: #8c909f;
+  --color-outline-variant: #424754;
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+  --color-log-v: #8c909f;
+  --color-log-d: #adc6ff;
+  --color-log-i: #4edea3;
+  --color-log-w: #df7412;
+  --color-log-e: #ffb4ab;
+  --color-log-f: #ffb4ab;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0b1326;
+}
+::-webkit-scrollbar-thumb {
+  background: #2d3449;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #424754;
+}
+
+/* Log row hover */
+.log-row {
+  display: flex;
+  align-items: center;
+}
+.log-row:hover {
+  background-color: #222a3d;
+}
+
+/* Search highlight */
+mark {
+  background-color: #4d8eff;
+  color: #002e6a;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Tooltip styles */
+.tooltip-trigger {
+  position: relative;
+  display: inline-flex;
+}
+.tooltip-trigger > .tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2d3449;
+  color: #dae2fd;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease 300ms;
+  z-index: 50;
+}
+.tooltip-trigger:hover > .tooltip {
+  opacity: 1;
+}
+
+/* Tooltip bottom variant */
+.tooltip-trigger > .tooltip-bottom {
+  bottom: auto;
+  top: calc(100% + 6px);
+}
+
+.tooltip kbd {
+  font-size: inherit;
+  font-family: inherit;
+}

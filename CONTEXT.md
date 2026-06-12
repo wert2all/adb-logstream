@@ -34,7 +34,7 @@ _Avoid_: state store, state manager
 
 **WebSocketService**:
 An Angular injectable service that manages WebSocket connection, reconnection logic, and message parsing. Exposes signals for latest entry, connection status, and status messages.
-\_Avoid$: ws service, connection service
+_Avoid_: ws service, connection service
 
 ## Relationships
 

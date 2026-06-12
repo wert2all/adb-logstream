@@ -6,8 +6,8 @@
 
 - Streams logs from a connected device (`adb logstream -v long`) via a Node.js server.
 - Server parses log entries to JSON and broadcasts them over WebSocket.
-- Browser client (Vite + TypeScript) renders a searchable, filterable, auto‑scrolling log list.
-- Uses Tailwind CSS via CDN and plain TypeScript for UI.
+- Browser client (Angular 21+) renders a searchable, filterable, auto‑scrolling log list.
+- Uses Angular signals for state management, Tailwind CSS v4 via PostCSS, and standalone components.
 
 ## Setup Commands
 
@@ -36,9 +36,10 @@
 
 - `npm run dev` launches:
   - `npm run dev -w server` → TypeScript watch + `nodemon` for hot restart.
-  - `npm run dev -w client` → Vite dev server with HMR.
-- Open the client at **http://localhost:5173** (Vite dev server).
+  - `npm run dev -w client` → `ng serve` (Angular dev server with HMR).
+- Open the client at **http://localhost:4200** (Angular dev server).
 - The server listens on **http://localhost:3000** and proxies WebSocket connections for the dev client.
+- WebSocket proxy is configured in `client/proxy.conf.json`.
 - Environment requirements:
   - Node.js ≥ 18
   - `adb` executable in `PATH`
@@ -52,10 +53,45 @@
 - **Linting**: Run `npm run lint` which invokes `tsc --noEmit` (type‑checking).
 - **File organization**:
   - Server code in `server/src/`.
-  - Client code in `client/src/`.
+  - Client code in `client/src/app/` — organized by feature (components/, services/, models/).
   - Workspace root `package.json` defines the two workspaces.
-- **Naming**: Follow typical JavaScript/TypeScript conventions – camelCase for variables/functions, PascalCase for classes/types.
+- **Naming**: Follow typical TypeScript conventions – camelCase for variables/functions, PascalCase for classes/types, kebab-case for file names.
+- **Angular conventions**:
+  - All components are standalone (no NgModules).
+  - State management via `signal()` and `computed()` — no RxJS for state.
+  - Templates use new control flow syntax (`@if`, `@for`, `@defer`).
+  - Inject dependencies with `inject()` function (no constructor DI).
+  - Tailwind classes in templates; custom CSS only for non‑Tailwind concerns.
+- **Tailwind CSS v4**: Theme is configured in `src/styles.css` via `@theme` block (not `tailwind.config.*`). Custom colors are defined as `--color-*` variables.
+
+## Build and Deployment
+
+- **Production build** (client assets + server bundle):
+  ```bash
+  npm run build
+  ```
+  - Client output is emitted to `client/dist/client/browser/` by Angular CLI.
+  - Server is compiled to `server/dist/`.
+- **Run the built server** (serves static client files):
+  ```bash
+  npm start
+  ```
+- **Docker (optional)** – you can containerise the app by copying the `dist/` folders and running `node server/dist/index.js` behind a lightweight web server.
+
+## Pull Request Guidelines
+
+- **Title format**: `[component] short description` (e.g., `[client] add dark theme toggle`).
+- **Checks before merge**:
+  1. `npm run lint` passes for both workspaces.
+  2. Manual verification that the dev server runs without type errors.
+- **Review process**: At least one reviewer must confirm that new UI changes do not break existing functionality and that any new server endpoints are documented.
 
 ## Additional Notes
 
 - **Documentation**: ADRs are in `docs/adr/`, design spec in `DESIGN.md`, and domain glossary in `CONTEXT.md`.
+- **Common gotchas**:
+  - Ensure `adb` is in your `PATH`; otherwise the server will fail to start.
+  - The client caps the DOM at 5 000 entries to avoid memory bloat.
+  - If the device disconnects, the client will automatically attempt to reconnect after 3 seconds.
+  - Angular dev server runs on port 4200; server on port 3000.
+- **Performance**: Log parsing is done in the server; the client only renders JSON entries.
