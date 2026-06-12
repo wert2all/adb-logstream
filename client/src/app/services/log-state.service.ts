@@ -18,6 +18,8 @@ export class LogStateService {
   connectionStatus = signal<ConnectionStatus>('disconnected');
   totalReceived = signal(0);
   autoScrollEnabled = signal(true);
+  selectedUuids = signal<Set<string>>(new Set());
+  copyFeedback = signal<{ message: string; visible: boolean } | null>(null);
 
   getFilteredEntries = computed(() => {
     const query = this.searchQuery().toLowerCase();
@@ -30,6 +32,54 @@ export class LogStateService {
       return text.includes(query);
     });
   });
+
+  getSelectedEntries = computed(() => {
+    const selected = this.selectedUuids();
+    return this.entries().filter((entry) => selected.has(entry.uuid));
+  });
+
+  hasSelection = computed(() => this.selectedUuids().size > 0);
+
+  isSelected(uuid: string): boolean {
+    return this.selectedUuids().has(uuid);
+  }
+
+  toggleSelection(uuid: string): void {
+    this.selectedUuids.update((set) => {
+      const next = new Set(set);
+      if (next.has(uuid)) {
+        next.delete(uuid);
+      } else {
+        next.add(uuid);
+      }
+      return next;
+    });
+  }
+
+  clearSelection(): void {
+    this.selectedUuids.set(new Set());
+  }
+
+  async copySelected(): Promise<void> {
+    const selected = this.getSelectedEntries();
+    if (selected.length === 0) return;
+
+    const json = JSON.stringify(selected, null, 2);
+    try {
+      await navigator.clipboard.writeText(json);
+      this.clearSelection();
+      this.showCopyFeedback('Copied!');
+    } catch {
+      this.showCopyFeedback('Copy failed');
+    }
+  }
+
+  private showCopyFeedback(message: string): void {
+    this.copyFeedback.set({ message, visible: true });
+    setTimeout(() => {
+      this.copyFeedback.set(null);
+    }, 2000);
+  }
 
   appendEntry(entry: LogstreamEntry): void {
     this.entries.update((current) => {
@@ -45,6 +95,7 @@ export class LogStateService {
   clearLog(): void {
     this.entries.set([]);
     this.totalReceived.set(0);
+    this.clearSelection();
   }
 
   toggleLevel(level: string): void {

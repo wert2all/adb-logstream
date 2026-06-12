@@ -1,3 +1,5 @@
+![ADB Logstream Viewer](images/logo.png)
+
 # ADB Logstream Viewer
 
 A minimalistic web-based viewer for Android `adb logcat` output. Stream logs from your device in real time, right in the browser.
