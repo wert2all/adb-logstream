@@ -26,12 +26,6 @@ export class AppComponent implements OnInit {
       this.logState.levelFilters.set(savedFilters);
     }
 
-    // Load auto-scroll state
-    const savedAutoScroll = this.localStorage.loadAutoScroll();
-    if (savedAutoScroll !== null) {
-      this.logState.autoScrollEnabled.set(savedAutoScroll);
-    }
-
     // Connect WebSocket
     this.webSocket.connect();
   }

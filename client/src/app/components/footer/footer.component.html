@@ -26,18 +26,14 @@
       <input
         type="checkbox"
         class="accent-primary cursor-pointer"
-        [checked]="logState.autoScrollEnabled()"
-        (change)="onToggle($event)"
+        [checked]="autoScrollEnabled()"
+        (change)="onToggle()"
       />
       <span class="flex items-center gap-1">
         <span><kbd class="bg-surface-variant px-1 rounded text-on-surface">A</kbd>uto-scroll:</span>
         <span
-          class="w-2 h-2 rounded-full {{
-            logState.autoScrollEnabled() ? 'bg-secondary' : 'bg-outline-variant'
-          }}"
-          attr.aria-label="{{
-            logState.autoScrollEnabled() ? 'Autoscroll is enabled' : 'Autoscroll is disabled'
-          }}"
+          class="w-2 h-2 rounded-full {{ autoScrollClass() }}"
+          attr.aria-label="{{ autoScrollLabel() }}"
         ></span>
       </span>
     </label>

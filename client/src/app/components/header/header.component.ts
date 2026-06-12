@@ -3,19 +3,22 @@ import { LogStateService } from '../../services/log-state.service';
 import { WebSocketService } from '../../services/websocket.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { LevelTogglesComponent } from '../level-toggles/level-toggles.component';
+import { Store } from '@ngrx/store';
+import { appActions } from '../../store/app.actions';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [SearchBarComponent, LevelTogglesComponent],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
+  private store = inject(Store);
   logState = inject(LogStateService);
   webSocket = inject(WebSocketService);
 
-  clearLogs(): void {
+  clearFilters(): void {
+    this.store.dispatch(appActions.cleanFilters());
     this.logState.clearLog();
   }
 

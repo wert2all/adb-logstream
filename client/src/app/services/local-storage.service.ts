@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
 const LEVELS_KEY = 'logstream-levels';
+const LEVELS_KEY_NEW = 'logstream-levels_new';
 const AUTO_SCROLL_KEY = 'logstream-auto-scroll-enabled';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
-  save(key: string, value: string): void {
+  private save(key: string, value: string): void {
     try {
       localStorage.setItem(key, value);
     } catch {
@@ -13,7 +14,7 @@ export class LocalStorageService {
     }
   }
 
-  load(key: string): string | null {
+  private load(key: string): string | null {
     try {
       return localStorage.getItem(key);
     } catch {
@@ -47,5 +48,9 @@ export class LocalStorageService {
     const stored = this.load(AUTO_SCROLL_KEY);
     if (stored === null) return null;
     return stored === 'true';
+  }
+
+  cleanFilters() {
+    localStorage.removeItem(LEVELS_KEY_NEW);
   }
 }

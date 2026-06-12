@@ -17,7 +17,6 @@ export class LogStateService {
   searchQuery = signal('');
   connectionStatus = signal<ConnectionStatus>('disconnected');
   totalReceived = signal(0);
-  autoScrollEnabled = signal(true);
   selectedUuids = signal<Set<string>>(new Set());
   copyFeedback = signal<{ message: string; visible: boolean } | null>(null);
 
@@ -107,10 +106,6 @@ export class LogStateService {
 
   setSearchQuery(query: string): void {
     this.searchQuery.set(query);
-  }
-
-  setAutoScroll(enabled: boolean): void {
-    this.autoScrollEnabled.set(enabled);
   }
 
   setConnectionStatus(status: ConnectionStatus): void {
