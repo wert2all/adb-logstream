@@ -1,0 +1,24 @@
+<div
+  class="flex items-center border border-outline-variant rounded bg-background overflow-visible h-7 text-sm"
+>
+  @for (level of levels; track level) {
+    <span
+      class="tooltip-trigger border-r border-outline-variant h-full"
+      [class.border-r]="level !== 'F'"
+    >
+      <button
+        (click)="toggleLevel(level)"
+        class="px-2 font-bold {{
+          levelColor(level)
+        }} hover:bg-surface-container-highest transition-colors h-full"
+        [class.bg-surface-container-highest]="isActive(level)"
+      >
+        {{ level }}
+      </button>
+      <span class="tooltip tooltip-bottom"
+        >Toggle {{ levelNames[level] }}
+        <kbd class="px-1 rounded bg-surface-container text-on-surface">{{ level }}</kbd></span
+      >
+    </span>
+  }
+</div>

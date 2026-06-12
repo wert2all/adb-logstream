@@ -26,15 +26,15 @@ npm start
 
 The server serves the pre-built client on [http://localhost:3000](http://localhost:3000).
 
-### Development
+#### Development
 
 ```bash
 npm run dev        # starts server + client in parallel via concurrently
 ```
 
-`npm run dev` uses [concurrently](https://github.com/open-cli-tools/concurrently) to run both the server (with `nodemon` hot reload) and the client (Vite dev server) in parallel. Each process is labeled with its color-coded name in the terminal output for easy identification.
+`npm run dev` uses [concurrently](https://github.com/open-cli-tools/concurrently) to run both the server (with `nodemon` hot reload) and the client (Angular dev server) in parallel. Each process is labeled with its color-coded name in the terminal output for easy identification.
 
-Open [http://localhost:5173](http://localhost:5173) for the Vite dev client (HMR enabled). The WebSocket proxy to the server is configured automatically in `vite.config.ts`.
+Open [http://localhost:4200](http://localhost:4200) for the Angular dev client (HMR enabled). The WebSocket proxy to the server is configured in `proxy.conf.json`.
 
 ## Project structure
 
@@ -45,22 +45,36 @@ adb-logstream/
 │   │   └── index.ts     # HTTP server, WebSocket broadcast, adb process, logstream parser
 │   ├── package.json
 │   └── tsconfig.json
-├── client/              # TypeScript, Vite, Tailwind CSS (CDN)
+├── client/              # Angular 21+, standalone components, Tailwind CSS (PostCSS)
 │   ├── src/
-│   │   ├── main.ts      # Entry point, wires up all modules
-│   │   ├── websocket.ts # WebSocket connection, reconnect, message dispatch
-│   │   ├── state.ts     # App state (entries, filters, search, connection status)
-│   │   ├── render.ts    # DOM rendering, auto-scroll, DOM cap (5000 entries)
-│   │   ├── filter.ts    # Level toggle logic, localStorage persistence
-│   │   ├── search.ts    # Text search with <mark> highlighting
-│   │   └── keyboard.ts  # Keyboard shortcuts (/, c, v, d, i, w, e, f, Esc)
-│   ├── index.html       # Page layout: header, search, toggles, log list, footer
-│   ├── vite.config.ts   # Vite dev server with WebSocket proxy to :3000
+│   │   ├── index.html         # Page layout <app-root>
+│   │   ├── main.ts            # Bootstrap Angular AppComponent
+│   │   ├── styles.css         # Tailwind imports + custom styles
+│   │   ├── app/
+│   │   │   ├── models/
+│   │   │   │   └── logstream.model.ts   # LogstreamEntry, ConnectionStatus types
+│   │   │   ├── services/
+│   │   │   │   ├── log-state.service.ts     # Signals-based state (entries, filters, search)
+│   │   │   │   ├── websocket.service.ts     # WebSocket + reconnect + message dispatch
+│   │   │   │   └── local-storage.service.ts # localStorage persistence
+│   │   │   └── components/
+│   │   │       ├── app/                 # Root layout (header, banner, main, footer)
+│   │   │       ├── header/              # Brand, status badge, search, toggles, clear
+│   │   │       ├── search-bar/          # Search input with clear button
+│   │   │       ├── level-toggles/       # V/D/I/W/E/F toggle buttons
+│   │   │       ├── connection-banner/   # Connection error banner
+│   │   │       ├── log-list/            # Log container with scroll detection
+│   │   │       ├── log-row/             # Single log entry row
+│   │   │       └── footer/              # Keyboard shortcuts + auto-scroll toggle
+│   │   └── app.config.ts
+│   ├── angular.json         # Angular CLI config with proxy
+│   ├── proxy.conf.json      # WebSocket proxy to :3000
+│   ├── postcss.config.json  # PostCSS with @tailwindcss/postcss
 │   ├── package.json
 │   └── tsconfig.json
 ├── docs/
-│   └── adr/             # Architecture decision records (7 ADRs)
-├── openspec/            # OpenSpec specs and completed change archives
+│   └── adr/             # Architecture decision records (8 ADRs)
+├── openspec/            # OpenSpec specs and change archives
 ├── CONTEXT.md           # Domain glossary
 ├── DESIGN.md            # Design system spec (Material-like dark theme)
 └── package.json         # Root workspace config
@@ -89,8 +103,10 @@ adb-logstream/
 - Connection status indicator (connected / reconnecting / disconnected)
 - Connection banner for server/status messages
 - Auto-reconnect on device disconnect
-- Keyboard shortcuts: `/` search, `c` clear, `v`/`d`/`i`/`w`/`e`/`f` toggle levels, `Esc` cancel
+- Keyboard shortcuts — `/` search, `c` clear, `v`/`d`/`i`/`w`/`e`/`f` toggle levels, `Esc` cancel
 - Multi-client support (multiple browser tabs)
+- Angular signals for reactive state (no RxJS)
+- Tailwind CSS v4 via PostCSS (build-time tree-shaking)
 - Graceful shutdown (SIGINT / SIGTERM)
 
 ## Docs
@@ -98,3 +114,4 @@ adb-logstream/
 - [ADRs](docs/adr/) — why each decision was made
 - [Design system](DESIGN.md) — colors, typography, layout, components
 - [Domain glossary](CONTEXT.md) — terminology
+- [AGENTS.md](AGENTS.md) — project conventions for AI coding agents

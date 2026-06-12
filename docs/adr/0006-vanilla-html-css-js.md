@@ -21,8 +21,8 @@ The client is built with **Angular 21+** using:
 - **Standalone components** (default in Angular 21) — no NgModules
 - **Angular signals** for reactive state management (no RxJS for state)
 - **New control flow syntax** (`@if`, `@for`) instead of structural directives
-- **Tailwind CSS via PostCSS** — build-time processing, no CDN script
-- **`tailwind.config.ts`** for design tokens from DESIGN.md
+- **Tailwind CSS v4 via `@tailwindcss/postcss`** — build-time processing, no CDN script
+- **`@theme` block in `styles.css`** for design tokens from DESIGN.md (CSS-first config)
 
 ### Component Architecture
 
@@ -47,7 +47,7 @@ The client is built with **Angular 21+** using:
 
 ### Styling
 
-Tailwind CSS is processed at build time via PostCSS. The `tailwind.config.ts` file contains all design tokens (colors, typography, spacing) migrated from the inline config in the original `index.html` and the DESIGN.md specification.
+Tailwind CSS v4 is processed at build time via `@tailwindcss/postcss`. Design tokens are defined in `src/styles.css` via the `@theme` block (CSS-first configuration), migrated from the inline config in the original `index.html` and the DESIGN.md specification.
 
 ## Consequences
 
