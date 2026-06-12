@@ -1,13 +1,16 @@
 # AGENTS.md
 
 ## Project Overview
+
 **adb-logstream** – a minimal web‑based viewer for Android `adb logstream`.
+
 - Streams logs from a connected device (`adb logstream -v long`) via a Node.js server.
 - Server parses log entries to JSON and broadcasts them over WebSocket.
 - Browser client (Vite + TypeScript) renders a searchable, filterable, auto‑scrolling log list.
 - Uses Tailwind CSS via CDN and plain TypeScript for UI.
 
 ## Setup Commands
+
 - **Install dependencies** (root workspace installs both server and client):
   ```bash
   npm install
@@ -30,6 +33,7 @@
   ```
 
 ## Development Workflow
+
 - `npm run dev` launches:
   - `npm run dev -w server` → TypeScript watch + `nodemon` for hot restart.
   - `npm run dev -w client` → Vite dev server with HMR.
@@ -41,7 +45,9 @@
   - Android device or emulator connected via USB.
 
 ## Testing Instructions
-*No automated test suite is currently configured.*
+
+_No automated test suite is currently configured._
+
 - Manual testing steps:
   1. Run `npm run dev`.
   2. Connect an Android device with `adb devices`.
@@ -49,6 +55,7 @@
 - If you add tests, place them under `server/__tests__` (Jest) or `client/__tests__` and add appropriate npm scripts.
 
 ## Code Style Guidelines
+
 - **Language**: TypeScript (strict mode enabled via `tsconfig.json`).
 - **Formatting**: Use `prettier` or your editor's built‑in TypeScript formatter.
 - **Linting**: Run `npm run lint` which invokes `tsc --noEmit` (type‑checking).
@@ -59,6 +66,7 @@
 - **Naming**: Follow typical JavaScript/TypeScript conventions – camelCase for variables/functions, PascalCase for classes/types.
 
 ## Build and Deployment
+
 - **Production build** (client assets + server bundle):
   ```bash
   npm run build
@@ -72,6 +80,7 @@
 - **Docker (optional)** – you can containerise the app by copying the `dist/` folders and running `node server/dist/index.js` behind a lightweight web server.
 
 ## Pull Request Guidelines
+
 - **Title format**: `[component] short description` (e.g., `[client] add dark theme toggle`).
 - **Checks before merge**:
   1. `npm run lint` passes for both workspaces.
@@ -79,6 +88,7 @@
 - **Review process**: At least one reviewer must confirm that new UI changes do not break existing functionality and that any new server endpoints are documented.
 
 ## Additional Notes
+
 - **Documentation**: ADRs are in `docs/adr/`, design spec in `DESIGN.md`, and domain glossary in `CONTEXT.md`.
 - **Common gotchas**:
   - Ensure `adb` is in your `PATH`; otherwise the server will fail to start.

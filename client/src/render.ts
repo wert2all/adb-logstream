@@ -14,14 +14,20 @@ const MAX_DOM_ENTRIES = 5000;
 const logList = document.getElementById("log-list") as HTMLDivElement;
 const logContainer = document.getElementById("log-container") as HTMLDivElement;
 const entryCount = document.getElementById("entry-count") as HTMLSpanElement;
-const autoScrollIndicator = document.getElementById("auto-scroll-indicator") as HTMLSpanElement;
+const autoScrollIndicator = document.getElementById(
+  "auto-scroll-indicator",
+) as HTMLSpanElement;
 
 logContainer.addEventListener("scroll", () => {
-  const atBottom = logContainer.scrollTop + logContainer.clientHeight >= logContainer.scrollHeight - 50;
+  const atBottom =
+    logContainer.scrollTop + logContainer.clientHeight >=
+    logContainer.scrollHeight - 50;
   if (!atBottom && state.autoScrollEnabled) {
     state.autoScrollEnabled = false;
     saveAutoScrollState();
-    const autoScrollToggle = document.getElementById("auto-scroll-toggle") as HTMLInputElement;
+    const autoScrollToggle = document.getElementById(
+      "auto-scroll-toggle",
+    ) as HTMLInputElement;
     autoScrollToggle.checked = false;
     updateAutoScrollIndicator();
   }
@@ -101,7 +107,9 @@ export function autoScroll(): void {
 }
 
 export function updateAutoScrollIndicator(): void {
-  autoScrollIndicator.textContent = state.autoScrollEnabled ? "Auto-scroll: ON" : "Auto-scroll: OFF";
+  autoScrollIndicator.textContent = state.autoScrollEnabled
+    ? "Auto-scroll: ON"
+    : "Auto-scroll: OFF";
 }
 
 export function escapeHtml(str: string): string {
@@ -130,7 +138,9 @@ export function formatMessage(message: string, query: string): string {
 
   while (index !== -1) {
     parts.push(escapedMessage.substring(lastIndex, index));
-    parts.push(`<mark>${escapedMessage.substring(index, index + query.length)}</mark>`);
+    parts.push(
+      `<mark>${escapedMessage.substring(index, index + query.length)}</mark>`,
+    );
     lastIndex = index + query.length;
     index = lowerMessage.indexOf(lowerQuery, lastIndex);
   }
@@ -145,7 +155,8 @@ export function reRenderAll(): void {
 
   for (const entry of state.entries) {
     const levelVisible = state.levelFilters[entry.level] !== false;
-    const searchVisible = !query || (entry.tag + " " + entry.message).toLowerCase().includes(query);
+    const searchVisible =
+      !query || (entry.tag + " " + entry.message).toLowerCase().includes(query);
 
     if (levelVisible && searchVisible) {
       logList.appendChild(createEntryRow(entry));

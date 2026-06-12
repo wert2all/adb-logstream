@@ -70,7 +70,8 @@ wss.on("connection", (ws) => {
 });
 
 // === Log Parser ===
-const HEADER_REGEX = /^\[\s*([\d-]+\s+[\d:.]+)\s+(\d+):\s*(\d+)\s+([VDIWEF])\/(\S+)\s*\]$/;
+const HEADER_REGEX =
+  /^\[\s*([\d-]+\s+[\d:.]+)\s+(\d+):\s*(\d+)\s+([VDIWEF])\/(\S+)\s*\]$/;
 
 interface LogstreamEntry {
   timestamp: string;
