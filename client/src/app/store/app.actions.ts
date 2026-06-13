@@ -12,5 +12,8 @@ export const appActions = createActionGroup({
     'clean filters': emptyProps(),
     'toggle autoscroll': emptyProps(),
     'set autoscroll': props<{ enabled: boolean }>(),
+
+    'set query': props<{ query: string }>(),
+    'clean query': emptyProps(),
   },
 });

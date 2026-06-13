@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { AppState } from './app.types';
 import { appActions } from './app.actions';
 
@@ -48,5 +48,30 @@ export const appFeature = createFeature({
         autoScroll: enabled,
       }),
     ),
+
+    on(
+      appActions.setQuery,
+      (state, { query }): AppState => ({
+        ...state,
+        filters: { ...state.filters, query },
+      }),
+    ),
+
+    on(
+      appActions.cleanQuery,
+      (state): AppState => ({
+        ...state,
+        filters: { ...state.filters, query: undefined },
+      }),
+    ),
   ),
+  extraSelectors: ({ selectFilters }) => {
+    const selectQuery = createSelector(selectFilters, (filters) => filters.query);
+
+    const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
+    return {
+      selectQuery,
+      selectQueryString,
+    };
+  },
 });
