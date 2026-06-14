@@ -1,30 +1,21 @@
-import {
-  Component,
-  inject,
-  AfterViewInit,
-  ElementRef,
-  ViewChild,
-  effect,
-} from "@angular/core";
-import { LogRowComponent } from "../log-row/log-row.component";
-import { Store } from "@ngrx/store";
-import { streamFeature } from "../../store/stream/stream.redusers";
-import { LogStateService } from "../../services/log-state.service";
+import { Component, inject, ElementRef, ViewChild, effect } from '@angular/core';
+import { LogRowComponent } from '../log-row/log-row.component';
+import { Store } from '@ngrx/store';
+import { streamFeature } from '../../store/stream/stream.redusers';
+import { LogStateService } from '../../services/log-state.service';
 
 @Component({
-  selector: "app-log-list",
+  selector: 'app-log-list',
   standalone: true,
   imports: [LogRowComponent],
-  templateUrl: "./log-list.component.html",
-  styleUrls: ["./log-list.component.css"],
+  templateUrl: './log-list.component.html',
+  styleUrls: ['./log-list.component.css'],
 })
 export class LogListComponent {
   private store = inject(Store);
-  private autoScrollEnabled = this.store.selectSignal(
-    streamFeature.selectAutoScroll,
-  );
+  private autoScrollEnabled = this.store.selectSignal(streamFeature.selectAutoScroll);
 
-  @ViewChild("container", { static: true })
+  @ViewChild('container', { static: true })
   protected container!: ElementRef<HTMLDivElement>;
   protected logState = inject(LogStateService);
 

@@ -17,5 +17,9 @@
     "@commitlint/config-conventional": "^21.0.2",
     "concurrently": "^10.0.3",
     "prettier": "^3.8.4"
+  },
+  "dependencies": {
+    "@ng-icons/core": "^33.2.4",
+    "@ng-icons/phosphor-icons": "^33.2.4"
   }
 }

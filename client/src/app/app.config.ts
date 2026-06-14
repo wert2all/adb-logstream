@@ -1,13 +1,11 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-} from "@angular/core";
-import { provideState, provideStore } from "@ngrx/store";
-import { streamFeature } from "./store/stream/stream.redusers";
-import { provideStoreDevtools } from "@ngrx/store-devtools";
-import { isDevMode } from "@angular/core";
-import { provideEffects } from "@ngrx/effects";
-import { streamEffects } from "./store/stream/stream.effects";
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideState, provideStore } from '@ngrx/store';
+import { streamFeature } from './store/stream/stream.redusers';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { isDevMode } from '@angular/core';
+import { provideEffects } from '@ngrx/effects';
+import { streamEffects } from './store/stream/stream.effects';
+import { notificationFeature } from './store/notification/notification.reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +20,7 @@ export const appConfig: ApplicationConfig = {
       connectInZone: true, // If set to true, the connection is established within the Angular zone
     }),
     provideState(streamFeature),
+    provideState(notificationFeature),
     provideEffects(streamEffects),
   ],
 };

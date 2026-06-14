@@ -1,41 +1,32 @@
-import { inject } from "@angular/core";
-import {
-  Actions,
-  createEffect,
-  ofType,
-  ROOT_EFFECTS_INIT,
-} from "@ngrx/effects";
-import { map, tap } from "rxjs";
-import { LocalStorageService } from "../../services/local-storage.service";
-import { streamActions } from "./stream.actions";
-import {
-  DispatchEffect,
-  KeyboardShortcut,
-  NonDispatchEffect,
-} from "../../app.types";
-import { Store } from "@ngrx/store";
-import { streamFeature } from "./stream.redusers";
-import { concatLatestFrom } from "@ngrx/operators";
+import { inject } from '@angular/core';
+import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { map, tap } from 'rxjs';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { streamActions } from './stream.actions';
+import { DispatchEffect, KeyboardShortcut, NonDispatchEffect } from '../../app.types';
+import { Store } from '@ngrx/store';
+import { streamFeature } from './stream.redusers';
+import { concatLatestFrom } from '@ngrx/operators';
 
 function exposeActionFromKeyPressed(key: KeyboardShortcut) {
   switch (key) {
-    case "Escape":
+    case 'Escape':
       return streamActions.cleanQuery();
-    case "c":
+    case 'c':
       return streamActions.cleanFilters();
-    case "v":
-      return streamActions.toggleLevel({ level: "V" });
-    case "d":
-      return streamActions.toggleLevel({ level: "D" });
-    case "i":
-      return streamActions.toggleLevel({ level: "I" });
-    case "w":
-      return streamActions.toggleLevel({ level: "W" });
-    case "e":
-      return streamActions.toggleLevel({ level: "E" });
-    case "f":
-      return streamActions.toggleLevel({ level: "F" });
-    case "a":
+    case 'v':
+      return streamActions.toggleLevel({ level: 'V' });
+    case 'd':
+      return streamActions.toggleLevel({ level: 'D' });
+    case 'i':
+      return streamActions.toggleLevel({ level: 'I' });
+    case 'w':
+      return streamActions.toggleLevel({ level: 'W' });
+    case 'e':
+      return streamActions.toggleLevel({ level: 'E' });
+    case 'f':
+      return streamActions.toggleLevel({ level: 'F' });
+    case 'a':
       return streamActions.toggleAutoscroll();
     default:
       return streamActions.noShortcutKeyPressed();
@@ -71,16 +62,11 @@ export const cleanFilters = (
     }),
   );
 
-export const toggleAutoScroll = (
-  actions$ = inject(Actions),
-  store = inject(Store),
-) =>
+export const toggleAutoScroll = (actions$ = inject(Actions), store = inject(Store)) =>
   actions$.pipe(
     ofType(streamActions.toggleAutoscroll),
     concatLatestFrom(() => store.select(streamFeature.selectAutoScroll)),
-    map(([_, autoScroll]) =>
-      streamActions.setAutoscroll({ enabled: !autoScroll }),
-    ),
+    map(([_, autoScroll]) => streamActions.setAutoscroll({ enabled: !autoScroll })),
   );
 
 export const setAutoscroll = (

@@ -1,0 +1,11 @@
+@for (message of messages(); track message.uuid) {
+  <div class="relative overflow-hidden message {{ message.type }}">
+    <div class="text animate-pulse py-1 px-4 flex items-center justify-between gap-2 text-sm z-10">
+      <span class="flex-1 text-center">{{ message.message }}</span>
+      <button (click)="dismiss(message.uuid)" class="cursor-pointer hover:opacity-80">
+        <ng-icon name="phosphorXSquareDuotone" size="24"></ng-icon>
+      </button>
+    </div>
+    <div class="progress-bar" (animationend)="dismiss(message.uuid)"></div>
+  </div>
+}
