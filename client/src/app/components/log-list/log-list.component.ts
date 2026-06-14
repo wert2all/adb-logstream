@@ -14,6 +14,7 @@ import { LogStateService } from '../../services/log-state.service';
 export class LogListComponent {
   private store = inject(Store);
   private autoScrollEnabled = this.store.selectSignal(appFeature.selectAutoScroll);
+
   @ViewChild('container', { static: true })
   protected container!: ElementRef<HTMLDivElement>;
   protected logState = inject(LogStateService);

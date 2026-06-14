@@ -1,19 +1,26 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { StorageFilter } from './app.types';
-import { Undefined } from '../app.types';
+import { createActionGroup, emptyProps, props } from "@ngrx/store";
+import { LevelFilter } from "./app.types";
+import { KeyboardShortcut, Level, Undefined } from "../app.types";
 
 export const appActions = createActionGroup({
-  source: 'app',
+  source: "app",
   events: {
-    'set application state from storage': props<{
-      filters: StorageFilter | Undefined;
+    "set application state from storage": props<{
+      filters: LevelFilter | Undefined;
       autoScroll: boolean;
     }>(),
-    'clean filters': emptyProps(),
-    'toggle autoscroll': emptyProps(),
-    'set autoscroll': props<{ enabled: boolean }>(),
+    "clean filters": emptyProps(),
+    "toggle autoscroll": emptyProps(),
+    "set autoscroll": props<{ enabled: boolean }>(),
 
-    'set query': props<{ query: string }>(),
-    'clean query': emptyProps(),
+    "set query": props<{ query: string }>(),
+    "clean query": emptyProps(),
+
+    "toggle level": props<{ level: Level }>(),
+
+    "key pressed": props<{ key: KeyboardShortcut }>(),
+    "no shortcut key pressed": emptyProps(),
+
+    "copy selected entries": emptyProps(),
   },
 });

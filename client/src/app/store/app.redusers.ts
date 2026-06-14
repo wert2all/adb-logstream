@@ -27,7 +27,7 @@ export const appFeature = createFeature({
         ...state,
         filters: {
           ...state.filters,
-          levels: filters ? filters.levels : state.filters.levels,
+          levels: filters ? filters : state.filters.levels,
         },
         autoScroll,
       }),
@@ -64,14 +64,31 @@ export const appFeature = createFeature({
         filters: { ...state.filters, query: undefined },
       }),
     ),
+
+    on(
+      appActions.toggleLevel,
+      (state, { level }): AppState => ({
+        ...state,
+        filters: {
+          ...state.filters,
+          levels: {
+            ...state.filters.levels,
+            [level]: !state.filters.levels[level],
+          },
+        },
+      }),
+    ),
   ),
   extraSelectors: ({ selectFilters }) => {
     const selectQuery = createSelector(selectFilters, (filters) => filters.query);
 
     const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
+    const selectLevelFilters = createSelector(selectFilters, (filters) => filters.levels);
+
     return {
       selectQuery,
       selectQueryString,
+      selectLevelFilters,
     };
   },
 });
