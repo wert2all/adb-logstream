@@ -1,0 +1,31 @@
+.message.success .text {
+  background-color: var(--color-secondary-container);
+}
+.message.error .text {
+  background-color: var(--color-error-container);
+}
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: left;
+  animation: shrink 10s linear forwards;
+}
+
+.message.error .progress-bar {
+  background-color: var(--color-error);
+}
+.message.success .progress-bar {
+  background-color: var(--color-secondary);
+}
+
+@keyframes shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}

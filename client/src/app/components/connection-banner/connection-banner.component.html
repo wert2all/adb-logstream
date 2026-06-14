@@ -1,9 +1,0 @@
-@if (webSocket.statusMessage()) {
-  <div
-    class="bg-error-container border-b border-error text-on-error py-1 px-4 flex items-center justify-center gap-2 text-sm z-10"
-  >
-    <span class="material-symbols-outlined text-sm">warning</span>
-    <span>{{ webSocket.statusMessage() }}</span>
-    <button (click)="dismiss()" class="ml-4 underline hover:opacity-80">Dismiss</button>
-  </div>
-}

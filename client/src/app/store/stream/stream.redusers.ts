@@ -1,6 +1,6 @@
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import { StreamState } from "./stream.types";
-import { streamActions } from "./stream.actions";
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { StreamState } from './stream.types';
+import { streamActions } from './stream.actions';
 
 const initialState: StreamState = {
   autoScroll: true,
@@ -18,7 +18,7 @@ const initialState: StreamState = {
 };
 
 export const streamFeature = createFeature({
-  name: "streamState",
+  name: 'streamState',
   reducer: createReducer(
     initialState,
     on(
@@ -80,19 +80,10 @@ export const streamFeature = createFeature({
     ),
   ),
   extraSelectors: ({ selectFilters }) => {
-    const selectQuery = createSelector(
-      selectFilters,
-      (filters) => filters.query,
-    );
+    const selectQuery = createSelector(selectFilters, (filters) => filters.query);
 
-    const selectQueryString = createSelector(
-      selectFilters,
-      (filters) => filters.query || "",
-    );
-    const selectLevelFilters = createSelector(
-      selectFilters,
-      (filters) => filters.levels,
-    );
+    const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
+    const selectLevelFilters = createSelector(selectFilters, (filters) => filters.levels);
 
     return {
       selectQuery,

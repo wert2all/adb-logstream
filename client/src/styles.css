@@ -31,7 +31,16 @@
   --color-log-f: #93000a;
   --font-mono: 'JetBrains Mono', monospace;
 }
-
+/* :root{ */
+/**/
+/*   --color-secondary: #4edea3; */
+/*   --color-secondary-container: #00a572; */
+/*   --color-on-secondary: #003824; */
+/*   --color-on-secondary-container: #00311f; */
+/**/
+/*   --color-error: #ffb4ab; */
+/*   --color-error-container: #93000a; */
+/* } */
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
