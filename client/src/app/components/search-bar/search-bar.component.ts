@@ -1,17 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { LogStateService } from '../../services/log-state.service';
-import { Store } from '@ngrx/store';
-import { appActions } from '../../store/app.actions';
-import { appFeature } from '../../store/app.redusers';
+import { Component, inject } from "@angular/core";
+import { LogStateService } from "../../services/log-state.service";
+import { Store } from "@ngrx/store";
+import { streamActions } from "../../store/stream/stream.actions";
+import { streamFeature } from "../../store/stream/stream.redusers";
 
 @Component({
-  selector: 'app-search-bar',
+  selector: "app-search-bar",
   standalone: true,
-  templateUrl: './search-bar.component.html',
+  templateUrl: "./search-bar.component.html",
 })
 export class SearchBarComponent {
   private store = inject(Store);
-  protected query = this.store.selectSignal(appFeature.selectQueryString);
+  protected query = this.store.selectSignal(streamFeature.selectQueryString);
 
   logState = inject(LogStateService);
 
@@ -19,13 +19,13 @@ export class SearchBarComponent {
     const query = (event.target as HTMLInputElement).value;
     this.logState.setSearchQuery(query);
 
-    this.store.dispatch(appActions.setQuery({ query }));
+    this.store.dispatch(streamActions.setQuery({ query }));
   }
 
   clearSearch(): void {
-    this.logState.setSearchQuery('');
-    document.getElementById('search-input')?.blur();
+    this.logState.setSearchQuery("");
+    document.getElementById("search-input")?.blur();
 
-    this.store.dispatch(appActions.cleanQuery());
+    this.store.dispatch(streamActions.cleanQuery());
   }
 }

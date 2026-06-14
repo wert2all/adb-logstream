@@ -1,10 +1,13 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideState, provideStore } from '@ngrx/store';
-import { appFeature } from './store/app.redusers';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { isDevMode } from '@angular/core';
-import { provideEffects } from '@ngrx/effects';
-import { appEffects } from './store/app.effects';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+} from "@angular/core";
+import { provideState, provideStore } from "@ngrx/store";
+import { streamFeature } from "./store/stream/stream.redusers";
+import { provideStoreDevtools } from "@ngrx/store-devtools";
+import { isDevMode } from "@angular/core";
+import { provideEffects } from "@ngrx/effects";
+import { streamEffects } from "./store/stream/stream.effects";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +21,7 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true, // If set to true, the connection is established within the Angular zone
     }),
-    provideState(appFeature),
-    provideEffects(appEffects),
+    provideState(streamFeature),
+    provideEffects(streamEffects),
   ],
 };

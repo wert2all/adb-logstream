@@ -1,8 +1,8 @@
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { AppState } from './app.types';
-import { appActions } from './app.actions';
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
+import { StreamState } from "./stream.types";
+import { streamActions } from "./stream.actions";
 
-const initialState: AppState = {
+const initialState: StreamState = {
   autoScroll: true,
   filters: {
     query: undefined,
@@ -17,13 +17,13 @@ const initialState: AppState = {
   },
 };
 
-export const appFeature = createFeature({
-  name: 'appState',
+export const streamFeature = createFeature({
+  name: "streamState",
   reducer: createReducer(
     initialState,
     on(
-      appActions.setApplicationStateFromStorage,
-      (state, { filters, autoScroll }): AppState => ({
+      streamActions.setApplicationStateFromStorage,
+      (state, { filters, autoScroll }): StreamState => ({
         ...state,
         filters: {
           ...state.filters,
@@ -34,40 +34,40 @@ export const appFeature = createFeature({
     ),
 
     on(
-      appActions.cleanFilters,
-      (state): AppState => ({
+      streamActions.cleanFilters,
+      (state): StreamState => ({
         ...state,
         filters: initialState.filters,
       }),
     ),
 
     on(
-      appActions.setAutoscroll,
-      (state, { enabled }): AppState => ({
+      streamActions.setAutoscroll,
+      (state, { enabled }): StreamState => ({
         ...state,
         autoScroll: enabled,
       }),
     ),
 
     on(
-      appActions.setQuery,
-      (state, { query }): AppState => ({
+      streamActions.setQuery,
+      (state, { query }): StreamState => ({
         ...state,
         filters: { ...state.filters, query },
       }),
     ),
 
     on(
-      appActions.cleanQuery,
-      (state): AppState => ({
+      streamActions.cleanQuery,
+      (state): StreamState => ({
         ...state,
         filters: { ...state.filters, query: undefined },
       }),
     ),
 
     on(
-      appActions.toggleLevel,
-      (state, { level }): AppState => ({
+      streamActions.toggleLevel,
+      (state, { level }): StreamState => ({
         ...state,
         filters: {
           ...state.filters,
@@ -80,10 +80,19 @@ export const appFeature = createFeature({
     ),
   ),
   extraSelectors: ({ selectFilters }) => {
-    const selectQuery = createSelector(selectFilters, (filters) => filters.query);
+    const selectQuery = createSelector(
+      selectFilters,
+      (filters) => filters.query,
+    );
 
-    const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
-    const selectLevelFilters = createSelector(selectFilters, (filters) => filters.levels);
+    const selectQueryString = createSelector(
+      selectFilters,
+      (filters) => filters.query || "",
+    );
+    const selectLevelFilters = createSelector(
+      selectFilters,
+      (filters) => filters.levels,
+    );
 
     return {
       selectQuery,
