@@ -1,5 +1,4 @@
 import { Component, effect, HostListener, inject, OnInit } from '@angular/core';
-import { LogStateService } from '../../services/log-state.service';
 import { WebSocketService } from '../../services/websocket.service';
 import { HeaderComponent } from '../header/header.component';
 import { LogListComponent } from '../log-list/log-list.component';

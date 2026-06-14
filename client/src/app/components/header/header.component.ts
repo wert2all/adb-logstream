@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LogStateService } from '../../services/log-state.service';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { LevelTogglesComponent } from '../level-toggles/level-toggles.component';
@@ -14,14 +14,14 @@ import { streamActions } from '../../store/stream/stream.actions';
 export class HeaderComponent {
   private store = inject(Store);
   logState = inject(LogStateService);
+  protected hasSelection = signal(this.logState.hasSelection());
 
   clearFilters(): void {
     this.store.dispatch(streamActions.cleanFilters());
-    this.logState.clearLog();
   }
 
   copyLogs(): void {
-    this.logState.copySelected();
+    this.store.dispatch(streamActions.copySelected());
   }
 
   statusClass() {
