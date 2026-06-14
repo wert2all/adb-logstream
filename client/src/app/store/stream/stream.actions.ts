@@ -1,9 +1,9 @@
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
-import { LevelFilter } from "./app.types";
-import { KeyboardShortcut, Level, Undefined } from "../app.types";
+import { LevelFilter } from "./stream.types";
+import { KeyboardShortcut, Level, Undefined } from "../../app.types";
 
-export const appActions = createActionGroup({
-  source: "app",
+export const streamActions = createActionGroup({
+  source: "stream",
   events: {
     "set application state from storage": props<{
       filters: LevelFilter | Undefined;

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { LevelFilter } from '../store/app.types';
+import { Injectable } from "@angular/core";
+import { LevelFilter } from "../store/stream/stream.types";
 
-const LEVELS_KEY = 'logstream-levels';
-const AUTO_SCROLL_KEY = 'logstream-auto-scroll-enabled';
+const LEVELS_KEY = "logstream-levels";
+const AUTO_SCROLL_KEY = "logstream-auto-scroll-enabled";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class LocalStorageService {
   private save(key: string, value: string): void {
     try {
@@ -27,7 +27,7 @@ export class LocalStorageService {
     if (!saved) return null;
     try {
       const parsed = JSON.parse(saved);
-      if (parsed && typeof parsed === 'object') {
+      if (parsed && typeof parsed === "object") {
         return parsed as LevelFilter;
       }
     } catch {
@@ -43,7 +43,7 @@ export class LocalStorageService {
   loadAutoScroll(): boolean | null {
     const stored = this.load(AUTO_SCROLL_KEY);
     if (stored === null) return null;
-    return stored === 'true';
+    return stored === "true";
   }
 
   saveFilters(filters: LevelFilter): void {
