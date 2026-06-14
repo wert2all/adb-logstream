@@ -1,0 +1,23 @@
+.log-level.V {
+  color: var(--color-log-v);
+}
+
+.log-level.D {
+  color: var(--color-log-d);
+}
+
+.log-level.I {
+  color: var(--color-log-i);
+}
+
+.log-level.W {
+  color: var(--color-log-w);
+}
+
+.log-level.E {
+  color: var(--color-log-e);
+}
+
+.log-level.F {
+  color: var(--color-log-f);
+}

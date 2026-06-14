@@ -1,11 +1,13 @@
 import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { LogStateService } from '../../services/log-state.service';
 import { WebSocketService } from '../../services/websocket.service';
-import { LocalStorageService } from '../../services/local-storage.service';
 import { HeaderComponent } from '../header/header.component';
 import { ConnectionBannerComponent } from '../connection-banner/connection-banner.component';
 import { LogListComponent } from '../log-list/log-list.component';
 import { FooterComponent } from '../footer/footer.component';
+import { Store } from '@ngrx/store';
+import { KeyboardShortcut, KeyboardShortcuts } from '../../app.types';
+import { appActions } from '../../store/app.actions';
 
 @Component({
   selector: 'app-root',
@@ -15,34 +17,29 @@ import { FooterComponent } from '../footer/footer.component';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  private store = inject(Store);
   private logState: LogStateService = inject(LogStateService);
   private webSocket: WebSocketService = inject(WebSocketService);
-  private localStorage: LocalStorageService = inject(LocalStorageService);
 
   ngOnInit(): void {
-    // Load persisted filters
-    const savedFilters = this.localStorage.loadFilters();
-    if (savedFilters) {
-      this.logState.levelFilters.set(savedFilters);
-    }
-
     // Connect WebSocket
     this.webSocket.connect();
   }
 
+  private isShortcut(key: string): key is KeyboardShortcut {
+    return KeyboardShortcuts.includes(key as KeyboardShortcut);
+  }
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
-    const target = event.target as HTMLElement;
-    const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
-
-    if (isInput) {
-      if (event.key === 'Escape') {
-        this.logState.setSearchQuery('');
-        event.preventDefault();
+    const key = event.key.toLocaleLowerCase();
+    if (this.isShortcut(key)) {
+      this.store.dispatch(appActions.keyPressed({ key }));
+      event.preventDefault();
+      if (key === '/') {
+        document.getElementById('search-input')?.focus();
       }
-      return;
     }
-
     switch (event.key) {
       case '/':
         event.preventDefault();

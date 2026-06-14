@@ -15,3 +15,15 @@ export const NonDispatchEffect: EffectConfig & {
 };
 
 export type Level = 'V' | 'D' | 'I' | 'W' | 'E' | 'F';
+export const LevelNames: Record<Level, string> = {
+  V: 'Verbose',
+  D: 'Debug',
+  I: 'Info',
+  W: 'Warn',
+  E: 'Error',
+  F: 'Fatal',
+};
+
+export const KeyboardShortcuts = ['/', 'Escape', 'c', 'a', 'v', 'd', 'i', 'w', 'e', 'f'] as const;
+
+export type KeyboardShortcut = (typeof KeyboardShortcuts)[number];

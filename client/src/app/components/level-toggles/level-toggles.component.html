@@ -1,23 +1,23 @@
 <div
   class="flex items-center border border-outline-variant rounded bg-background overflow-visible h-7 text-sm"
 >
-  @for (level of levels; track level) {
+  @for (item of levels(); track item.key) {
     <span
       class="tooltip-trigger border-r border-outline-variant h-full"
-      [class.border-r]="level !== 'F'"
+      [class.border-r]="item.key === 'F'"
     >
       <button
-        (click)="toggleLevel(level)"
-        class="px-2 font-bold {{
-          levelColor(level)
+        (click)="toggleLevel(item.key)"
+        class="px-2 font-bold log-level {{
+          item.key
         }} hover:bg-surface-container-highest transition-colors h-full"
-        [class.bg-surface-container-highest]="isActive(level)"
+        [class.bg-surface-container-highest]="item.isActive"
       >
-        {{ level }}
+        {{ item.key }}
       </button>
-      <span class="tooltip tooltip-bottom"
-        >Toggle {{ levelNames[level] }}
-        <kbd class="px-1 rounded bg-surface-container text-on-surface">{{ level }}</kbd></span
+      <span class="tooltip tooltip-bottom">
+        Toggle
+        <kbd class="px-1 rounded bg-surface-container text-on-surface">{{ item.key }}</kbd></span
       >
     </span>
   }
