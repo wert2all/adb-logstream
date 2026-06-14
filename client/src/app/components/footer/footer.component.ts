@@ -22,7 +22,7 @@ export class FooterComponent {
   );
 
   copyLogs(): void {
-    this.logState.copySelected();
+    this.store.dispatch(streamActions.copySelected());
   }
 
   onToggle(): void {

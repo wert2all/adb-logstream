@@ -4,6 +4,7 @@ import { streamActions } from './stream.actions';
 
 const initialState: StreamState = {
   autoScroll: true,
+  selected: [],
   filters: {
     query: undefined,
     levels: {

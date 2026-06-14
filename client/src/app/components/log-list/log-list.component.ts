@@ -1,4 +1,4 @@
-import { Component, inject, ElementRef, ViewChild, effect } from '@angular/core';
+import { Component, inject, ElementRef, ViewChild, effect, signal } from '@angular/core';
 import { LogRowComponent } from '../log-row/log-row.component';
 import { Store } from '@ngrx/store';
 import { streamFeature } from '../../store/stream/stream.redusers';
@@ -18,6 +18,7 @@ export class LogListComponent {
   @ViewChild('container', { static: true })
   protected container!: ElementRef<HTMLDivElement>;
   protected logState = inject(LogStateService);
+  protected entries = signal(this.logState.getFilteredEntries());
 
   constructor() {
     effect(() => {

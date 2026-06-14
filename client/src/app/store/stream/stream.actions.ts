@@ -22,5 +22,10 @@ export const streamActions = createActionGroup({
     'no shortcut key pressed': emptyProps(),
 
     'copy selected entries': emptyProps(),
+
+    'copy selected': emptyProps(),
+    'empty selection': emptyProps(),
+    copied: emptyProps(),
+    'copy failed': emptyProps(),
   },
 });

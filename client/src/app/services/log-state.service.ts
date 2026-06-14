@@ -18,7 +18,6 @@ export class LogStateService {
   connectionStatus = signal<ConnectionStatus>('disconnected');
   totalReceived = signal(0);
   selectedUuids = signal<Set<string>>(new Set());
-  copyFeedback = signal<{ message: string; visible: boolean } | null>(null);
 
   getFilteredEntries = computed(() => {
     const query = this.searchQuery().toLowerCase();
@@ -57,27 +56,6 @@ export class LogStateService {
 
   clearSelection(): void {
     this.selectedUuids.set(new Set());
-  }
-
-  async copySelected(): Promise<void> {
-    const selected = this.getSelectedEntries();
-    if (selected.length === 0) return;
-
-    const json = JSON.stringify(selected, null, 2);
-    try {
-      await navigator.clipboard.writeText(json);
-      this.clearSelection();
-      this.showCopyFeedback('Copied!');
-    } catch {
-      this.showCopyFeedback('Copy failed');
-    }
-  }
-
-  private showCopyFeedback(message: string): void {
-    this.copyFeedback.set({ message, visible: true });
-    setTimeout(() => {
-      this.copyFeedback.set(null);
-    }, 2000);
   }
 
   appendEntry(entry: LogstreamEntry): void {

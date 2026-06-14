@@ -7,6 +7,7 @@ import { DispatchEffect, KeyboardShortcut, NonDispatchEffect } from '../../app.t
 import { Store } from '@ngrx/store';
 import { streamFeature } from './stream.redusers';
 import { concatLatestFrom } from '@ngrx/operators';
+import { notificationActions } from '../notification/notification.actions';
 
 function exposeActionFromKeyPressed(key: KeyboardShortcut) {
   switch (key) {
@@ -96,6 +97,45 @@ export const keyPressed = (actions$ = inject(Actions)) =>
     ofType(streamActions.keyPressed),
     map(({ key }) => exposeActionFromKeyPressed(key)),
   );
+export const copySelectedEntries = (actions$ = inject(Actions), store = inject(Store)) =>
+  actions$.pipe(
+    ofType(streamActions.copySelected),
+
+    concatLatestFrom(() => store.select(streamFeature.selectSelected)),
+    map(([_, selected]) => {
+      if (selected.length === 0) return streamActions.emptySelection();
+
+      const json = JSON.stringify(selected, null, 2);
+      try {
+        navigator.clipboard.writeText(json);
+        return streamActions.copied();
+      } catch {
+        return streamActions.copyFailed();
+      }
+    }),
+  );
+
+export const notifyCopied = (actions$ = inject(Actions)) =>
+  actions$.pipe(
+    ofType(streamActions.copied),
+    map(() =>
+      notificationActions.showMessage({
+        messageType: 'success',
+        message: 'Copied to clipboard',
+      }),
+    ),
+  );
+
+export const notifyCopyFailed = (actions$ = inject(Actions)) =>
+  actions$.pipe(
+    ofType(streamActions.copyFailed),
+    map(() =>
+      notificationActions.showMessage({
+        messageType: 'error',
+        message: 'Failed to copy to clipboard',
+      }),
+    ),
+  );
 
 export const streamEffects = {
   initStateFromStorage: createEffect(initStateFromStorage, DispatchEffect),
@@ -104,4 +144,7 @@ export const streamEffects = {
   setAutoScroll: createEffect(setAutoscroll, NonDispatchEffect),
   toggleLevelFilter: createEffect(toggleLevelFilter, NonDispatchEffect),
   keyPressed: createEffect(keyPressed, DispatchEffect),
+  copySelectedEntries: createEffect(copySelectedEntries, DispatchEffect),
+  notifyCopied: createEffect(notifyCopied, DispatchEffect),
+  notifyCopyFailed: createEffect(notifyCopyFailed, DispatchEffect),
 };
