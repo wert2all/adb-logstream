@@ -21,8 +21,8 @@
 
   <!-- Count & Clear & Copy -->
   <div class="flex items-center gap-2 shrink-0">
-    <span class="text-xs text-outline-variant">{{ logState.totalReceived() }} entries</span>
-    @if (hasSelection()) {
+    <span class="text-xs text-outline-variant">{{ totalReceived() }} entries</span>
+    @if (hasSelected()) {
       <span class="tooltip-trigger">
         <button
           (click)="copyLogs()"

@@ -1,17 +1,18 @@
-import { Injectable, signal, inject } from '@angular/core';
-import { LogStateService } from './log-state.service';
-import { LogstreamEntry, ConnectionStatus } from '../models/logstream.model';
+import { Injectable, signal, inject } from "@angular/core";
+import { LogStateService } from "./log-state.service";
+import { LogstreamEntry } from "../models/logstream.model";
+import { Store } from "@ngrx/store";
+import { notificationActions } from "../store/notification/notification.actions";
+import { streamActions } from "../store/stream/stream.actions";
 
-const WS_URL = 'ws://localhost:3000';
+const WS_URL = "ws://localhost:3000";
 const RECONNECT_DELAY = 3000;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class WebSocketService {
   private logState = inject(LogStateService);
-
-  latestEntry = signal<LogstreamEntry | null>(null);
-  status = signal<ConnectionStatus>('disconnected');
-  statusMessage = signal('');
+  private store = inject(Store);
+  private latestEntry = signal<LogstreamEntry | null>(null);
 
   private ws: WebSocket | null = null;
   private reconnectTimer: number | null = null;
@@ -25,13 +26,18 @@ export class WebSocketService {
     try {
       this.ws = new WebSocket(WS_URL);
     } catch (err) {
-      console.error('Failed to create WebSocket:', err);
+      console.error("Failed to create WebSocket:", err);
       this.scheduleReconnect();
       return;
     }
 
     this.ws.onopen = () => {
-      this.updateStatus('connected');
+      this.store.dispatch(
+        streamActions.setConnectionStatus({ status: "connected" }),
+      );
+      this.store.dispatch(
+        streamActions.setConnectionStatus({ status: "connected" }),
+      );
       if (this.wasDisconnected) {
         window.location.reload();
       }
@@ -43,32 +49,32 @@ export class WebSocketService {
 
     this.ws.onclose = () => {
       this.ws = null;
-      this.updateStatus('disconnected');
+      this.store.dispatch(
+        streamActions.setConnectionStatus({ status: "disconnected" }),
+      );
       this.wasDisconnected = true;
-      this.showBanner('Device disconnected. Reconnecting...');
+      this.store.dispatch(
+        notificationActions.showMessage({
+          messageType: "error",
+          message: "Device disconnected. Reconnecting...",
+        }),
+      );
       this.scheduleReconnect();
     };
 
     this.ws.onerror = (err) => {
-      console.error('WebSocket error:', err);
+      console.error("WebSocket error:", err);
       this.ws?.close();
     };
   }
 
-  disconnect(): void {
-    this.ws?.close();
-    this.ws = null;
-    if (this.reconnectTimer) {
-      window.clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-    }
-  }
-
-  scheduleReconnect(): void {
+  private scheduleReconnect(): void {
     if (this.reconnectTimer) {
       return;
     }
-    this.updateStatus('reconnecting');
+    this.store.dispatch(
+      streamActions.setConnectionStatus({ status: "reconnecting" }),
+    );
     this.reconnectTimer = window.setTimeout(() => {
       this.reconnectTimer = null;
       this.connect();
@@ -80,46 +86,38 @@ export class WebSocketService {
     try {
       message = JSON.parse(data);
     } catch {
-      console.error('Malformed JSON received:', data);
+      console.error("Malformed JSON received:", data);
       return;
     }
 
-    if (!message || typeof message !== 'object') {
+    if (!message || typeof message !== "object") {
       return;
     }
 
     const msg = message as Record<string, unknown>;
 
-    if (msg['type'] === 'entry') {
+    if (msg["type"] === "entry") {
       const entry: LogstreamEntry = {
-        uuid: String(msg['uuid'] || ''),
-        timestamp: String(msg['timestamp'] || ''),
-        pid: String(msg['pid'] || ''),
-        tid: String(msg['tid'] || ''),
-        level: String(msg['level'] || 'I') as LogstreamEntry['level'],
-        tag: String(msg['tag'] || ''),
-        message: String(msg['message'] || ''),
+        uuid: String(msg["uuid"] || ""),
+        timestamp: String(msg["timestamp"] || ""),
+        pid: String(msg["pid"] || ""),
+        tid: String(msg["tid"] || ""),
+        level: String(msg["level"] || "I") as LogstreamEntry["level"],
+        tag: String(msg["tag"] || ""),
+        message: String(msg["message"] || ""),
       };
       this.logState.appendEntry(entry);
       this.latestEntry.set(entry);
-    } else if (msg['type'] === 'status') {
-      const text = String(msg['message'] || '');
+    } else if (msg["type"] === "status") {
+      const text = String(msg["message"] || "");
       if (text) {
-        this.showBanner(text);
+        this.store.dispatch(
+          notificationActions.showMessage({
+            messageType: "error",
+            message: text,
+          }),
+        );
       }
     }
-  }
-
-  private updateStatus(status: ConnectionStatus): void {
-    this.status.set(status);
-    this.logState.setConnectionStatus(status);
-  }
-
-  private showBanner(text: string): void {
-    this.statusMessage.set(text);
-  }
-
-  dismissBanner(): void {
-    this.statusMessage.set('');
   }
 }

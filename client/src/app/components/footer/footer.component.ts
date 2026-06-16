@@ -1,5 +1,4 @@
 import { Component, computed, inject } from '@angular/core';
-import { LogStateService } from '../../services/log-state.service';
 import { Store } from '@ngrx/store';
 import { streamActions } from '../../store/stream/stream.actions';
 import { streamFeature } from '../../store/stream/stream.redusers';
@@ -11,21 +10,25 @@ import { streamFeature } from '../../store/stream/stream.redusers';
 })
 export class FooterComponent {
   private store = inject(Store);
-  logState = inject(LogStateService);
-  autoScrollEnabled = this.store.selectSignal(streamFeature.selectAutoScroll);
+  protected autoScrollEnabled = this.store.selectSignal(streamFeature.selectAutoScroll);
 
-  autoScrollClass = computed(() =>
+  protected autoScrollClass = computed(() =>
     this.autoScrollEnabled() ? 'bg-secondary' : 'bg-outline-variant',
   );
-  autoScrollLabel = computed(() =>
+  protected autoScrollLabel = computed(() =>
     this.autoScrollEnabled() ? 'Autoscroll is enabled' : 'Autoscroll is disabled',
   );
+  private selected = this.store.selectSignal(streamFeature.selectSelected);
+  protected hasSelection = computed(() => {
+    const selected = this.selected();
+    return selected.length > 0;
+  });
 
-  copyLogs(): void {
+  protected copyLogs(): void {
     this.store.dispatch(streamActions.copySelected());
   }
 
-  onToggle(): void {
+  protected onToggle(): void {
     this.store.dispatch(streamActions.toggleAutoscroll());
   }
 }

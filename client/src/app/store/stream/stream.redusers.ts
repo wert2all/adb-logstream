@@ -5,6 +5,9 @@ import { streamActions } from './stream.actions';
 const initialState: StreamState = {
   autoScroll: true,
   selected: [],
+  totalReceived: 0,
+  connectionStatus: 'disconnected',
+  entries: [],
   filters: {
     query: undefined,
     levels: {
@@ -80,16 +83,39 @@ export const streamFeature = createFeature({
       }),
     ),
   ),
-  extraSelectors: ({ selectFilters }) => {
+  extraSelectors: ({ selectFilters, selectEntries, selectSelected }) => {
     const selectQuery = createSelector(selectFilters, (filters) => filters.query);
 
     const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
     const selectLevelFilters = createSelector(selectFilters, (filters) => filters.levels);
 
+    const hasSelected = createSelector(
+      selectSelected,
+      (selectSelected) => selectSelected.length > 0,
+    );
+
+    const selectFilteredEntries = createSelector(
+      selectEntries,
+      selectFilters,
+      (entries, filters) => {
+        const query = filters.query;
+        const levels = filters.levels;
+        return entries.filter((entry) => {
+          const levelVisible = levels[entry.level] !== false;
+          if (!levelVisible) return false;
+          if (!query) return true;
+          const text = (entry.tag + ' ' + entry.message).toLowerCase();
+          return text.includes(query);
+        });
+      },
+    );
+
     return {
       selectQuery,
       selectQueryString,
       selectLevelFilters,
+      selectFilteredEntries,
+      hasSelected,
     };
   },
 });
