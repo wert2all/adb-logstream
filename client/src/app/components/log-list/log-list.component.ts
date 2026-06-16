@@ -1,8 +1,7 @@
-import { Component, inject, ElementRef, ViewChild, effect, signal } from '@angular/core';
+import { Component, inject, ElementRef, ViewChild, effect } from '@angular/core';
 import { LogRowComponent } from '../log-row/log-row.component';
 import { Store } from '@ngrx/store';
 import { streamFeature } from '../../store/stream/stream.redusers';
-import { LogStateService } from '../../services/log-state.service';
 
 @Component({
   selector: 'app-log-list',
@@ -17,8 +16,8 @@ export class LogListComponent {
 
   @ViewChild('container', { static: true })
   protected container!: ElementRef<HTMLDivElement>;
-  protected logState = inject(LogStateService);
-  protected entries = signal(this.logState.getFilteredEntries());
+  protected entries = this.store.selectSignal(streamFeature.selectFilteredEntries);
+  protected searchQuery = this.store.selectSignal(streamFeature.selectQueryString);
 
   constructor() {
     effect(() => {

@@ -1,7 +1,7 @@
 <main #container class="flex-1 overflow-y-auto p-2 text-sm leading-tight">
   <div class="flex flex-col gap-0.5">
     @for (entry of entries(); track entry.uuid) {
-      <app-log-row [entry]="entry" [query]="logState.searchQuery()"></app-log-row>
+      <app-log-row [entry]="entry" [query]="searchQuery()"></app-log-row>
     }
   </div>
 </main>
