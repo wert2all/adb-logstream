@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-**adb-logstream** – a minimal web‑based viewer for Android `adb logstream`.
+**adb-logstream** – a minimal web‑based viewer for Android `adb logcat`.
 
-- Streams logs from a connected device (`adb logstream -v long`) via a Node.js server.
+- Streams logs from a connected device (`adb logcat -v long`) via a Node.js server.
 - Server parses log entries to JSON and broadcasts them over WebSocket.
-- Browser client (Angular 21+) renders a searchable, filterable, auto‑scrolling log list.
+- Browser client (Angular 22+) renders a searchable, filterable, auto‑scrolling log list.
 - Uses Angular signals for state management, Tailwind CSS v4 via PostCSS, and standalone components.
 
 ## Setup Commands

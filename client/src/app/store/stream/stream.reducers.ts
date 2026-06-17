@@ -15,8 +15,8 @@ const initialState: StreamState = {
       D: false,
       I: false,
       W: false,
-      E: false,
-      F: false,
+      E: true,
+      F: true,
     },
   },
 };
@@ -92,6 +92,13 @@ export const streamFeature = createFeature({
         ...state,
         entries,
         totalReceived: state.totalReceived + 1,
+      };
+    }),
+
+    on(streamActions.copied, (state): StreamState => {
+      return {
+        ...state,
+        selected: [],
       };
     }),
 
