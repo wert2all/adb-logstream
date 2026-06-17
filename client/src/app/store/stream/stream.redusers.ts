@@ -82,6 +82,30 @@ export const streamFeature = createFeature({
         },
       }),
     ),
+
+    on(streamActions.appendEntry, (state, { entry }): StreamState => {
+      const entries = [...state.entries, entry];
+      if (entries.length > 5000) {
+        entries.shift();
+      }
+      return {
+        ...state,
+        entries,
+        totalReceived: state.totalReceived + 1,
+      };
+    }),
+
+    on(streamActions.toggleSelection, (state, { uuid }): StreamState => {
+      const entry = state.entries.find((e) => e.uuid === uuid);
+      if (!entry) return state;
+
+      const isSelected = state.selected.some((e) => e.uuid === uuid);
+      const selected = isSelected
+        ? state.selected.filter((e) => e.uuid !== uuid)
+        : [...state.selected, entry];
+
+      return { ...state, selected };
+    }),
   ),
   extraSelectors: ({ selectFilters, selectEntries, selectSelected }) => {
     const selectQuery = createSelector(selectFilters, (filters) => filters.query);

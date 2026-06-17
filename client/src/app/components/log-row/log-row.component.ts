@@ -1,6 +1,8 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { LogstreamEntry } from '../../models/logstream.model';
-import { LogStateService } from '../../services/log-state.service';
+import { Store } from '@ngrx/store';
+import { streamActions } from '../../store/stream/stream.actions';
+import { streamFeature } from '../../store/stream/stream.redusers';
 
 @Component({
   selector: 'app-log-row',
@@ -9,27 +11,25 @@ import { LogStateService } from '../../services/log-state.service';
   styleUrls: ['./log-row.component.css'],
 })
 export class LogRowComponent {
-  @Input() entry!: LogstreamEntry;
-  @Input() query = '';
+  entry = input.required<LogstreamEntry>();
+  query = input<string>('');
+  private store = inject(Store);
+  private selected = this.store.selectSignal(streamFeature.selectSelected);
+  protected isSelected = computed(() => {
+    const selected = this.selected();
+    const entry = this.entry();
+    return selected.some((e) => e.uuid === entry.uuid);
+  });
 
-  logState = inject(LogStateService);
-
-  isSelected(): boolean {
-    return this.logState.isSelected(this.entry.uuid);
-  }
-
-  toggleSelected(): void {
-    this.logState.toggleSelection(this.entry.uuid);
-  }
-
-  formatMessage(): string {
-    if (!this.query) {
-      return this.escapeHtml(this.entry.message);
+  protected formatMessage = computed((): string => {
+    const entry = this.entry();
+    if (!this.query()) {
+      return this.escapeHtml(entry.message);
     }
 
-    const escapedMessage = this.escapeHtml(this.entry.message);
-    const lowerQuery = this.query.toLowerCase();
-    const lowerMessage = this.entry.message.toLowerCase();
+    const escapedMessage = this.escapeHtml(entry.message);
+    const lowerQuery = this.query().toLowerCase();
+    const lowerMessage = entry.message.toLowerCase();
 
     if (!lowerMessage.includes(lowerQuery)) {
       return escapedMessage;
@@ -48,6 +48,10 @@ export class LogRowComponent {
 
     parts.push(escapedMessage.substring(lastIndex));
     return parts.join('');
+  });
+
+  protected toggleSelected(): void {
+    this.store.dispatch(streamActions.toggleSelection({ uuid: this.entry().uuid }));
   }
 
   private escapeHtml(str: string): string {
