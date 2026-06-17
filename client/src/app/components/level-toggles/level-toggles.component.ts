@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { Level, LevelNames } from '../../app.types';
 import { Store } from '@ngrx/store';
-import { streamFeature } from '../../store/stream/stream.redusers';
+import { streamFeature } from '../../store/stream/stream.reducers';
 import { streamActions } from '../../store/stream/stream.actions';
 
 @Component({

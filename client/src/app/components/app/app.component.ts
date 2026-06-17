@@ -1,4 +1,4 @@
-import { Component, effect, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { WebSocketService } from '../../services/websocket.service';
 import { HeaderComponent } from '../header/header.component';
 import { LogListComponent } from '../log-list/log-list.component';
@@ -6,12 +6,12 @@ import { FooterComponent } from '../footer/footer.component';
 import { Store } from '@ngrx/store';
 import { KeyboardShortcut, KeyboardShortcuts } from '../../app.types';
 import { streamActions } from '../../store/stream/stream.actions';
-import { NotficationBannerComponent } from '../notification-banner/notification-banner.component';
+import { NotificationBannerComponent } from '../notification-banner/notification-banner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, LogListComponent, FooterComponent, NotficationBannerComponent],
+  imports: [HeaderComponent, LogListComponent, FooterComponent, NotificationBannerComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideState, provideStore } from '@ngrx/store';
-import { streamFeature } from './store/stream/stream.redusers';
+import { streamFeature } from './store/stream/stream.reducers';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { isDevMode } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';

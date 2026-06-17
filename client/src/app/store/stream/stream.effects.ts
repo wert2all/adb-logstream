@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { map, tap } from 'rxjs';
-import { LocalStorageService } from '../../services/local-storage.service';
+import { LocalStorageService } from './local-storage.service';
 import { streamActions } from './stream.actions';
 import { DispatchEffect, KeyboardShortcut, NonDispatchEffect } from '../../app.types';
 import { Store } from '@ngrx/store';
-import { streamFeature } from './stream.redusers';
+import { streamFeature } from './stream.reducers';
 import { concatLatestFrom } from '@ngrx/operators';
 import { notificationActions } from '../notification/notification.actions';
 

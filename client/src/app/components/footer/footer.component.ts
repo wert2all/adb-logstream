@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { streamActions } from '../../store/stream/stream.actions';
-import { streamFeature } from '../../store/stream/stream.redusers';
+import { streamFeature } from '../../store/stream/stream.reducers';
 
 @Component({
   selector: 'app-footer',

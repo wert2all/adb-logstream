@@ -58,7 +58,7 @@
 - **Naming**: Follow typical TypeScript conventions – camelCase for variables/functions, PascalCase for classes/types, kebab-case for file names.
 - **Angular conventions**:
   - All components are standalone (no NgModules).
-  - State management via `signal()` and `computed()` — no RxJS for state.
+  - State management via **NgRx Store + Effects**; components read state with `selectSignal()`, dispatch actions via `store.dispatch()`.
   - Templates use new control flow syntax (`@if`, `@for`, `@defer`).
   - Inject dependencies with `inject()` function (no constructor DI).
   - Tailwind classes in templates; custom CSS only for non‑Tailwind concerns.

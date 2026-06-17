@@ -14,7 +14,7 @@ import { phosphorXSquareDuotone } from '@ng-icons/phosphor-icons/duotone';
   templateUrl: './notification-banner.component.html',
   styleUrls: ['./notification-banner.component.css'],
 })
-export class NotficationBannerComponent {
+export class NotificationBannerComponent {
   private store = inject(Store);
 
   protected messages = this.store.selectSignal(notificationFeature.selectOpenMessages);

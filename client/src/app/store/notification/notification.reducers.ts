@@ -16,6 +16,22 @@ export const notificationFeature = createFeature({
         message.uuid === uuid ? { ...message, isOpen: false } : message,
       ),
     })),
+
+    on(
+      notificationActions.showMessage,
+      (state, { message, messageType }): NotificationState => ({
+        ...state,
+        messages: [
+          ...state.messages,
+          {
+            message,
+            isOpen: true,
+            type: messageType,
+            uuid: crypto.randomUUID(),
+          },
+        ],
+      }),
+    ),
   ),
   extraSelectors: ({ selectMessages }) => {
     const selectOpenMessages = createSelector(selectMessages, (messages) =>
