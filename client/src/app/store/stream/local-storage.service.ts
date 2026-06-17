@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LevelFilter } from '../store/stream/stream.types';
+import { LevelFilter } from './stream.types';
 
 const LEVELS_KEY = 'logstream-levels';
 const AUTO_SCROLL_KEY = 'logstream-auto-scroll-enabled';

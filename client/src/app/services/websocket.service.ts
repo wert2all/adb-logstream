@@ -14,7 +14,6 @@ export class WebSocketService {
 
   private ws: WebSocket | null = null;
   private reconnectTimer: number | null = null;
-  private wasDisconnected = false;
 
   connect(): void {
     if (this.ws) {
@@ -31,10 +30,6 @@ export class WebSocketService {
 
     this.ws.onopen = () => {
       this.store.dispatch(streamActions.setConnectionStatus({ status: 'connected' }));
-      this.store.dispatch(streamActions.setConnectionStatus({ status: 'connected' }));
-      if (this.wasDisconnected) {
-        window.location.reload();
-      }
     };
 
     this.ws.onmessage = (event) => {
@@ -44,7 +39,6 @@ export class WebSocketService {
     this.ws.onclose = () => {
       this.ws = null;
       this.store.dispatch(streamActions.setConnectionStatus({ status: 'disconnected' }));
-      this.wasDisconnected = true;
       this.store.dispatch(
         notificationActions.showMessage({
           messageType: 'error',

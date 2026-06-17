@@ -1,4 +1,4 @@
-# ADR-0008: Pure signals for state management (no RxJS)
+# ADR-0008: NgRx + RxJS for state management
 
 ## Status
 
@@ -6,47 +6,70 @@ Accepted
 
 ## Context
 
-Angular 21+ provides signals as a built-in reactive primitive. The client needs reactive state management for:
+The client needs reactive state management for:
 
 - Log entries (append, clear, cap at 5000)
 - Level filters (toggle, persist to localStorage)
 - Search query (update, clear)
 - Connection status (connected, disconnected, reconnecting)
 - Auto-scroll state (toggle, persist to localStorage)
+- Entry selection (checkboxes, copy to clipboard)
+- Side effects (localStorage persistence, clipboard API, keyboard shortcuts, notification banners)
 
-The WebSocket API is inherently imperative (`new WebSocket()`, `onopen`, `onclose`, `onmessage`). The question is whether to wrap it in RxJS Observables or keep it imperative and expose state via signals.
+The WebSocket API is inherently imperative (`new WebSocket()`, `onopen`, `onclose`, `onmessage`). The question was what pattern to use for routing WebSocket data through the UI.
 
 ## Decision
 
-Use **pure Angular signals** for all state management. No RxJS is used in the client.
+Use **NgRx Store + Effects** for all state management. RxJS is used for effect pipelines and selector composition.
 
 ### Approach
 
-- `WebSocketService` uses imperative WebSocket API internally
-- Exposes `signal<LogstreamEntry | null>` for latest entry, `signal<ConnectionStatus>` for status
-- `LogStateService` owns all application state as signals
-- Components read signals directly in templates or via `effect()` for side effects
-- `computed()` signals derived from base signals (e.g., filtered entries, visible count)
+- **NgRx Store** — single source of truth with two feature slices: `streamState` (log data, filters, selection, connection status) and `notificationState` (banner messages)
+- **NgRx Effects** — handle all side effects: localStorage persistence, clipboard copy, keyboard shortcut dispatching, notification timing
+- **Angular signals via `selectSignal()`** — components read from the store using `toSignal`-like selectors, keeping templates reactive without manual subscriptions
+- **Feature creators (`createFeature`)** — reducer + selectors defined together for each domain slice
+- **Functional effects** (`createEffect` with `{ functional: true }`) — injected as plain functions for tree-shakeable effect registration
 
-### Signal Flow
+### Data Flow
 
 ```
-WebSocketService.latestEntry (signal)
-    → LogStateService.appendEntry()
-        → LogStateService.entries (signal)
-            → LogListComponent reads via @for
-            → LogRowComponent receives entry as input
+WebSocket (JSON message)
+    → WebSocketService.handleMessage()
+        → store.dispatch(streamActions.appendEntry())
+            → streamReducer appends to entries[]
+                → component selectSignal() picks up change
+                    → Angular CDK re-renders @for
+```
+
+### State Shape
+
+```
+streamState: {
+  entries: LogEntry[]          // capped at 5000
+  filters: { query?, levels }  // search + level toggles
+  selected: LogEntry[]         // checkbox selection
+  autoScroll: boolean
+  totalReceived: number
+  connectionStatus: 'connected' | 'disconnected' | 'reconnecting'
+}
+
+notificationState: {
+  messages: Message[]          // auto-dismiss banners
+}
 ```
 
 ## Consequences
 
-- No RxJS dependency reduces bundle size and learning curve
-- Signals are synchronous by default, which matches the real-time log streaming use case
-- `effect()` handles side effects (auto-scroll, DOM updates) without Observable pipes
-- Reconnect logic remains imperative in `WebSocketService` — this is appropriate since WebSocket lifecycle is inherently imperative
+- **+ ~50KB bundle** (NgRx runtime + store-devtools), offset by maintainability gains
+- **DevTools** — action history, state inspection, time-travel debugging via `@ngrx/store-devtools`
+- **Predictable state flow** — every state change is a dispatched action, every side effect is an effect
+- **RxJS learning curve** — developers need to understand `pipe`, `ofType`, `concatLatestFrom`, `map`, `tap`
+- **Signals + NgRx hybrid** — `selectSignal()` bridges the two worlds: NgRx for mutation, Angular signals for reactive reads in templates
+- **WebSocket stays imperative** — wrapping WebSocket in Observable adds complexity without benefit; imperative dispatch into store is simpler
 
 ## Considered Options
 
-- **RxJS Observables with `toSignal()`** — provides operators like `retry`, `switchMap`, but adds complexity and bundle size for a simple use case
-- **RxJS for WebSocket only** — inconsistent: some state via signals, some via Observables; creates two mental models
-- **NgRx / Akita** — full state management libraries; overkill for this application's state complexity
+- **Pure Angular signals** — simpler and lighter, but lacks DevTools, explicit action traceability, and structured side-effect management. Rejected once the app grew beyond a trivial log viewer (selection, clipboard, keyboard shortcuts, notifications all need coordinated side effects).
+- **RxJS BehaviorSubjects in a service** — lighter than NgRx but requires manually wiring DevTools and standardising action patterns across the team. No advantage over NgRx once you need action logging.
+- **Akita / Elf** — smaller libraries but less Angular ecosystem integration. NgRx is the Angular-idiomatic choice with the best DevTools support.
+- **Signal store (@ngrx/signals)** — bridges NgRx with signals but was immature at the time of this decision and didn't offer the same DevTools integration as the full NgRx store.

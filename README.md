@@ -56,7 +56,7 @@ adb-logstream/
 │   │   │   ├── models/
 │   │   │   │   └── logstream.model.ts   # LogstreamEntry, ConnectionStatus types
 │   │   │   ├── services/
-│   │   │   │   ├── log-state.service.ts     # Signals-based state (entries, filters, search)
+│   │   │   │   ├── (removed)                 # Was LogStateService — replaced by NgRx Store
 │   │   │   │   ├── websocket.service.ts     # WebSocket + reconnect + message dispatch
 │   │   │   │   └── local-storage.service.ts # localStorage persistence
 │   │   │   └── components/
@@ -107,7 +107,7 @@ adb-logstream/
 - Auto-reconnect on device disconnect
 - Keyboard shortcuts — `/` search, `c` clear, `v`/`d`/`i`/`w`/`e`/`f` toggle levels, `Esc` cancel
 - Multi-client support (multiple browser tabs)
-- Angular signals for reactive state (no RxJS)
+- NgRx Store + Effects for state management with Angular `selectSignal()` integration
 - Tailwind CSS v4 via PostCSS (build-time tree-shaking)
 - Graceful shutdown (SIGINT / SIGTERM)
 

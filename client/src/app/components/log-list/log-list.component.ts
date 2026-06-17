@@ -1,7 +1,7 @@
 import { Component, inject, ElementRef, ViewChild, effect } from '@angular/core';
 import { LogRowComponent } from '../log-row/log-row.component';
 import { Store } from '@ngrx/store';
-import { streamFeature } from '../../store/stream/stream.redusers';
+import { streamFeature } from '../../store/stream/stream.reducers';
 
 @Component({
   selector: 'app-log-list',

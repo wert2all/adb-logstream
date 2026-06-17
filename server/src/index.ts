@@ -1,51 +1,10 @@
-import { createServer } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { spawn, ChildProcess } from "child_process";
-import { readFileSync, existsSync } from "fs";
-import { join, extname } from "path";
 import { v4 as uuidv4 } from "uuid";
 const PORT = 3000;
-const CLIENT_DIR = join(__dirname, "..", "..", "client");
 
-const MIME_TYPES: Record<string, string> = {
-  ".html": "text/html",
-  ".css": "text/css",
-  ".js": "application/javascript",
-  ".ts": "application/javascript",
-};
-
-// === HTTP Static Server ===
-const server = createServer((req, res) => {
-  const url = req.url || "/";
-  let filePath: string;
-
-  if (url === "/") {
-    filePath = join(CLIENT_DIR, "index.html");
-  } else {
-    filePath = join(CLIENT_DIR, url);
-  }
-
-  if (!existsSync(filePath)) {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-    return;
-  }
-
-  const ext = extname(filePath);
-  const contentType = MIME_TYPES[ext] || "application/octet-stream";
-
-  try {
-    const content = readFileSync(filePath);
-    res.writeHead(200, { "Content-Type": contentType });
-    res.end(content);
-  } catch (err) {
-    res.writeHead(500, { "Content-Type": "text/plain" });
-    res.end("Internal Server Error");
-  }
-});
-
-// === WebSocket Broadcast ===
-const wss = new WebSocketServer({ server });
+// === WebSocket Server ===
+const wss = new WebSocketServer({ port: PORT });
 const clients = new Set<WebSocket>();
 
 function broadcast(type: string, data: Record<string, unknown>): void {
@@ -171,7 +130,7 @@ function shutdown(): void {
   if (adbProcess && !adbProcess.killed) {
     adbProcess.kill();
   }
-  server.close(() => {
+  wss.close(() => {
     process.exit(0);
   });
   // Force exit after 5 seconds if server doesn't close
@@ -182,7 +141,5 @@ process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
 // === Start ===
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  startAdb();
-});
+console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+startAdb();

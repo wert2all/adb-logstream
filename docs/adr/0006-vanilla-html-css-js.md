@@ -19,7 +19,7 @@ The project needs:
 The client is built with **Angular 21+** using:
 
 - **Standalone components** (default in Angular 21) — no NgModules
-- **Angular signals** for reactive state management (no RxJS for state)
+- **NgRx + RxJS** for reactive state management (Store + Effects + `selectSignal()` for Angular signal integration)
 - **New control flow syntax** (`@if`, `@for`) instead of structural directives
 - **Tailwind CSS v4 via `@tailwindcss/postcss`** — build-time processing, no CDN script
 - **`@theme` block in `styles.css`** for design tokens from DESIGN.md (CSS-first config)
@@ -39,11 +39,11 @@ The client is built with **Angular 21+** using:
 
 ### Service Architecture
 
-| Service               | Responsibility                                                                                                                            |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `LogStateService`     | Signals: entries, levelFilters, searchQuery, connectionStatus, autoScrollEnabled. Methods: appendEntry(), clearLog(), toggleLevel(), etc. |
-| `WebSocketService`    | Connection, reconnect, message parsing. Signals: latestEntry, status, statusMessage.                                                      |
-| `LocalStorageService` | Wrapper around localStorage for filter and auto-scroll persistence.                                                                       |
+| Service               | Responsibility                                                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `NgRx Store`          | Feature states: `streamState` (entries, filters, selection, connection) + `notificationState` (banners) via createFeature/selectSignal |
+| `WebSocketService`    | Connection, reconnect, message parsing. Signals: latestEntry, status, statusMessage.                                                   |
+| `LocalStorageService` | Wrapper around localStorage for filter and auto-scroll persistence.                                                                    |
 
 ### Styling
 
@@ -62,4 +62,5 @@ Tailwind CSS v4 is processed at build time via `@tailwindcss/postcss`. Design to
 - **Vanilla TypeScript + Vite** (original) — simple but direct DOM manipulation doesn't scale
 - **React + Vite** — familiar but different component model; signals are native to Angular
 - **Preact / Svelte** — lighter alternatives but Angular signals were the stated goal
-- **Angular with RxJS for state** — over-engineered for this use case; pure signals are sufficient
+- **Pure Angular signals** — rejected: less suitable for coordinating complex side effects (clipboard, localStorage, keybindings, notifications)
+- **Angular with RxJS for state** — initially considered over-engineered, but ultimately chosen for DevTools support and predictable effect pipelines
