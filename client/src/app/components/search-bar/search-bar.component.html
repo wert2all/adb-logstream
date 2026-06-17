@@ -11,7 +11,7 @@
     placeholder="Filter logs (regex supported) [/]"
     class="w-full bg-background border border-outline-variant rounded py-1 pl-8 pr-8 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline-variant/50"
   />
-  @if (logState.searchQuery()) {
+  @if (searchQuery()) {
     <button
       (click)="clearSearch()"
       class="absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors"
