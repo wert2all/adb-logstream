@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/wert2all/adb-logstream/compare/adb-logstream-v0.3.1...adb-logstream-v0.4.0) (2026-06-18)
+
+
+### Features
+
+* add package name filter via server PID resolution and client UI ([d2be4fa](https://github.com/wert2all/adb-logstream/commit/d2be4fa8289f73b54a73eb87b9f9afe2a8e84a3e))
+
 ## [0.3.1](https://github.com/wert2all/adb-logstream/compare/adb-logstream-v0.3.0...adb-logstream-v0.3.1) (2026-06-18)
 
 
