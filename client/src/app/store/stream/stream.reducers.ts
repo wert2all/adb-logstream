@@ -42,6 +42,7 @@ export const streamFeature = createFeature({
       (state): StreamState => ({
         ...state,
         filters: initialState.filters,
+        selected: [],
       }),
     ),
 
