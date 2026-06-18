@@ -101,9 +101,17 @@ export const streamFeature = createFeature({
         ...state,
         selected: [],
       };
-    }),
+    }),    on(
+      streamActions.setConnectionStatus,
+      (state, { status }): StreamState => ({
+        ...state,
+        connectionStatus: status,
+      }),
+    ),
 
-    on(streamActions.toggleSelection, (state, { uuid }): StreamState => {
+    on(
+      streamActions.toggleSelection,
+      (state, { uuid }): StreamState => {
       const entry = state.entries.find((e) => e.uuid === uuid);
       if (!entry) return state;
 
