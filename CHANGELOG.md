@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/wert2all/adb-logstream/compare/adb-logstream-v0.2.0...adb-logstream-v0.3.0) (2026-06-18)
+
+
+### Features
+
+* enable npx adb-logstream with HTTP serving and npm publishing ([1fcf93e](https://github.com/wert2all/adb-logstream/commit/1fcf93e56d79c33e1dbf16f18a99d5bd5c235f1b))
+
 ## [0.2.0](https://github.com/wert2all/adb-logstream/compare/adb-logstream-v0.1.0...adb-logstream-v0.2.0) (2026-06-18)
 
 
