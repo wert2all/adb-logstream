@@ -21,6 +21,7 @@ export class LogListComponent {
 
   constructor() {
     effect(() => {
+      const all = this.entries();
       if (this.autoScrollEnabled()) {
         requestAnimationFrame(() => this.scrollToBottom());
       }
