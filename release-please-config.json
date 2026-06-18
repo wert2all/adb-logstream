@@ -1,0 +1,10 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "adb-logstream",
+      "changelog-path": "CHANGELOG.md"
+    }
+  },
+  "plugins": []
+}

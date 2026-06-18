@@ -1,47 +1,51 @@
 name: Release Application
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  release:
+  release-please:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Run Release Please
+        id: release
+        uses: google-github-actions/release-please-action@v4
         with:
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Checkout repository
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "npm"
 
       - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created }}
         run: npm ci
 
       - name: Run Lint & Type-check
+        if: ${{ steps.release.outputs.release_created }}
         run: npm run lint
 
-      - name: Initialize Git User
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Run Release-it
-        run: npx release-it --ci
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build client and server
+        if: ${{ steps.release.outputs.release_created }}
         run: npm run build
 
       - name: Prepare Release Artifacts
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           mkdir -p adb-logstream-release
           cp -r server/dist adb-logstream-release/server-dist
@@ -50,9 +54,9 @@ jobs:
           cp package-lock.json adb-logstream-release/
           zip -r adb-logstream-release.zip adb-logstream-release
 
-      - name: Upload Artifacts to existing GitHub Release
+      - name: Upload Artifacts to Tagged Release
+        if: ${{ steps.release.outputs.release_created }}
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ env.NEW_VERSION }}
+          tag_name: ${{ steps.release.outputs.tag_name }}
           files: adb-logstream-release.zip
-        if: always()
