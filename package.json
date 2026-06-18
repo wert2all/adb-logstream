@@ -21,5 +21,6 @@
   "dependencies": {
     "@ng-icons/core": "^33.2.4",
     "@ng-icons/phosphor-icons": "^33.2.4"
-  }
+  },
+  "version": "0.2.0"
 }
