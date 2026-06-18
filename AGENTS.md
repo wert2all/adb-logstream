@@ -7,7 +7,7 @@
 - Streams logs from a connected device (`adb logcat -v long`) via a Node.js server.
 - Server parses log entries to JSON and broadcasts them over WebSocket.
 - Browser client (Angular 22+) renders a searchable, filterable, auto‑scrolling log list.
-- Uses Angular signals for state management, Tailwind CSS v4 via PostCSS, and standalone components.
+- Uses NgRx Store + Effects (functional effects) for state management with `selectSignal()` for reactive reads, Tailwind CSS v4 via PostCSS, and standalone components.
 
 ## Setup Commands
 
@@ -53,12 +53,14 @@
 - **Linting**: Run `npm run lint` which invokes `tsc --noEmit` (type‑checking).
 - **File organization**:
   - Server code in `server/src/`.
-  - Client code in `client/src/app/` — organized by feature (components/, services/, models/).
+  - Client code in `client/src/app/` — organized by feature (components/, services/, models/, store/).
+  - NgRx store features in `client/src/app/store/stream/` and `client/src/app/store/notification/`.
   - Workspace root `package.json` defines the two workspaces.
 - **Naming**: Follow typical TypeScript conventions – camelCase for variables/functions, PascalCase for classes/types, kebab-case for file names.
 - **Angular conventions**:
   - All components are standalone (no NgModules).
-  - State management via **NgRx Store + Effects**; components read state with `selectSignal()`, dispatch actions via `store.dispatch()`.
+  - State management via **NgRx Store + Effects** (functional effects with `{ functional: true }`); components read state with `selectSignal()`, dispatch actions via `store.dispatch()`.
+  - Two feature slices: `streamState` (entries, filters, selection, autoscroll) and `notificationState` (banner messages).
   - Templates use new control flow syntax (`@if`, `@for`, `@defer`).
   - Inject dependencies with `inject()` function (no constructor DI).
   - Tailwind classes in templates; custom CSS only for non‑Tailwind concerns.
