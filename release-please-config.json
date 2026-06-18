@@ -8,8 +8,7 @@
   },
   "plugins": [
     {
-      "type": "node-workspace-hooks",
-      "runInRoot": true,
+      "type": "node-workspace-builder",
       "script": "npx prettier --write CHANGELOG.md"
     }
   ]
