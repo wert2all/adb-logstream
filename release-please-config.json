@@ -6,10 +6,5 @@
       "changelog-path": "CHANGELOG.md"
     }
   },
-  "plugins": [
-    {
-      "type": "node-workspace-builder",
-      "script": "npx prettier --write CHANGELOG.md"
-    }
-  ]
+  "plugins": []
 }
