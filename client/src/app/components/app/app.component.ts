@@ -30,8 +30,18 @@ export class AppComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
+    const target = event.target as HTMLElement;
+    const isFormField =
+      target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+
     const key = event.key.toLocaleLowerCase();
     if (this.isShortcut(key)) {
+      // Allow Escape to work everywhere (clears search / blurs input)
+      // All other shortcuts: skip when user is typing in a form field
+      if (isFormField && key !== 'escape') {
+        return;
+      }
+
       this.store.dispatch(streamActions.keyPressed({ key }));
       event.preventDefault();
       if (key === '/') {

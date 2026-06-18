@@ -1,12 +1,12 @@
-import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
-import { StreamState } from "./stream.types";
-import { streamActions } from "./stream.actions";
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { StreamState } from './stream.types';
+import { streamActions } from './stream.actions';
 
 const initialState: StreamState = {
   autoScroll: true,
   selected: [],
   totalReceived: 0,
-  connectionStatus: "disconnected",
+  connectionStatus: 'disconnected',
   entries: [],
   filters: {
     query: undefined,
@@ -22,7 +22,7 @@ const initialState: StreamState = {
 };
 
 export const streamFeature = createFeature({
-  name: "streamState",
+  name: 'streamState',
   reducer: createReducer(
     initialState,
     on(
@@ -89,10 +89,7 @@ export const streamFeature = createFeature({
       const levels = state.filters.levels;
       const levelVisible = levels[entry.level] !== false;
 
-      if (
-        !levelVisible ||
-        (query && !entry.message.toLowerCase().includes(query.toLowerCase()))
-      ) {
+      if (!levelVisible || (query && !entry.message.toLowerCase().includes(query.toLowerCase()))) {
         return state;
       }
 
@@ -135,19 +132,10 @@ export const streamFeature = createFeature({
     }),
   ),
   extraSelectors: ({ selectFilters, selectSelected }) => {
-    const selectQuery = createSelector(
-      selectFilters,
-      (filters) => filters.query,
-    );
+    const selectQuery = createSelector(selectFilters, (filters) => filters.query);
 
-    const selectQueryString = createSelector(
-      selectFilters,
-      (filters) => filters.query || "",
-    );
-    const selectLevelFilters = createSelector(
-      selectFilters,
-      (filters) => filters.levels,
-    );
+    const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
+    const selectLevelFilters = createSelector(selectFilters, (filters) => filters.levels);
 
     const hasSelected = createSelector(
       selectSelected,
