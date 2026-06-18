@@ -83,7 +83,8 @@ adb-logstream/
 │   │       ├── app.config.ts         # NgRx providers (store, effects, devtools)
 │   │       └── components/
 │   │           ├── app/                   # Root layout (header, banner, main, footer)
-│   │           ├── header/                # Brand, status badge, search, toggles, clear, copy
+│   │           ├── header/                # Brand, status badge, search, package filter, level toggles, clear, copy
+│   │           ├── package-filter/        # Package name filter input with datalist suggestions
 │   │           ├── search-bar/            # Search input with clear button (debounced 300ms)
 │   │           ├── level-toggles/         # V/D/I/W/E/F toggle buttons
 │   │           ├── notification-banner/   # Dismissable notification banner (success/error)
@@ -96,7 +97,7 @@ adb-logstream/
 │   ├── package.json
 │   └── tsconfig.json
 ├── docs/
-│   └── adr/                  # Architecture decision records (9 ADRs)
+│   └── adr/                  # Architecture decision records (10 ADRs)
 ├── openspec/                 # OpenSpec specs and change archives
 ├── CONTEXT.md                # Domain glossary
 ├── DESIGN.md                 # Design system spec (Material-like dark theme)

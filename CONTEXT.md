@@ -37,7 +37,7 @@ The Node.js process that runs `adb logcat` and broadcasts entries to all connect
 _Avoid_: backend, service
 
 **NgRx Store**:
-The Redux-style state store that manages all client-side state: entries, level filters, search query, connection status, auto-scroll, selection, and notifications. Components interact via `store.dispatch()` and `selectSignal()`.
+The Redux-style state store that manages all client-side state: entries, level filters, search query, packageFilter, connection status, auto-scroll, selection, and notifications. Components interact via `store.dispatch()` and `selectSignal()`.
 _Avoid_: LogStateService, state manager, custom store
 
 **Selection**:
