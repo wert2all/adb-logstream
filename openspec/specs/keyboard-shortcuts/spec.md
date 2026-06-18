@@ -133,5 +133,30 @@ The Client SHALL NOT trigger keyboard shortcuts when an editable input field is 
 #### Scenario: User types in search field
 
 - **WHEN** the user is typing in the search input field
-- **THEN** pressing `c`, `v`, `d`, `i`, `w`, `e`, `f`, or `a` SHALL insert the character into the field
+- **THEN** pressing `c`, `v`, `d`, `i`, `w`, `e`, `f`, `a`, or `.` SHALL insert the character into the field
 - **AND** the corresponding shortcut action SHALL NOT be triggered
+
+#### Scenario: User presses `.` in search field
+
+- **WHEN** the user is typing in the search input field
+- **AND** the user presses the `.` key
+- **THEN** the `.` character SHALL be inserted into the field
+- **AND** the package filter focus action SHALL NOT be triggered
+
+#### Scenario: User presses `.` in package filter field
+
+- **WHEN** the user is typing in the package filter input field
+- **AND** the user presses the `.` key
+- **THEN** the `.` character SHALL be inserted into the field
+- **AND** the package filter focus action SHALL NOT be triggered
+
+### Requirement: Focus package filter input
+
+The Client SHALL focus the package filter input when the `.` (period) key is pressed.
+
+#### Scenario: User presses `.`
+
+- **WHEN** the user presses the `.` key
+- **AND** no editable input field is focused
+- **THEN** the package name filter input SHALL receive focus
+- **AND** the `.` character SHALL NOT be inserted into any field

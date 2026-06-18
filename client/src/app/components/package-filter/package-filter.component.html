@@ -1,0 +1,31 @@
+<div class="tooltip-trigger">
+  <span
+    class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline-variant text-sm"
+    >apps</span
+  >
+  <input
+    id="package-filter-input"
+    type="text"
+    [value]="packageFilter() ?? ''"
+    (input)="onInput($event)"
+    placeholder="Package [.]"
+    list="package-names-list"
+    class="w-48 bg-background border border-outline-variant rounded py-1 pl-8 pr-8 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline-variant/50"
+  />
+  <datalist id="package-names-list">
+    @for (name of packageNames(); track name) {
+      <option [value]="name"></option>
+    }
+  </datalist>
+  @if (packageFilter()) {
+    <button
+      (click)="clearFilter()"
+      class="absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors"
+    >
+      <span class="material-symbols-outlined text-sm">close</span>
+    </button>
+  }
+  <span class="tooltip tooltip-bottom"
+    >Filter by package <kbd class="px-1 rounded bg-surface-container text-on-surface">.</kbd></span
+  >
+</div>

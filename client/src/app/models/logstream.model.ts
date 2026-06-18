@@ -6,6 +6,7 @@ export interface LogstreamEntry {
   level: 'V' | 'D' | 'I' | 'W' | 'E' | 'F';
   tag: string;
   message: string;
+  packageName: string | null;
 }
 
 export type ConnectionStatus = 'connected' | 'disconnected' | 'reconnecting';

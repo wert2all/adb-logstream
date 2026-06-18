@@ -89,6 +89,7 @@ export class WebSocketService {
         level: String(msg['level'] || 'I') as LogstreamEntry['level'],
         tag: String(msg['tag'] || ''),
         message: String(msg['message'] || ''),
+        packageName: msg['packageName'] != null ? String(msg['packageName']) : null,
       };
       this.store.dispatch(streamActions.appendEntry({ entry }));
       this.latestEntry.set(entry);

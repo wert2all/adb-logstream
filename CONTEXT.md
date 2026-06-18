@@ -20,6 +20,10 @@ _Avoid_: severity, priority, log type
 A short string identifying the subsystem that produced the Logcat Entry (e.g. `ActivityManager`, `System.err`).
 _Avoid_: source, category, label
 
+**packageName**:
+The Android applicationId (e.g. `com.wert2all.application`). Mapped server-side from the entry PID using periodic `adb shell ps -A` output. Included as `packageName` in the JSON entry; `null` when the PID can't be resolved.
+_Avoid_: applicationId, package, app name, bundle identifier
+
 **Stream**:
 The continuous flow of Logstream Entries from the server to connected clients via WebSocket.
 _Avoid_: feed, pipe, channel
@@ -54,6 +58,7 @@ _Avoid_: ws service, connection service
 - Multiple **Clients** can connect to the same **Server** simultaneously
 - Each **Logstream Entry** has exactly one **Level** and one **Tag**
 - Filtering and search are performed on the **Client** side; the **Server** sends all entries unfiltered
+- The **Server** periodically runs `adb shell ps -A` to build a PID→packageName map and enriches each **Logstream Entry** with a `packageName` field before broadcasting
 - The **Client** is composed of Angular standalone components that read from the **NgRx Store** via `selectSignal()`
 - The **WebSocketService** dispatches actions into the **NgRx Store** to append entries and update connection status
 
@@ -62,3 +67,4 @@ _Avoid_: ws service, connection service
 - "log" was used to refer to both the entire `adb logcat` output and a single line — resolved: the entire output is the **Stream**, a single line is a **Logstream Entry**.
 - "frontend" and "client" were used interchangeably — resolved: **Client** is the canonical term (the browser-side code).
 - UUID added for future extensibility — server generates UUIDv4 for each entry, field name `uuid`, sent to clients via WebSocket.
+- "applicationId" was used to mean the Android app identifier — resolved: **packageName** is the canonical term in this project (the field in the JSON entry).

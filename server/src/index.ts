@@ -115,7 +115,11 @@ interface LogstreamEntry {
   level: string;
   tag: string;
   message: string;
+  packageName: string | null;
 }
+
+// PID → packageName map, populated by ps timer
+let pidToPackageName: Map<number, string> = new Map();
 
 let currentEntry: LogstreamEntry | null = null;
 let bodyLines: string[] = [];
@@ -123,6 +127,9 @@ let bodyLines: string[] = [];
 function emitEntry(): void {
   if (!currentEntry) return;
   currentEntry.message = bodyLines.join("\n");
+  // Resolve packageName from PID map
+  const pid = parseInt(currentEntry.pid, 10);
+  currentEntry.packageName = pidToPackageName.get(pid) ?? null;
   broadcast("entry", { ...currentEntry });
   currentEntry = null;
   bodyLines = [];
@@ -142,6 +149,7 @@ function parseLine(line: string): void {
       level: match[4],
       tag: match[5],
       message: "",
+      packageName: null,
     };
   } else if (currentEntry) {
     bodyLines.push(trimmed);
@@ -198,10 +206,61 @@ function startAdb(): void {
   });
 }
 
+// === PID → packageName Resolution via ps -A ===
+let psTimer: NodeJS.Timeout | null = null;
+
+function tickPs(): void {
+  const ps = spawn("adb", ["shell", "ps", "-A", "-o", "PID,NAME"], {
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+
+  ps.stdout?.setEncoding("utf8");
+  ps.stderr?.setEncoding("utf8");
+
+  let stdoutBuffer = "";
+  ps.stdout?.on("data", (chunk: string) => {
+    stdoutBuffer += chunk;
+  });
+
+  ps.on("close", (code) => {
+    if (code !== 0 || isShuttingDown) return;
+
+    // Parse output: each line is "  PID  NAME" or "PID NAME"
+    const newMap: Map<number, string> = new Map();
+    const lines = stdoutBuffer.split("\n");
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      // Format: PID and NAME separated by whitespace
+      const spaceIdx = trimmed.indexOf(" ");
+      if (spaceIdx === -1) continue;
+      const pidStr = trimmed.slice(0, spaceIdx);
+      const nameStr = trimmed.slice(spaceIdx + 1).trim();
+      const pid = parseInt(pidStr, 10);
+      if (!isNaN(pid) && nameStr) {
+        newMap.set(pid, nameStr);
+      }
+    }
+    pidToPackageName = newMap;
+  });
+
+  // On ps failure, keep existing map — newMap is only assigned on success
+  ps.on("error", () => {
+    // Silently ignore — stale map survives
+  });
+}
+
+function startPsTimer(): void {
+  if (isShuttingDown) return;
+  tickPs(); // Run immediately on start
+  psTimer = setInterval(tickPs, 2000);
+}
+
 // === Graceful Shutdown ===
 function shutdown(): void {
   isShuttingDown = true;
   if (reconnectTimer) clearTimeout(reconnectTimer);
+  if (psTimer) clearInterval(psTimer);
   if (adbProcess && !adbProcess.killed) {
     adbProcess.kill();
   }
@@ -224,3 +283,4 @@ server.listen(PORT, () => {
   console.log(`adb-logstream server running at http://localhost:${PORT}`);
 });
 startAdb();
+startPsTimer();
