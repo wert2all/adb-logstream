@@ -20,11 +20,7 @@ export class SearchBarComponent {
 
   constructor() {
     this.query$
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
       .subscribe((query) => {
         this.store.dispatch(streamActions.setQuery({ query }));
       });
