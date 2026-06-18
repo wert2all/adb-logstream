@@ -145,12 +145,31 @@ This system avoids shadows entirely to maintain a flat, technical aesthetic. Dep
 
 Shapes are intentionally geometric and sharp. We use a **Soft (0.25rem)** roundedness for buttons and input fields to prevent the UI from feeling hostile, but containers and panels retain sharp 0px corners to reinforce the "grid" and terminal-like structure.
 
+> **Implementation notes:** Several DESIGN.md specifications diverge from the current code. See the [design deviations](#design-deviations) section for details.
+
 ## Components
 
-- **Buttons:** Primary buttons are solid Blue-600. Secondary buttons use a subtle border with no fill. All buttons use `body-mono-bold` for text.
+- **Buttons:** Primary buttons are solid `--color-primary-container` (`#4d8eff`). Secondary buttons are similarly styled with container color. All buttons use `body-mono-bold` for text.
 - **Status Chips:** Small, rectangular indicators with a subtle background tint of the log-level color and a high-contrast label.
-- **Input Fields:** Dark backgrounds (`#020617`) with a 1px border. On focus, the border changes to Blue-500 with no outer glow.
-- **Log Lists:** Alternating row stripes (zebra striping) are permitted for very wide data tables. Hovering over a log line should trigger a subtle surface highlight.
-- **Checkboxes:** Square with sharp corners. The checkmark is a simple high-contrast "X" or tick in the primary color.
+- **Input Fields:** Dark backgrounds (`--color-background: #0b1326`) with a 1px border (`--color-outline-variant`). On focus, the border changes to `--color-primary` (`#adc6ff`) with a 1px ring.
+- **Log Lists:** Hovering over a log line triggers a subtle surface highlight (`--color-surface-container-high`). Row selection uses a level-tinted background (20% opacity of the level color).
+- **Checkboxes:** Square with rounded corners. The checkmark uses the accent color (`--color-primary`).
+- **Tabs:** Underline style for active state. No background change. Active tab uses the primary Blue-500 for the underline and text.
+- **Tree View:** Used for file navigation or object inspection. Indentation should be exactly 16px per level with vertical guidelines.
+
+## Design Deviations
+
+The following aspects of this design spec are not implemented in the current codebase:
+
+| Spec                                | Actual                                                                   |
+| ----------------------------------- | ------------------------------------------------------------------------ |
+| Background `#020617` (Level 0)      | `--color-background: #0b1326`                                            |
+| Geist font for headings             | Only JetBrains Mono used (applied globally via `font-mono`)              |
+| Blue-600 / Blue-500 primary buttons | `--color-primary-container` (`#4d8eff`) / `--color-primary` (`#adc6ff`)  |
+| Zebra striping for log rows         | Not implemented; hover + selection highlighting only                     |
+| Shadows for elevation               | Tonal layers + 1px borders used (consistent with current implementation) |
+
+These deviations reflect iterative refinement during implementation. The design spec serves as the guiding vision, while the actual codebase represents the pragmatic application."X" or tick in the primary color.
+
 - **Tabs:** Underline style for active state. No background change. Active tab uses the primary Blue-500 for the underline and text.
 - **Tree View:** Used for file navigation or object inspection. Indentation should be exactly 16px per level with vertical guidelines.
