@@ -24,6 +24,6 @@ export const LevelNames: Record<Level, string> = {
   F: 'Fatal',
 };
 
-export const KeyboardShortcuts = ['/', 'Escape', 'c', 'a', 'v', 'd', 'i', 'w', 'e', 'f'] as const;
+export const KeyboardShortcuts = ['/', 'escape', 'c', 'a', 'v', 'd', 'i', 'w', 'e', 'f'] as const;
 
 export type KeyboardShortcut = (typeof KeyboardShortcuts)[number];
