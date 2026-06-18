@@ -16,7 +16,7 @@ export class LogListComponent {
 
   @ViewChild('container', { static: true })
   protected container!: ElementRef<HTMLDivElement>;
-  protected entries = this.store.selectSignal(streamFeature.selectFilteredEntries);
+  protected entries = this.store.selectSignal(streamFeature.selectEntries);
   protected searchQuery = this.store.selectSignal(streamFeature.selectQueryString);
 
   constructor() {

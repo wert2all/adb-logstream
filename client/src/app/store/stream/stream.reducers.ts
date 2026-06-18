@@ -1,12 +1,12 @@
-import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
-import { StreamState } from './stream.types';
-import { streamActions } from './stream.actions';
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
+import { StreamState } from "./stream.types";
+import { streamActions } from "./stream.actions";
 
 const initialState: StreamState = {
   autoScroll: true,
   selected: [],
   totalReceived: 0,
-  connectionStatus: 'disconnected',
+  connectionStatus: "disconnected",
   entries: [],
   filters: {
     query: undefined,
@@ -22,7 +22,7 @@ const initialState: StreamState = {
 };
 
 export const streamFeature = createFeature({
-  name: 'streamState',
+  name: "streamState",
   reducer: createReducer(
     initialState,
     on(
@@ -85,7 +85,19 @@ export const streamFeature = createFeature({
     ),
 
     on(streamActions.appendEntry, (state, { entry }): StreamState => {
+      const query = state.filters.query;
+      const levels = state.filters.levels;
+      const levelVisible = levels[entry.level] !== false;
+
+      if (
+        !levelVisible ||
+        (query && !entry.message.toLowerCase().includes(query.toLowerCase()))
+      ) {
+        return state;
+      }
+
       const entries = [...state.entries, entry];
+
       if (entries.length > 5000) {
         entries.shift();
       }
@@ -101,7 +113,8 @@ export const streamFeature = createFeature({
         ...state,
         selected: [],
       };
-    }),    on(
+    }),
+    on(
       streamActions.setConnectionStatus,
       (state, { status }): StreamState => ({
         ...state,
@@ -109,9 +122,7 @@ export const streamFeature = createFeature({
       }),
     ),
 
-    on(
-      streamActions.toggleSelection,
-      (state, { uuid }): StreamState => {
+    on(streamActions.toggleSelection, (state, { uuid }): StreamState => {
       const entry = state.entries.find((e) => e.uuid === uuid);
       if (!entry) return state;
 
@@ -123,38 +134,30 @@ export const streamFeature = createFeature({
       return { ...state, selected };
     }),
   ),
-  extraSelectors: ({ selectFilters, selectEntries, selectSelected }) => {
-    const selectQuery = createSelector(selectFilters, (filters) => filters.query);
+  extraSelectors: ({ selectFilters, selectSelected }) => {
+    const selectQuery = createSelector(
+      selectFilters,
+      (filters) => filters.query,
+    );
 
-    const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
-    const selectLevelFilters = createSelector(selectFilters, (filters) => filters.levels);
+    const selectQueryString = createSelector(
+      selectFilters,
+      (filters) => filters.query || "",
+    );
+    const selectLevelFilters = createSelector(
+      selectFilters,
+      (filters) => filters.levels,
+    );
 
     const hasSelected = createSelector(
       selectSelected,
       (selectSelected) => selectSelected.length > 0,
     );
 
-    const selectFilteredEntries = createSelector(
-      selectEntries,
-      selectFilters,
-      (entries, filters) => {
-        const query = filters.query;
-        const levels = filters.levels;
-        return entries.filter((entry) => {
-          const levelVisible = levels[entry.level] !== false;
-          if (!levelVisible) return false;
-          if (!query) return true;
-          const text = (entry.tag + ' ' + entry.message).toLowerCase();
-          return text.includes(query);
-        });
-      },
-    );
-
     return {
       selectQuery,
       selectQueryString,
       selectLevelFilters,
-      selectFilteredEntries,
       hasSelected,
     };
   },
