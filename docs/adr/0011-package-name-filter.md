@@ -16,4 +16,4 @@ We add a `packageName` field to each Logstream Entry so the client can filter by
 - The `packageName` field is added to the WebSocket JSON message; old clients that ignore unknown fields continue to work
 - All filtering stays client-side (ADR-0003 still holds)
 
-Status: accepted.
+Status: **implemented**.
