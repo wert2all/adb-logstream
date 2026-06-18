@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { LevelTogglesComponent } from '../level-toggles/level-toggles.component';
+import { PackageFilterComponent } from '../package-filter/package-filter.component';
 import { Store } from '@ngrx/store';
 import { streamActions } from '../../store/stream/stream.actions';
 import { streamFeature } from '../../store/stream/stream.reducers';
@@ -8,7 +9,7 @@ import { streamFeature } from '../../store/stream/stream.reducers';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [SearchBarComponent, LevelTogglesComponent],
+  imports: [SearchBarComponent, LevelTogglesComponent, PackageFilterComponent],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {

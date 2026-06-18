@@ -8,6 +8,7 @@ const initialState: StreamState = {
   totalReceived: 0,
   connectionStatus: 'disconnected',
   entries: [],
+  packageFilter: null,
   filters: {
     query: undefined,
     levels: {
@@ -43,6 +44,7 @@ export const streamFeature = createFeature({
         ...state,
         filters: initialState.filters,
         selected: [],
+        packageFilter: null,
       }),
     ),
 
@@ -87,9 +89,17 @@ export const streamFeature = createFeature({
     on(streamActions.appendEntry, (state, { entry }): StreamState => {
       const query = state.filters.query;
       const levels = state.filters.levels;
+      const packageFilter = state.packageFilter;
       const levelVisible = levels[entry.level] !== false;
 
       if (!levelVisible || (query && !entry.message.toLowerCase().includes(query.toLowerCase()))) {
+        return state;
+      }
+
+      if (
+        packageFilter &&
+        !entry.packageName?.toLowerCase().includes(packageFilter.toLowerCase())
+      ) {
         return state;
       }
 
@@ -130,8 +140,24 @@ export const streamFeature = createFeature({
 
       return { ...state, selected };
     }),
+
+    on(
+      streamActions.setPackageFilter,
+      (state, { query }): StreamState => ({
+        ...state,
+        packageFilter: query || null,
+      }),
+    ),
+
+    on(
+      streamActions.cleanPackageFilter,
+      (state): StreamState => ({
+        ...state,
+        packageFilter: null,
+      }),
+    ),
   ),
-  extraSelectors: ({ selectFilters, selectSelected }) => {
+  extraSelectors: ({ selectFilters, selectSelected, selectEntries }) => {
     const selectQuery = createSelector(selectFilters, (filters) => filters.query);
 
     const selectQueryString = createSelector(selectFilters, (filters) => filters.query || '');
@@ -142,11 +168,20 @@ export const streamFeature = createFeature({
       (selectSelected) => selectSelected.length > 0,
     );
 
+    const selectPackageNames = createSelector(selectEntries, (entries) => {
+      const names = new Set<string>();
+      for (const entry of entries) {
+        if (entry.packageName) names.add(entry.packageName);
+      }
+      return Array.from(names).sort();
+    });
+
     return {
       selectQuery,
       selectQueryString,
       selectLevelFilters,
       hasSelected,
+      selectPackageNames,
     };
   },
 });

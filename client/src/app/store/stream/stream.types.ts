@@ -8,6 +8,7 @@ export type LogEntry = {
   pid: string;
   tid: string;
   tag: string;
+  packageName: string | null;
 };
 export type ConnectionStatus = 'connected' | 'disconnected' | 'reconnecting';
 export type LevelFilter = Record<Level, boolean>;
@@ -19,4 +20,5 @@ export type StreamState = {
   entries: LogEntry[];
   totalReceived: number;
   connectionStatus: ConnectionStatus;
+  packageFilter: string | null;
 };

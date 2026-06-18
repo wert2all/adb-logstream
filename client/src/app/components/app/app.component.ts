@@ -46,6 +46,8 @@ export class AppComponent implements OnInit {
       event.preventDefault();
       if (key === '/') {
         document.getElementById('search-input')?.focus();
+      } else if (key === '.') {
+        document.getElementById('package-filter-input')?.focus();
       }
     }
   }

@@ -32,5 +32,8 @@ export const streamActions = createActionGroup({
     'set connection status': props<{ status: ConnectionStatus }>(),
 
     'toggle selection': props<{ uuid: string }>(),
+
+    'set package filter': props<{ query: string }>(),
+    'clean package filter': emptyProps(),
   },
 });
