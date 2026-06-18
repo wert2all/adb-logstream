@@ -11,26 +11,16 @@
 
 ## Setup Commands
 
-- **Install dependencies** (root workspace installs both server and client):
-  ```bash
-  npm install
-  ```
-- **Build client and server**:
-  ```bash
-  npm run build
-  ```
-- **Start the production server** (serves pre‑built client):
-  ```bash
-  npm start
-  ```
-- **Development mode** – runs server and client concurrently with hot‑reload:
-  ```bash
-  npm run dev
-  ```
-- **Lint / type‑check**:
-  ```bash
-  npm run lint
-  ```
+| Command                  | Purpose                                                            |
+| ------------------------ | ------------------------------------------------------------------ |
+| `npm install`            | Install dependencies for both workspaces                           |
+| `npm run build`          | Build client and server                                            |
+| `npm start`              | Start the production server (serves static client)                 |
+| `npm run dev`            | Development mode — server + client with hot‑reload                 |
+| `npm run lint`           | Type‑check both workspaces (`tsc --noEmit`)                        |
+| `npm run format`         | Format code with Prettier                                          |
+| `npx adb-logstream`      | Run published package without installing (uses `bin` entry)        |
+| `npm run prepublishOnly` | Triggered automatically before `npm publish`; runs `npm run build` |
 
 ## Development Workflow
 
@@ -79,6 +69,21 @@
   npm start
   ```
 - **Docker (optional)** – you can containerise the app by copying the `dist/` folders and running `node server/dist/index.js` behind a lightweight web server.
+
+### Publishing checklist
+
+Before `npm publish`:
+
+1. Ensure `npm run lint` passes for both workspaces.
+2. Run `npm run build` and verify both client and server compile without errors.
+3. Verify `server/dist/index.js` starts with `#!/usr/bin/env node`.
+4. Confirm the client build exists at `client/dist/client/browser/`.
+5. Bump version if needed (release‑please handles this automatically via CI).
+6. `npm publish` triggers `prepublishOnly` which runs `npm run build`.
+
+### Versioning
+
+Follow the existing release‑please workflow. `npm publish` happens after a release PR is merged. The root `package.json` version is the source of truth for the published package.
 
 ## Pull Request Guidelines
 

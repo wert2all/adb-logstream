@@ -1,11 +1,86 @@
+#!/usr/bin/env node
 import { WebSocketServer, WebSocket } from "ws";
 import { spawn, ChildProcess } from "child_process";
 import { v4 as uuidv4 } from "uuid";
+import * as http from "http";
+import * as fs from "fs";
+import * as path from "path";
+import { Socket } from "net";
+
 const PORT = 3000;
 
-// === WebSocket Server ===
-const wss = new WebSocketServer({ port: PORT });
+// === Static File Serving ===
+const CLIENT_DIR = path.join(__dirname, "../../client/dist/client/browser/");
+
+if (!fs.existsSync(CLIENT_DIR)) {
+  console.error(`Error: Client build directory not found at ${CLIENT_DIR}`);
+  console.error("Please run `npm run build` to build the client first.");
+  process.exit(1);
+}
+
+const MIME_TYPES: Record<string, string> = {
+  ".html": "text/html",
+  ".js": "application/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".woff": "font/woff",
+  ".woff2": "font/woff2",
+};
+
+function serveStatic(
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): void {
+  console.log(`${req.method} ${req.url}`);
+
+  let filePath = path.join(
+    CLIENT_DIR,
+    req.url === "/" ? "index.html" : req.url || "",
+  );
+  const ext = path.extname(filePath).toLowerCase();
+
+  // If the URL does not have an extension and the file does not exist, serve index.html (SPA fallback)
+  if (!ext && !fs.existsSync(filePath)) {
+    filePath = path.join(CLIENT_DIR, "index.html");
+  }
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      // Fallback to index.html for any non-file request
+      const fallbackPath = path.join(CLIENT_DIR, "index.html");
+      fs.readFile(fallbackPath, (fallbackErr, fallbackData) => {
+        if (fallbackErr) {
+          res.writeHead(500);
+          res.end("Internal Server Error");
+          return;
+        }
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end(fallbackData);
+      });
+      return;
+    }
+
+    const contentType = MIME_TYPES[ext] || "application/octet-stream";
+    res.writeHead(200, { "Content-Type": contentType });
+    res.end(data);
+  });
+}
+
+// === HTTP + WebSocket Server ===
+const server = http.createServer(serveStatic);
+const wss = new WebSocketServer({ server });
 const clients = new Set<WebSocket>();
+const connections = new Set<Socket>();
+
+server.on("connection", (conn: Socket) => {
+  connections.add(conn);
+  conn.on("close", () => {
+    connections.delete(conn);
+  });
+});
 
 function broadcast(type: string, data: Record<string, unknown>): void {
   const message = JSON.stringify({ type, ...data });
@@ -130,7 +205,11 @@ function shutdown(): void {
   if (adbProcess && !adbProcess.killed) {
     adbProcess.kill();
   }
-  wss.close(() => {
+  // Destroy all active connections to allow the server to close immediately
+  for (const conn of connections) {
+    conn.destroy();
+  }
+  server.close(() => {
     process.exit(0);
   });
   // Force exit after 5 seconds if server doesn't close
@@ -141,5 +220,7 @@ process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
 // === Start ===
-console.log(`WebSocket server listening on ws://localhost:${PORT}`);
+server.listen(PORT, () => {
+  console.log(`adb-logstream server running at http://localhost:${PORT}`);
+});
 startAdb();

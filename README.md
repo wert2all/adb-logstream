@@ -15,12 +15,23 @@ The server spawns `adb logcat -v long`, parses each entry into structured JSON, 
 ## Requirements
 
 - Node.js 18+
-- `adb` in PATH
+- `adb` in PATH (also required when running via `npx`)
 - Android device connected via USB with debugging enabled (or emulator)
 
 ## Quick start
 
+### Using npx (no install required)
+
 ```bash
+npx adb-logstream
+# → adb-logstream server running at http://localhost:3000
+```
+
+### Local development
+
+```bash
+git clone <url>
+cd adb-logstream
 npm install
 npm run build
 npm start
@@ -28,7 +39,7 @@ npm start
 
 The server serves the pre-built client on [http://localhost:3000](http://localhost:3000).
 
-#### Development
+#### Development mode
 
 ```bash
 npm run dev        # starts server + client in parallel via concurrently

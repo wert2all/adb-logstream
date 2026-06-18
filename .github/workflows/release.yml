@@ -1,59 +1,38 @@
-name: Release Application
+name: Release
+
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+
 permissions:
   contents: write
   pull-requests: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - name: Run Release Please
+      - uses: googleapis/release-please-action@v4
         id: release
-        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
 
-      - name: Checkout repository
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        if: ${{ steps.release.outputs.release_created }}
-        uses: actions/setup-node@v4
+  publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
-
-      - name: Install dependencies
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm ci
-
-      - name: Run Lint & Type-check
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm run lint
-
-      - name: Build client and server
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm run build
-
-      - name: Prepare Release Artifacts
-        if: ${{ steps.release.outputs.release_created }}
-        run: |
-          mkdir -p adb-logstream-release
-          cp -r server/dist adb-logstream-release/server-dist
-          cp -r client/dist adb-logstream-release/client-dist
-          cp package.json adb-logstream-release/
-          cp package-lock.json adb-logstream-release/
-          zip -r adb-logstream-release.zip adb-logstream-release
-
-      - name: Upload Artifacts to Tagged Release
-        if: ${{ steps.release.outputs.release_created }}
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.release.outputs.tag_name }}
-          files: adb-logstream-release.zip
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
