@@ -11,7 +11,7 @@ import { notificationActions } from '../notification/notification.actions';
 
 function exposeActionFromKeyPressed(key: KeyboardShortcut) {
   switch (key) {
-    case 'Escape':
+    case 'escape':
       return streamActions.cleanQuery();
     case 'c':
       return streamActions.cleanFilters();
